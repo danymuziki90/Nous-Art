@@ -15,6 +15,7 @@ import {
   Layers,
   Award,
   BookOpen,
+  Menu as MenuIcon,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 
@@ -23,6 +24,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [currencyMenu, setCurrencyMenu] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +51,7 @@ export default function Navbar() {
     setOpen(false);
     setCurrencyMenu(false);
     setActiveDropdown(null);
+    setShowMegaMenu(false);
   }, [location.pathname]);
 
   // Lock body scroll when mobile menu is open
@@ -72,7 +75,7 @@ export default function Navbar() {
     }
   };
 
-  // Exactly 5 Primary Navigation Items with Sub-menu Groups
+  // Exactly 5 Primary Navigation Items
   const primaryNavItems = [
     {
       id: 'collection',
@@ -184,7 +187,7 @@ export default function Navbar() {
                   type="button"
                   onClick={openSearch}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-gold-300 p-1"
-                  aria-label="Open search modal"
+                  aria-label="Open menu search"
                 >
                   <Sparkles size={14} className="text-gold-400" />
                 </button>
@@ -231,7 +234,7 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Instant Search Button (Mobile / Tablet) */}
+              {/* Instant Search Button */}
               <button
                 onClick={openSearch}
                 className="lg:hidden w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
@@ -293,7 +296,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Simplified 5 Primary Items Desktop Navigation Bar */}
+        {/* 5 Primary Items Navigation Bar with "Menu" Item */}
         <div className="hidden md:block bg-ink-950/90 backdrop-blur-md border-b border-white/10 py-2.5">
           <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between text-xs font-medium uppercase tracking-widest text-ink-300">
             <div className="flex items-center gap-9">
@@ -349,15 +352,135 @@ export default function Navbar() {
               })}
             </div>
 
-            <div className="flex items-center gap-2 text-[10px] text-gold-400 font-mono">
-              <Sparkles size={12} />
-              <span>Contemporary Art Gallery • Est. 2014</span>
+            {/* Replaced Item: "Menu" Mega Dropdown Trigger */}
+            <div
+              className="relative"
+              onMouseEnter={() => setShowMegaMenu(true)}
+              onMouseLeave={() => setShowMegaMenu(false)}
+            >
+              <button
+                onClick={() => setShowMegaMenu(!showMegaMenu)}
+                className="flex items-center gap-2 text-gold-400 hover:text-gold-300 font-mono text-xs uppercase tracking-widest py-1 transition-colors group"
+              >
+                <MenuIcon size={14} className="group-hover:rotate-90 transition-transform duration-300" />
+                <span className="font-semibold gold-text-gradient">Menu</span>
+                <ChevronDown size={12} className={`transition-transform duration-300 ${showMegaMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Luxury Mega Menu */}
+              {showMegaMenu && (
+                <div className="absolute right-0 mt-2 w-[650px] rounded-2xl glass-panel p-6 shadow-2xl border border-gold-500/40 z-50 fade-up">
+                  <div className="grid grid-cols-3 gap-6 text-left">
+                    {/* Col 1: Catalogue & Mediums */}
+                    <div className="space-y-3">
+                      <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
+                        Catalogue
+                      </h5>
+                      <ul className="space-y-2 text-xs font-normal">
+                        <li>
+                          <Link to="/gallery" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            All Artworks
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?medium=Painting" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Paintings
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?medium=Sculpture" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Sculptures
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?medium=Photography" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Photography
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?medium=Edition" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Limited Editions
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?sort=newest" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            New Arrivals
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Col 2: Artists & Editorial */}
+                    <div className="space-y-3">
+                      <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
+                        Artists & News
+                      </h5>
+                      <ul className="space-y-2 text-xs font-normal">
+                        <li>
+                          <Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Artist Roster
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?search=emerging" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Emerging Voices
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/gallery?search=master" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Established Masters
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Current Exhibitions
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Curatorial Editorial
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Col 3: Gallery Services */}
+                    <div className="space-y-3">
+                      <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
+                        Gallery Services
+                      </h5>
+                      <ul className="space-y-2 text-xs font-normal">
+                        <li>
+                          <Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Our House & Philosophy
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Advisory Concierge
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Visit Gallery
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">
+                            Request Consultation
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </header>
 
-      {/* Fullscreen Responsive Mobile Menu */}
+      {/* Fullscreen Mobile Menu */}
       <div
         className={`fixed inset-0 z-30 md:hidden bg-ink-950/98 backdrop-blur-3xl transition-all duration-500 flex flex-col justify-between p-6 pt-32 ${
           open ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'

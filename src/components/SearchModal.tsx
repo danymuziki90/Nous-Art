@@ -55,19 +55,19 @@ export const SearchModal: React.FC = () => {
         <div className="flex items-center justify-between pb-6 border-b border-white/10">
           <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold">
             <Sparkles size={14} />
-            <span>Catalogue Search</span>
+            <span>Menu</span>
           </div>
 
           <button
             onClick={closeSearch}
             className="w-10 h-10 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
-            aria-label="Close search"
+            aria-label="Close menu search"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Search Input Bar (Artsper Style) */}
+        {/* Search Input Bar */}
         <div className="relative mt-8">
           <Search size={22} className="absolute left-5 top-1/2 -translate-y-1/2 text-gold-400" />
           <input
