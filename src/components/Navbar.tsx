@@ -49,7 +49,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpen(false);
-    setCurrencyMenu(false);
+
     setSearchExpanded(false);
     setShowMegaMenu(false);
   }, [location.pathname]);
