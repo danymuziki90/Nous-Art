@@ -20,6 +20,14 @@
     overflow-x: hidden;
   }
 
+  /* Global Paragraph Alignment */
+  p {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+  }
+
   /* Custom Selection styling */
   ::selection {
     background-color: rgba(212, 173, 118, 0.3);
