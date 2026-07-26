@@ -249,9 +249,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured by NOUS ART (Product Grid) */}
-      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 md:py-32 z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 border-b border-white/10 pb-8">
+      {/* Featured by NOUS ART (Horizontal Carousel) */}
+      <section className="relative py-24 md:py-32 z-10 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 border-b border-white/10 pb-8">
           <div>
             <div className="text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
               <span>Curatorial Selection</span>
@@ -271,31 +271,27 @@ export default function Home() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {[...Array(6)].map((_, i) => (
+          <div className="flex gap-6 lg:gap-8 overflow-hidden pl-6 lg:pl-10">
+            {[...Array(4)].map((_, i) => (
               <div 
                 key={i} 
-                className={`aspect-[4/5] bg-ink-900/60 rounded-xl animate-pulse border border-white/5 sm:even:mt-12 lg:even:mt-0 lg:[&:nth-child(3n-1)]:mt-24 lg:[&:nth-child(3n)]:mt-12`} 
+                className="w-[80vw] sm:w-[320px] lg:w-[420px] shrink-0 aspect-[4/5] bg-ink-900/60 rounded-xl animate-pulse border border-white/5"
               />
             ))}
           </div>
         ) : (
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 lg:pb-24"
-          >
-            {featured.map((piece, i) => (
-              <div 
-                key={piece.id} 
-                className="sm:even:mt-16 lg:even:mt-0 lg:[&:nth-child(3n-1)]:mt-24 lg:[&:nth-child(3n)]:mt-12"
-              >
-                <ArtworkCard piece={piece} index={i} useAdvancedMotion={true} />
-              </div>
-            ))}
-          </motion.div>
+          <div className="relative w-full group overflow-hidden">
+            <div className="flex gap-6 lg:gap-8 w-max animate-marquee group-hover:[animation-play-state:paused] pl-6 lg:pl-10">
+              {[...featured, ...featured, ...featured].map((piece, i) => (
+                <div 
+                  key={`${piece.id}-${i}`} 
+                  className="w-[80vw] sm:w-[320px] lg:w-[420px] shrink-0"
+                >
+                  <ArtworkCard piece={piece} useAdvancedMotion={false} />
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </section>
 

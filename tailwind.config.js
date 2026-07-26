@@ -48,6 +48,7 @@ export default {
         'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
         'shimmer': 'shimmer 2.5s infinite linear',
         'logo-glow': 'logoGlow 4s ease-in-out infinite alternate',
+        'marquee': 'marquee 40s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -69,6 +70,10 @@ export default {
         logoGlow: {
           '0%': { filter: 'drop-shadow(0 0 2px rgba(212,173,118,0.2))' },
           '100%': { filter: 'drop-shadow(0 0 10px rgba(212,173,118,0.6))' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       backgroundImage: {
