@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
   ArrowRight,
   Sparkles,
@@ -109,6 +109,45 @@ export default function Home() {
   const navigate = useNavigate();
   const { openSearch } = useStore();
 
+  // 3D Hero Parallax Mouse Tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const mouseXSpring = useSpring(mouseX, { stiffness: 60, damping: 20 });
+  const mouseYSpring = useSpring(mouseY, { stiffness: 60, damping: 20 });
+
+  // Map mouse to rotations (Perspective container)
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
+
+  // Map mouse to translations (Background Layer - Moves opposite)
+  const bgX = useTransform(mouseXSpring, [-0.5, 0.5], ["2%", "-2%"]);
+  const bgY = useTransform(mouseYSpring, [-0.5, 0.5], ["2%", "-2%"]);
+
+  // Map mouse to translations (Foreground Layer - Moves with cursor)
+  const fgX = useTransform(mouseXSpring, [-0.5, 0.5], ["-20px", "20px"]);
+  const fgY = useTransform(mouseYSpring, [-0.5, 0.5], ["-20px", "20px"]);
+
+  // Atmospheric Particles (Moves wildly opposite)
+  const particleX = useTransform(mouseXSpring, [-0.5, 0.5], ["5%", "-5%"]);
+  const particleY = useTransform(mouseYSpring, [-0.5, 0.5], ["5%", "-5%"]);
+
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    mouseX.set(x / width - 0.5);
+    mouseY.set(y / height - 0.5);
+  };
+
+  const handleHeroMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   useEffect(() => {
     supabase
       .from('art_pieces')
@@ -145,105 +184,158 @@ export default function Home() {
 
   return (
     <div className="bg-ink-950 text-ink-50 overflow-hidden">
-      {/* Full-Bleed Hero Section with Integrated Overlay Navigation */}
-      <section className="relative h-screen min-h-[750px] flex items-center justify-center overflow-hidden">
-        {/* Hero Background Media */}
-        <div className="absolute inset-0 z-0">
-          {heroType === 'video' && heroUrl ? (
-            <video
-              src={heroUrl}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover scale-105 filter brightness-[0.55] contrast-[1.1] image-reveal"
-            />
-          ) : (
-            <img
-              src={heroUrl}
-              alt="Gallery Interior"
-              className="w-full h-full object-cover scale-105 filter brightness-[0.55] contrast-[1.1] image-reveal"
-            />
-          )}
-
-          {/* Multi-Layered Atmosphere Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/85 via-ink-950/40 to-ink-950" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/40 to-ink-950 opacity-80" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent opacity-70 pointer-events-none" />
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-24 md:pt-32">
-          {/* Curatorial Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-950/60 border border-gold-500/35 backdrop-blur-xl mb-6 fade-up shadow-2xl">
-            <Sparkles size={13} className="text-gold-400" />
-            <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
-              Contemporary Art Gallery & Marketplace
-            </span>
-          </div>
-
-          {/* Headline Statement */}
-          <h1
-            className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-ink-50 leading-[0.95] fade-up font-light text-balance"
-            style={{ animationDelay: '0.2s' }}
+      {/* Full-Bleed 3D Hero Section */}
+      <section 
+        className="relative h-screen min-h-[750px] flex items-center justify-center overflow-hidden perspective-[1500px]"
+        onMouseMove={handleHeroMouseMove}
+        onMouseLeave={handleHeroMouseLeave}
+      >
+        <motion.div 
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className="absolute inset-0 w-full h-full flex items-center justify-center"
+        >
+          {/* Layer 0: Deep Hero Background Media */}
+          <motion.div 
+            style={{ x: bgX, y: bgY, translateZ: "-50px" }}
+            initial={{ scale: 1.2, opacity: 0 }}
+            animate={{ scale: 1.05, opacity: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            className="absolute inset-[-5%] z-0"
           >
-            Where vision <br />
-            <em className="font-serif italic gold-text-gradient font-normal gold-text-glow">becomes</em> collection
-          </h1>
-
-          {/* Sub-headline */}
-          <p
-            className="mt-6 text-base md:text-lg text-ink-100 max-w-2xl mx-auto leading-relaxed font-light fade-up"
-            style={{ animationDelay: '0.4s' }}
-          >
-            Discover and acquire curated original artworks from premier emerging and established masters worldwide.
-          </p>
-
-          {/* Integrated Search Bar (Hero Integration) */}
-          <form
-            onSubmit={handleHeroSearch}
-            className="mt-9 max-w-xl mx-auto relative fade-up"
-            style={{ animationDelay: '0.6s' }}
-          >
-            <div className="relative flex items-center">
-              <Search size={20} className="absolute left-5 text-gold-400" />
-              <input
-                type="text"
-                placeholder="Search for an artwork, artist, style..."
-                value={heroSearch}
-                onChange={(e) => setHeroSearch(e.target.value)}
-                onClick={openSearch}
-                className="w-full bg-ink-950/80 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-xl transition-all"
+            {heroType === 'video' && heroUrl ? (
+              <video
+                src={heroUrl}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover filter brightness-[0.55] contrast-[1.1]"
               />
-              <button
-                type="submit"
-                className="absolute right-2 btn-gold rounded-full !py-2.5 !px-5 !text-[11px] font-semibold shadow-lg"
-              >
-                Search
-              </button>
-            </div>
-          </form>
+            ) : (
+              <img
+                src={heroUrl}
+                alt="Gallery Interior"
+                className="w-full h-full object-cover filter brightness-[0.55] contrast-[1.1]"
+              />
+            )}
 
-          {/* Quick Filter Term Chips */}
-          <div
-            className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-ink-200 font-mono fade-up"
-            style={{ animationDelay: '0.7s' }}
+            {/* Multi-Layered Atmosphere Gradients */}
+            <div className="absolute inset-0 bg-gradient-to-b from-ink-950/90 via-ink-950/40 to-ink-950" />
+            <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/40 to-ink-950 opacity-80" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-500/15 via-transparent to-transparent opacity-70 pointer-events-none" />
+          </motion.div>
+
+          {/* Layer 1: Atmospheric Floating Particles */}
+          <motion.div 
+            style={{ x: particleX, y: particleY, translateZ: "20px" }}
+            className="absolute inset-0 z-1 pointer-events-none overflow-hidden mix-blend-screen"
           >
-            <span className="text-gold-400">Trending:</span>
-            {['Abstract Paintings', 'Bronze Sculptures', 'Fine Art Prints'].map((term) => (
-              <Link
-                key={term}
-                to={`/gallery?search=${encodeURIComponent(term)}`}
-                className="hover:text-gold-300 underline underline-offset-4 decoration-gold-500/40 transition-colors"
-              >
-                {term}
-              </Link>
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: Math.random() * 100 }}
+                animate={{ opacity: [0, 0.5, 0], y: [Math.random() * 100, -100] }}
+                transition={{ duration: 5 + Math.random() * 10, repeat: Infinity, delay: Math.random() * 5 }}
+                className="absolute rounded-full bg-gold-400 blur-[2px]"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: `${Math.random() * 4 + 1}px`,
+                  height: `${Math.random() * 4 + 1}px`,
+                }}
+              />
             ))}
-          </div>
-        </div>
+          </motion.div>
+
+          {/* Layer 2: Hero Foreground Content */}
+          <motion.div 
+            style={{ x: fgX, y: fgY, translateZ: "60px" }}
+            className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-24 md:pt-32"
+          >
+            {/* Curatorial Badge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-950/60 border border-gold-500/35 backdrop-blur-xl mb-6 shadow-2xl"
+            >
+              <Sparkles size={13} className="text-gold-400" />
+              <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
+                Contemporary Art Gallery & Marketplace
+              </span>
+            </motion.div>
+
+            {/* Headline Statement */}
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-ink-50 leading-[0.95] font-light text-balance drop-shadow-2xl"
+            >
+              Where vision <br />
+              <em className="font-serif italic gold-text-gradient font-normal gold-text-glow">becomes</em> collection
+            </motion.h1>
+
+            {/* Sub-headline */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.2 }}
+              className="mt-6 text-base md:text-lg text-ink-100 max-w-2xl mx-auto leading-relaxed font-light drop-shadow-lg"
+            >
+              Discover and acquire curated original artworks from premier emerging and established masters worldwide.
+            </motion.p>
+
+            {/* Integrated Search Bar (Hero Integration) */}
+            <motion.form
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.4 }}
+              onSubmit={handleHeroSearch}
+              className="mt-9 max-w-xl mx-auto relative"
+            >
+              <div className="relative flex items-center">
+                <Search size={20} className="absolute left-5 text-gold-400" />
+                <input
+                  type="text"
+                  placeholder="Search for an artwork, artist, style..."
+                  value={heroSearch}
+                  onChange={(e) => setHeroSearch(e.target.value)}
+                  onClick={openSearch}
+                  className="w-full bg-ink-950/80 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-xl transition-all"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 btn-gold rounded-full !py-2.5 !px-5 !text-[11px] font-semibold shadow-lg hover:scale-105 transition-transform"
+                >
+                  Search
+                </button>
+              </div>
+            </motion.form>
+
+            {/* Quick Filter Term Chips */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.6 }}
+              className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-ink-200 font-mono"
+            >
+              <span className="text-gold-400">Trending:</span>
+              {['Abstract Paintings', 'Bronze Sculptures', 'Fine Art Prints'].map((term) => (
+                <Link
+                  key={term}
+                  to={`/gallery?search=${encodeURIComponent(term)}`}
+                  className="hover:text-gold-300 underline underline-offset-4 decoration-gold-500/40 transition-colors"
+                >
+                  {term}
+                </Link>
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 pointer-events-none">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 pointer-events-none">
           <span className="text-[9px] uppercase tracking-[0.4em] text-ink-300 font-sans">Scroll</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-gold-400 via-gold-500/50 to-transparent animate-pulse-subtle" />
         </div>
