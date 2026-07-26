@@ -199,11 +199,6 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Currency Badge (USD Only) */}
-              <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-white/10 text-[11px] font-mono shadow-md cursor-default">
-                <span className="text-ink-200">Currency:</span>
-                <span className="gold-text-gradient font-bold">$ USD</span>
-              </div>
 
               {/* Wishlist Button */}
               <button
