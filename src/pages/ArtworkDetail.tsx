@@ -89,7 +89,7 @@ export default function ArtworkDetail() {
       <SEO 
         title={`${piece.title} by ${piece.artist} — NOUS ART`} 
         description={`${piece.medium}, ${piece.dimensions}. ${piece.description?.substring(0, 150) || 'Discover this contemporary artwork at NOUS ART.'}`}
-        image={piece.media_url}
+        image={piece.image_url}
         url={`/artwork/${piece.id}`}
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">

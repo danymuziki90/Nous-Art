@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Plus, Pencil, Trash2, X, Star, Upload, Loader2, Film, ImageIcon, Sparkles, ShieldCheck } from 'lucide-react';
+import { LogOut, Plus, Pencil, Trash2, X, Star, Upload, Loader2, Film, ImageIcon, Sparkles, ShieldCheck, Cloud } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { supabase, type ArtPiece, type SiteSettings } from '@/lib/supabase';
+import { isR2Configured, uploadToR2 } from '@/lib/r2';
 
 interface FormState {
   title: string;
@@ -107,6 +108,14 @@ export default function AdminDashboard() {
   };
 
   const uploadMedia = async (file: File, type: 'image' | 'video'): Promise<string> => {
+    if (isR2Configured()) {
+      try {
+        const folder = type === 'video' ? 'art-videos' : 'art-images';
+        return await uploadToR2(file, folder);
+      } catch (r2Err) {
+        console.warn('Cloudflare R2 Upload failed, falling back to Supabase storage:', r2Err);
+      }
+    }
     const bucket = type === 'video' ? 'art-videos' : 'art-images';
     const ext = file.name.split('.').pop();
     const path = `${crypto.randomUUID()}.${ext}`;
@@ -218,7 +227,17 @@ export default function AdminDashboard() {
             <h1 className="font-display text-4xl md:text-5xl text-ink-50 font-light">
               Collection <span className="font-serif italic gold-text-gradient">Management</span>
             </h1>
-            <p className="text-xs text-ink-300 font-mono mt-1">Signed in as: {user?.email}</p>
+            <div className="flex flex-wrap items-center gap-3 mt-2">
+              <p className="text-xs text-ink-300 font-mono">Signed in as: {user?.email}</p>
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono ${
+                isR2Configured() 
+                  ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' 
+                  : 'bg-blue-500/10 text-blue-300 border border-blue-500/30'
+              }`}>
+                <Cloud size={12} />
+                {isR2Configured() ? 'Cloudflare R2 (Active)' : 'Supabase Storage'}
+              </span>
+            </div>
           </div>
 
           <div className="flex flex-wrap gap-3">
