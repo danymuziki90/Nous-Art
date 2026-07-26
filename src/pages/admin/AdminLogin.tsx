@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { Lock, ArrowRight, ShieldAlert } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 
 export default function AdminLogin() {
   const { signIn, user, loading } = useAuth();
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -21,9 +20,9 @@ export default function AdminLogin() {
     if (err) {
       setError(err);
       setSubmitting(false);
-    } else {
-      navigate('/admin/dashboard');
     }
+    // If successful, onAuthStateChange in AuthProvider updates context.
+    // The component will re-render and navigate automatically via the condition above.
   };
 
   return (
@@ -40,7 +39,7 @@ export default function AdminLogin() {
           <h1 className="font-display text-4xl text-ink-50 font-light">
             Admin <span className="font-serif italic gold-text-gradient">Portal</span>
           </h1>
-          <p className="text-xs uppercase tracking-widest text-ink-400 mt-2 font-mono">
+          <p className="text-xs uppercase tracking-widest text-ink-300 mt-2 font-mono">
             NOUS ART Gallery
           </p>
         </div>
@@ -54,7 +53,7 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">
+              <label className="block text-xs uppercase tracking-widest text-ink-200 mb-2 font-medium">
                 Email Address
               </label>
               <input
@@ -63,12 +62,12 @@ export default function AdminLogin() {
                 placeholder="admin@nousart.gallery"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-ink-900/80 border border-white/10 rounded-md px-4 py-3.5 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
+                className="w-full bg-ink-900/80 border border-white/10 rounded-md px-4 py-3.5 text-ink-50 placeholder-ink-300 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">
+              <label className="block text-xs uppercase tracking-widest text-ink-200 mb-2 font-medium">
                 Password
               </label>
               <input
@@ -77,7 +76,7 @@ export default function AdminLogin() {
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-ink-900/80 border border-white/10 rounded-md px-4 py-3.5 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
+                className="w-full bg-ink-900/80 border border-white/10 rounded-md px-4 py-3.5 text-ink-50 placeholder-ink-300 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
               />
             </div>
 
@@ -100,7 +99,7 @@ export default function AdminLogin() {
         </div>
 
         <div className="text-center mt-8">
-          <Link to="/" className="text-xs text-ink-400 hover:text-gold-300 transition-colors uppercase tracking-widest">
+          <Link to="/" className="text-xs text-ink-300 hover:text-gold-300 transition-colors uppercase tracking-widest">
             ← Return to public website
           </Link>
         </div>

@@ -1,15 +1,33 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import type { ArtPiece } from '@/lib/supabase';
 import { MediaDisplay } from '@/components/MediaDisplay';
 import { useStore } from '@/context/StoreContext';
 
 interface ArtworkCardProps {
   piece: ArtPiece;
-  animationDelay?: string;
+  // Optional flag to use advanced motion variants if rendered inside a staggered motion grid
+  index?: number;
+  useAdvancedMotion?: boolean;
+  animationDelay?: string; // Fallback for pure CSS delay if motion isn't used
 }
 
-export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, animationDelay }) => {
+// Framer Motion variants for the main card appearance
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+      ease: [0.16, 1, 0.3, 1] as any,
+    },
+  },
+};
+
+export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, index = 0, useAdvancedMotion = false, animationDelay }) => {
   const { isInWishlist, toggleWishlist, addToCart, formatPrice } = useStore();
   const liked = isInWishlist(piece.id);
 
@@ -25,78 +43,108 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, animationDelay 
     addToCart(piece);
   };
 
+  // Base card wrapped in motion.div or standard div depending on useAdvancedMotion
+  const Wrapper = useAdvancedMotion ? motion.div : 'div';
+  const motionProps = useAdvancedMotion ? { variants: cardVariants } : {};
+  const styleProps = !useAdvancedMotion && animationDelay ? { animationDelay } : {};
+
   return (
-    <div
-      className="group block fade-up relative perspective-card"
-      style={{ animationDelay: animationDelay || '0s' }}
+    <Wrapper 
+      className={`group block relative ${!useAdvancedMotion ? 'fade-up perspective-card' : ''}`}
+      style={styleProps}
+      {...motionProps}
     >
-      {/* Artwork Media Card Frame with 3D Tilt & Light Sheen Pass */}
+      {/* Artwork Media Card Frame with cinematic reveal */}
       <Link
         to={`/artwork/${piece.id}`}
-        className="block relative overflow-hidden aspect-[4/5] bg-ink-900 rounded-2xl border border-white/10 artwork-card-tilt reflection-pass shadow-2xl"
+        className="block relative overflow-hidden aspect-[4/5] bg-ink-950 rounded-xl border border-white/5 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-gold-500/10 hover:border-white/10"
       >
-        {/* Media Image/Video Display */}
-        <div className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-108">
-          <MediaDisplay piece={piece} autoPlay muted showBadge />
+        {/* Cinematic Mask Reveal overlay (runs once when parent is in view) */}
+        {useAdvancedMotion && (
+          <motion.div
+            className="absolute inset-0 bg-ink-900 z-10 origin-bottom pointer-events-none"
+            variants={{
+              hidden: { scaleY: 1 },
+              show: {
+                scaleY: 0,
+                transition: { duration: 1.2, ease: [0.77, 0, 0.175, 1] as any, delay: 0.1 },
+              },
+            }}
+          />
+        )}
+
+        {/* Media Container with Slow Premium Zoom */}
+        <div className="w-full h-full relative">
+          <div className="w-full h-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]">
+            <MediaDisplay piece={piece} autoPlay muted showBadge />
+            {/* Soft Ambient Overlay to ensure text readability if needed */}
+            <div className="absolute inset-0 bg-ink-950/20 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          </div>
         </div>
 
-        {/* Floating Heart / Wishlist Icon with Micro-Pulse */}
+        {/* Animated Favorite Button (Magnetic-like reveal) */}
         <button
           onClick={handleWishlistClick}
           aria-label="Save to Wishlist"
-          className={`absolute top-4 right-4 z-20 w-10 h-10 rounded-full backdrop-blur-md border transition-all duration-300 flex items-center justify-center ${
+          className={`absolute top-5 right-5 z-20 w-11 h-11 rounded-full backdrop-blur-md border transition-all duration-500 ease-out flex items-center justify-center opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 ${
             liked
-              ? 'bg-gold-500 border-gold-400 text-ink-950 shadow-lg shadow-gold-500/40 scale-110'
-              : 'bg-ink-950/70 border-white/15 text-ink-200 hover:text-gold-300 hover:border-gold-500/40 hover:scale-110 hover:bg-ink-900'
+              ? 'bg-gold-500/90 border-gold-400 text-ink-950 shadow-lg shadow-gold-500/30 opacity-100 translate-y-0'
+              : 'bg-ink-950/40 border-white/20 text-ink-50 hover:text-gold-300 hover:border-gold-500/50 hover:bg-ink-900/80'
           }`}
         >
-          <Heart size={17} className={liked ? 'fill-ink-950 text-ink-950 animate-pulse' : ''} />
+          <Heart size={18} className={liked ? 'fill-ink-950 text-ink-950 animate-pulse-subtle' : ''} />
         </button>
 
-        {/* Quick Action Glass Overlay on Hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-5 pointer-events-none">
-          <div className="flex items-center gap-2.5 pointer-events-auto transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-            <button
-              onClick={handleCartClick}
-              className="flex-1 btn-gold rounded-xl !py-3 !px-4 !text-[11px] font-semibold flex items-center justify-center gap-2 shadow-xl shimmer-bar"
-            >
-              <ShoppingBag size={14} />
-              <span>Acquire Work</span>
-            </button>
-            
-            <span className="w-10 h-10 rounded-xl bg-ink-900/90 border border-white/20 text-gold-400 flex items-center justify-center shrink-0 group-hover:border-gold-500 group-hover:bg-gold-500/10 transition-colors">
-              <ArrowUpRight size={17} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </span>
+        {/* Cinematic Gradient & Info Overlay (Bottom) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none" />
+
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end pointer-events-none overflow-hidden">
+          {/* Metadata slides up gracefully inside the card */}
+          <div className="transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-[0.8s] ease-[cubic-bezier(0.16,1,0.3,1)]">
+            <p className="text-xs gold-text-gradient font-sans tracking-widest font-semibold uppercase mb-2">
+              {piece.artist}
+            </p>
+            <h3 className="font-display text-2xl sm:text-3xl text-ink-50 font-light leading-tight mb-4">
+              {piece.title} {piece.year && <span className="text-ink-200">({piece.year})</span>}
+            </h3>
+
+            <div className="flex items-center gap-3 pointer-events-auto">
+              <button
+                onClick={handleCartClick}
+                className="flex-1 btn-gold rounded-full !py-3 !px-5 !text-[10px] sm:!text-[11px] font-semibold flex items-center justify-center gap-2 shadow-xl"
+              >
+                <ShoppingBag size={14} />
+                <span>Acquire</span>
+              </button>
+              <div className="w-12 h-12 rounded-full bg-ink-900/80 border border-white/20 text-gold-400 flex items-center justify-center shrink-0 group-hover:border-gold-500 group-hover:bg-gold-500/10 transition-colors">
+                <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </div>
           </div>
         </div>
       </Link>
 
-      {/* Artwork Metadata with Micro-Interactions */}
-      <div className="mt-4 flex flex-col justify-between gap-1.5 px-1">
-        <div className="flex items-start justify-between gap-3">
+      {/* External Metadata (visible by default below the image) */}
+      <div className="mt-5 flex flex-col gap-1.5 px-1 relative z-10 transition-all duration-500 group-hover:-translate-y-2 group-hover:opacity-0">
+        <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <Link to={`/artwork/${piece.id}`} className="block">
-              <h3 className="font-display text-2xl text-ink-50 group-hover:text-gold-300 transition-colors duration-300 font-medium truncate">
-                {piece.title}
-              </h3>
-            </Link>
-            <p className="text-xs gold-text-gradient font-sans tracking-wide mt-0.5 font-medium transition-all group-hover:translate-x-0.5">
-              {piece.artist}{piece.year ? `, ${piece.year}` : ''}
+            <h3 className="font-display text-xl sm:text-2xl text-ink-50 font-medium truncate">
+              {piece.title}
+            </h3>
+            <p className="text-xs text-ink-200 font-sans tracking-wide mt-1">
+              {piece.artist}
             </p>
           </div>
-
           <div className="text-right shrink-0">
-            <span className="text-sm font-display text-gold-400 font-semibold bg-gold-500/10 px-3 py-1 rounded-lg border border-gold-500/25 whitespace-nowrap block shadow-sm group-hover:border-gold-500/50 group-hover:bg-gold-500/15 transition-colors">
+            <span className="text-sm font-sans text-gold-400 font-medium block">
               {formatPrice(piece.price)}
             </span>
           </div>
         </div>
-
-        {/* Specifications snippet */}
-        <p className="text-[11px] text-ink-400 font-mono tracking-wider truncate">
+        <p className="text-[11px] text-ink-300 font-mono tracking-wider truncate mt-1">
           {piece.medium || 'Contemporary Work'} {piece.dimensions ? `• ${piece.dimensions}` : ''}
         </p>
       </div>
-    </div>
+    </Wrapper>
   );
 };

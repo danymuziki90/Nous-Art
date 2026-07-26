@@ -69,7 +69,7 @@ export default function ArtworkDetail() {
     return (
       <div className="pt-36 pb-24 bg-ink-950 text-ink-50 min-h-screen text-center">
         <h2 className="font-display text-4xl text-ink-50">Artwork Not Found</h2>
-        <p className="text-ink-300 mt-2">The requested work is unavailable.</p>
+        <p className="text-ink-200 mt-2">The requested work is unavailable.</p>
         <Link to="/gallery" className="mt-6 inline-block btn-gold rounded-sm">
           Return to Catalogue
         </Link>
@@ -89,7 +89,7 @@ export default function ArtworkDetail() {
         {/* Back Link */}
         <Link
           to="/gallery"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ink-400 hover:text-gold-300 transition-colors mb-8 font-mono"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ink-300 hover:text-gold-300 transition-colors mb-8 font-mono"
         >
           <ArrowLeft size={14} />
           <span>Back to Collection</span>
@@ -109,7 +109,7 @@ export default function ArtworkDetail() {
                 className={`absolute top-4 right-4 z-20 w-11 h-11 rounded-full backdrop-blur-md border transition-all duration-300 flex items-center justify-center ${
                   liked
                     ? 'bg-gold-500 border-gold-400 text-ink-950 shadow-lg scale-105'
-                    : 'bg-ink-950/70 border-white/15 text-ink-200 hover:text-gold-300 hover:border-gold-500/40'
+                    : 'bg-ink-950/70 border-white/15 text-ink-100 hover:text-gold-300 hover:border-gold-500/40'
                 }`}
               >
                 <Heart size={18} className={liked ? 'fill-ink-950 text-ink-950' : ''} />
@@ -146,7 +146,7 @@ export default function ArtworkDetail() {
             {/* Price Box */}
             <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
               <div className="flex items-baseline justify-between border-b border-white/10 pb-4">
-                <span className="text-xs uppercase tracking-widest text-ink-400 font-mono">
+                <span className="text-xs uppercase tracking-widest text-ink-300 font-mono">
                   Acquisition Price
                 </span>
                 <span className="font-display text-3xl text-gold-400 font-bold">
@@ -173,7 +173,7 @@ export default function ArtworkDetail() {
               </div>
 
               {/* Trust Badges */}
-              <div className="grid grid-cols-1 gap-2.5 pt-4 border-t border-white/10 text-xs text-ink-300 font-light">
+              <div className="grid grid-cols-1 gap-2.5 pt-4 border-t border-white/10 text-xs text-ink-200 font-light">
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck size={16} className="text-gold-400 shrink-0" />
                   <span>Certificate of Authenticity Included</span>
@@ -192,19 +192,19 @@ export default function ArtworkDetail() {
             {/* Specifications Summary List */}
             <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-3 text-xs font-mono">
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-ink-400">Medium</span>
+                <span className="text-ink-300">Medium</span>
                 <span className="text-ink-100">{piece.medium || 'Contemporary Work'}</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-ink-400">Dimensions</span>
+                <span className="text-ink-300">Dimensions</span>
                 <span className="text-ink-100">{piece.dimensions || '120 × 80 cm'}</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-ink-400">Year</span>
+                <span className="text-ink-300">Year</span>
                 <span className="text-ink-100">{piece.year || '2024'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-ink-400">Provenance</span>
+                <span className="text-ink-300">Provenance</span>
                 <span className="text-gold-400">NOUS ART Gallery</span>
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function ArtworkDetail() {
                   {openAccordion === 'desc' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
                 </button>
                 {openAccordion === 'desc' && (
-                  <div className="p-4 pt-0 text-sm text-ink-300 font-light leading-relaxed border-t border-white/5">
+                  <div className="p-4 pt-0 text-sm text-ink-200 font-light leading-relaxed border-t border-white/5">
                     {piece.description ||
                       'An extraordinary contemporary work exploring themes of light, structure, and physical form. Created with high-grade pigments and museum-archival materials.'}
                   </div>
@@ -238,7 +238,7 @@ export default function ArtworkDetail() {
                   {openAccordion === 'bio' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
                 </button>
                 {openAccordion === 'bio' && (
-                  <div className="p-4 pt-0 text-sm text-ink-300 font-light leading-relaxed border-t border-white/5">
+                  <div className="p-4 pt-0 text-sm text-ink-200 font-light leading-relaxed border-t border-white/5">
                     {piece.artist} is a featured artist represented by NOUS ART Gallery. Their works are held in premier private collections across Europe, North America, and Asia.
                   </div>
                 )}
@@ -254,7 +254,7 @@ export default function ArtworkDetail() {
                   {openAccordion === 'auth' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
                 </button>
                 {openAccordion === 'auth' && (
-                  <div className="p-4 pt-0 text-sm text-ink-300 font-light leading-relaxed border-t border-white/5 space-y-2">
+                  <div className="p-4 pt-0 text-sm text-ink-200 font-light leading-relaxed border-t border-white/5 space-y-2">
                     <p>
                       This original artwork comes with a physical Certificate of Authenticity signed by the artist and verified by NOUS ART curators.
                     </p>

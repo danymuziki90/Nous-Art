@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   ArrowRight,
   Sparkles,
@@ -20,6 +21,16 @@ import {
 import { supabase, type ArtPiece, type SiteSettings } from '@/lib/supabase';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { useStore } from '@/context/StoreContext';
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const DEFAULT_HERO = {
   hero_media_url: 'https://images.pexels.com/photos/1839919/pexels-photo-1839919.jpeg?auto=compress&cs=tinysrgb&w=2000',
@@ -182,7 +193,7 @@ export default function Home() {
 
           {/* Sub-headline */}
           <p
-            className="mt-6 text-base md:text-lg text-ink-200 max-w-2xl mx-auto leading-relaxed font-light fade-up"
+            className="mt-6 text-base md:text-lg text-ink-100 max-w-2xl mx-auto leading-relaxed font-light fade-up"
             style={{ animationDelay: '0.4s' }}
           >
             Discover and acquire curated original artworks from premier emerging and established masters worldwide.
@@ -202,7 +213,7 @@ export default function Home() {
                 value={heroSearch}
                 onChange={(e) => setHeroSearch(e.target.value)}
                 onClick={openSearch}
-                className="w-full bg-ink-950/80 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-xl transition-all"
+                className="w-full bg-ink-950/80 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-300 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-xl transition-all"
               />
               <button
                 type="submit"
@@ -215,7 +226,7 @@ export default function Home() {
 
           {/* Quick Filter Term Chips */}
           <div
-            className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-ink-300 font-mono fade-up"
+            className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-ink-200 font-mono fade-up"
             style={{ animationDelay: '0.7s' }}
           >
             <span className="text-gold-400">Trending:</span>
@@ -233,7 +244,7 @@ export default function Home() {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 pointer-events-none">
-          <span className="text-[9px] uppercase tracking-[0.4em] text-ink-400 font-sans">Scroll</span>
+          <span className="text-[9px] uppercase tracking-[0.4em] text-ink-300 font-sans">Scroll</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-gold-400 via-gold-500/50 to-transparent animate-pulse-subtle" />
         </div>
       </section>
@@ -242,8 +253,7 @@ export default function Home() {
       <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 md:py-32 z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 border-b border-white/10 pb-8">
           <div>
-            <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
-              <Compass size={14} />
+            <div className="text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
               <span>Curatorial Selection</span>
             </div>
             <h2 className="font-display text-4xl sm:text-5xl text-ink-50 font-light">
@@ -253,7 +263,7 @@ export default function Home() {
 
           <Link
             to="/gallery"
-            className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-ink-300 hover:text-gold-300 transition-colors"
+            className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-ink-200 hover:text-gold-300 transition-colors"
           >
             <span>Explore Full Collection</span>
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -261,17 +271,31 @@ export default function Home() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="aspect-[4/5] bg-ink-900/60 rounded-xl animate-pulse border border-white/5" />
+              <div 
+                key={i} 
+                className={`aspect-[4/5] bg-ink-900/60 rounded-xl animate-pulse border border-white/5 sm:even:mt-12 lg:even:mt-0 lg:[&:nth-child(3n-1)]:mt-24 lg:[&:nth-child(3n)]:mt-12`} 
+              />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 lg:pb-24"
+          >
             {featured.map((piece, i) => (
-              <ArtworkCard key={piece.id} piece={piece} animationDelay={`${i * 0.08}s`} />
+              <div 
+                key={piece.id} 
+                className="sm:even:mt-16 lg:even:mt-0 lg:[&:nth-child(3n-1)]:mt-24 lg:[&:nth-child(3n)]:mt-12"
+              >
+                <ArtworkCard piece={piece} index={i} useAdvancedMotion={true} />
+              </div>
             ))}
-          </div>
+          </motion.div>
         )}
       </section>
 
@@ -279,14 +303,13 @@ export default function Home() {
       <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 border-t border-white/10">
         {/* Section Header */}
         <div className="mb-14">
-          <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">
-            <Layers size={14} />
+          <div className="text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">
             <span>Browse Marketplace</span>
           </div>
           <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink-50 font-light leading-tight">
             Explore art through its <span className="font-serif italic gold-text-gradient">mediums</span>.
           </h2>
-          <p className="mt-4 text-ink-300 max-w-2xl font-light text-base leading-relaxed">
+          <p className="mt-4 text-ink-200 max-w-2xl font-light text-base leading-relaxed">
             Navigate our curated catalog by discipline. Click or hover on any category to preview featured works and curatorial details.
           </p>
         </div>
@@ -310,8 +333,8 @@ export default function Home() {
 
             {/* Top Badge Overlay */}
             <div className="absolute top-6 left-6 z-10 glass-panel-gold px-4 py-2 rounded-full border border-gold-500/30 backdrop-blur-md">
-              <span className="text-xs uppercase tracking-widest text-gold-300 font-mono flex items-center gap-2">
-                <Sparkles size={13} /> Featured Roster • {currentMedium.featuredArtist}
+              <span className="text-xs uppercase tracking-widest text-gold-300 font-mono">
+                Featured Roster • {currentMedium.featuredArtist}
               </span>
             </div>
 
@@ -325,7 +348,7 @@ export default function Home() {
                 {currentMedium.title}
               </h3>
 
-              <p className="text-sm text-ink-200 max-w-lg font-light leading-relaxed">
+              <p className="text-sm text-ink-100 max-w-lg font-light leading-relaxed">
                 {currentMedium.tagline}
               </p>
 
@@ -369,7 +392,7 @@ export default function Home() {
                       className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-colors shrink-0 ${
                         isActive
                           ? 'bg-gold-500/20 border-gold-500/50 text-gold-300 scale-105'
-                          : 'bg-ink-950 border-white/10 text-ink-300 group-hover:text-gold-400 group-hover:border-gold-500/30'
+                          : 'bg-ink-950 border-white/10 text-ink-200 group-hover:text-gold-400 group-hover:border-gold-500/30'
                       }`}
                     >
                       <Icon size={20} />
@@ -383,7 +406,7 @@ export default function Home() {
                       >
                         {item.title}
                       </h4>
-                      <p className="text-xs text-ink-400 font-mono mt-0.5">{item.count}</p>
+                      <p className="text-xs text-ink-300 font-mono mt-0.5">{item.count}</p>
                     </div>
                   </div>
 
@@ -391,7 +414,7 @@ export default function Home() {
                     className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
                       isActive
                         ? 'bg-gold-500 text-ink-950 border-gold-400 scale-105'
-                        : 'border-white/10 text-ink-400 opacity-0 group-hover:opacity-100 group-hover:text-gold-300'
+                        : 'border-white/10 text-ink-300 opacity-0 group-hover:opacity-100 group-hover:text-gold-300'
                     }`}
                   >
                     {isActive ? <CheckCircle2 size={16} /> : <ArrowRight size={14} />}
@@ -421,7 +444,7 @@ export default function Home() {
                 <h3 className="font-display text-2xl text-ink-50 group-hover:text-gold-300 transition-colors font-medium">
                   {prof.title}
                 </h3>
-                <p className="text-xs text-ink-300 leading-relaxed font-light mt-2">
+                <p className="text-xs text-ink-200 leading-relaxed font-light mt-2">
                   {prof.desc}
                 </p>
                 <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest gold-text-gradient font-medium">
@@ -440,19 +463,23 @@ export default function Home() {
           <div className="lg:col-span-6 relative">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
               <img
-                src="https://images.pexels.com/photos/695409/pexels-photo-695409.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?q=80&w=1600&auto=format&fit=crop"
                 alt="Editorial Exhibition"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover bg-ink-900 transition-transform duration-700 group-hover:scale-105"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=1600&auto=format&fit=crop';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-ink-950/60 via-transparent to-transparent" />
             </div>
 
-            <div className="hidden sm:block absolute -bottom-6 -right-6 glass-panel-gold p-6 rounded-xl max-w-xs border border-gold-500/30 shadow-2xl">
-              <div className="flex items-center gap-2 text-gold-400 text-xs font-semibold uppercase tracking-widest mb-1">
-                <ShieldCheck size={16} />
+            <div className="hidden sm:block absolute -bottom-6 -right-6 glass-panel p-6 rounded-xl max-w-xs border border-white/10 shadow-2xl">
+              <div className="text-gold-400 text-xs font-semibold uppercase tracking-widest mb-1">
                 <span>Authenticity Guaranteed</span>
               </div>
-              <p className="text-xs text-ink-200 leading-relaxed font-light">
+              <p className="text-xs text-ink-100 leading-relaxed font-light">
                 Every acquisition includes a signed certificate of authenticity and provenance history.
               </p>
             </div>
@@ -466,7 +493,7 @@ export default function Home() {
               Art is not decoration.<br />
               <em className="font-serif italic gold-text-gradient font-normal">It is a way of seeing.</em>
             </h2>
-            <p className="text-ink-200 leading-relaxed font-light text-base">
+            <p className="text-ink-100 leading-relaxed font-light text-base">
               NOUS ART curates solo and group exhibitions, uniting classical techniques with radical contemporary expressions.
             </p>
             <div className="pt-4">

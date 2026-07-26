@@ -50,7 +50,7 @@ export const InSituPreviewModal: React.FC<InSituPreviewModalProps> = ({ piece, i
 
         <button
           onClick={onClose}
-          className="w-10 h-10 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
+          className="w-10 h-10 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
           aria-label="Close Preview"
         >
           <X size={20} />
@@ -94,7 +94,7 @@ export const InSituPreviewModal: React.FC<InSituPreviewModalProps> = ({ piece, i
 
         {/* Room Switcher Selector Pills */}
         <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
-          <span className="text-xs uppercase tracking-widest text-ink-400 font-mono mr-2">
+          <span className="text-xs uppercase tracking-widest text-ink-300 font-mono mr-2">
             Select Interior:
           </span>
           {ROOM_BACKGROUNDS.map((room) => {
@@ -106,7 +106,7 @@ export const InSituPreviewModal: React.FC<InSituPreviewModalProps> = ({ piece, i
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs uppercase tracking-widest transition-all duration-300 ${
                   active
                     ? 'bg-gold-gradient text-ink-950 font-semibold shadow-md shadow-gold-500/20'
-                    : 'bg-ink-900/80 border border-white/10 text-ink-300 hover:text-ink-50 hover:border-gold-500/40'
+                    : 'bg-ink-900/80 border border-white/10 text-ink-200 hover:text-ink-50 hover:border-gold-500/40'
                 }`}
               >
                 {active && <CheckCircle2 size={13} />}
@@ -118,7 +118,7 @@ export const InSituPreviewModal: React.FC<InSituPreviewModalProps> = ({ piece, i
       </div>
 
       {/* Footer Info */}
-      <div className="text-center text-xs text-ink-400 font-light border-t border-white/10 pt-4 relative z-10">
+      <div className="text-center text-xs text-ink-300 font-light border-t border-white/10 pt-4 relative z-10">
         Scale rendered according to dimensions: <span className="text-gold-400 font-mono">{piece.dimensions || '120 × 80 cm'}</span>
       </div>
     </div>

@@ -28,7 +28,7 @@ export const CartDrawer: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-display text-2xl text-ink-50 font-light">Collector Bag</h3>
-                  <p className="text-[10px] uppercase tracking-widest text-ink-400 font-mono">
+                  <p className="text-[10px] uppercase tracking-widest text-ink-300 font-mono">
                     {cart.length} item{cart.length !== 1 ? 's' : ''} selected
                   </p>
                 </div>
@@ -36,7 +36,7 @@ export const CartDrawer: React.FC = () => {
 
               <button
                 onClick={closeCart}
-                className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-300 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
+                className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
                 aria-label="Close cart"
               >
                 <X size={18} />
@@ -47,8 +47,8 @@ export const CartDrawer: React.FC = () => {
             <div className="mt-6 space-y-4 max-h-[50vh] overflow-y-auto pr-1">
               {cart.length === 0 ? (
                 <div className="text-center py-16 glass-panel rounded-xl border border-white/10">
-                  <ShoppingBag size={32} className="mx-auto text-ink-400 mb-3" />
-                  <p className="text-ink-300 font-light">Your collector bag is currently empty.</p>
+                  <ShoppingBag size={32} className="mx-auto text-ink-300 mb-3" />
+                  <p className="text-ink-200 font-light">Your collector bag is currently empty.</p>
                   <Link
                     to="/gallery"
                     onClick={closeCart}
@@ -87,7 +87,7 @@ export const CartDrawer: React.FC = () => {
                     <div className="flex flex-col items-end gap-2">
                       <button
                         onClick={() => removeFromCart(piece.id)}
-                        className="text-ink-400 hover:text-red-400 transition-colors p-1"
+                        className="text-ink-300 hover:text-red-400 transition-colors p-1"
                         aria-label="Remove item"
                       >
                         <Trash2 size={15} />
@@ -96,14 +96,14 @@ export const CartDrawer: React.FC = () => {
                       <div className="flex items-center border border-white/10 rounded bg-ink-900 text-xs">
                         <button
                           onClick={() => updateQuantity(piece.id, -1)}
-                          className="px-2 py-0.5 text-ink-300 hover:text-gold-300"
+                          className="px-2 py-0.5 text-ink-200 hover:text-gold-300"
                         >
                           -
                         </button>
                         <span className="px-2 font-mono text-ink-100">{quantity}</span>
                         <button
                           onClick={() => updateQuantity(piece.id, 1)}
-                          className="px-2 py-0.5 text-ink-300 hover:text-gold-300"
+                          className="px-2 py-0.5 text-ink-200 hover:text-gold-300"
                         >
                           +
                         </button>
@@ -119,11 +119,11 @@ export const CartDrawer: React.FC = () => {
           {cart.length > 0 && (
             <div className="border-t border-white/10 pt-6 space-y-4">
               <div className="space-y-2 text-xs font-mono">
-                <div className="flex justify-between text-ink-300">
+                <div className="flex justify-between text-ink-200">
                   <span>Subtotal</span>
                   <span>{formatPrice(cartTotal)}</span>
                 </div>
-                <div className="flex justify-between text-ink-300">
+                <div className="flex justify-between text-ink-200">
                   <span>Insured Shipping</span>
                   <span className="text-gold-400">Complimentary</span>
                 </div>
@@ -133,7 +133,7 @@ export const CartDrawer: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[10px] text-ink-400 pt-2 border-t border-white/5">
+              <div className="grid grid-cols-2 gap-2 text-[10px] text-ink-300 pt-2 border-t border-white/5">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck size={14} className="text-gold-400 shrink-0" />
                   <span>Certificate Included</span>

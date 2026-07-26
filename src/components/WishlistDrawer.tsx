@@ -47,7 +47,7 @@ export const WishlistDrawer: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-display text-2xl text-ink-50 font-light">Saved Artworks</h3>
-                  <p className="text-[10px] uppercase tracking-widest text-ink-400 font-mono">
+                  <p className="text-[10px] uppercase tracking-widest text-ink-300 font-mono">
                     {wishlist.length} saved work{wishlist.length !== 1 ? 's' : ''}
                   </p>
                 </div>
@@ -55,7 +55,7 @@ export const WishlistDrawer: React.FC = () => {
 
               <button
                 onClick={closeWishlist}
-                className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-300 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
+                className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors"
                 aria-label="Close wishlist"
               >
                 <X size={18} />
@@ -72,8 +72,8 @@ export const WishlistDrawer: React.FC = () => {
                 </div>
               ) : wishlist.length === 0 || pieces.length === 0 ? (
                 <div className="text-center py-16 glass-panel rounded-xl border border-white/10">
-                  <Heart size={32} className="mx-auto text-ink-400 mb-3" />
-                  <p className="text-ink-300 font-light">You haven't saved any artworks to your wishlist yet.</p>
+                  <Heart size={32} className="mx-auto text-ink-300 mb-3" />
+                  <p className="text-ink-200 font-light">You haven't saved any artworks to your wishlist yet.</p>
                   <Link
                     to="/gallery"
                     onClick={closeWishlist}
@@ -121,7 +121,7 @@ export const WishlistDrawer: React.FC = () => {
                     <div className="flex flex-col items-end gap-2">
                       <button
                         onClick={() => toggleWishlist(piece.id)}
-                        className="text-ink-400 hover:text-red-400 transition-colors p-1"
+                        className="text-ink-300 hover:text-red-400 transition-colors p-1"
                         aria-label="Remove from wishlist"
                       >
                         <Trash2 size={15} />

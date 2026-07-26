@@ -50,7 +50,7 @@ export function MediaDisplay({
         loading="lazy"
       />
       {showBadge && piece.category && (
-        <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-ink-950/80 backdrop-blur-md border border-white/10 text-ink-200 text-[10px] uppercase tracking-widest font-medium">
+        <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-ink-950/80 backdrop-blur-md border border-white/10 text-ink-100 text-[10px] uppercase tracking-widest font-medium">
           <ImageIcon size={10} className="text-gold-400 opacity-80" /> {piece.category}
         </span>
       )}

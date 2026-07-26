@@ -99,14 +99,13 @@ export default function Gallery() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Page Header */}
         <div className="mb-10 fade-up">
-          <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">
-            <Sparkles size={14} />
+          <div className="text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">
             <span>Catalogue & Marketplace</span>
           </div>
           <h1 className="font-display text-5xl md:text-7xl text-ink-50 font-light">
             The Complete <span className="font-serif italic gold-text-gradient">Collection</span>
           </h1>
-          <p className="mt-3 text-ink-300 max-w-2xl font-light text-base leading-relaxed">
+          <p className="mt-3 text-ink-200 max-w-2xl font-light text-base leading-relaxed">
             Acquire certified original artworks directly from world-renowned artists and curators.
           </p>
         </div>
@@ -120,7 +119,7 @@ export default function Gallery() {
                 searchParams.delete('search');
                 setSearchParams(searchParams);
               }}
-              className="text-ink-400 hover:text-gold-300 ml-auto"
+              className="text-ink-300 hover:text-gold-300 ml-auto"
             >
               <X size={16} />
             </button>
@@ -139,14 +138,14 @@ export default function Gallery() {
               <span>Filters</span>
             </button>
 
-            <span className="text-ink-400">
+            <span className="text-ink-300">
               Showing <strong className="text-gold-400">{filteredAndSorted.length}</strong> works
             </span>
           </div>
 
           {/* Sort Selector Dropdown */}
           <div className="flex items-center gap-3">
-            <span className="text-ink-400 hidden sm:inline">Sort by:</span>
+            <span className="text-ink-300 hidden sm:inline">Sort by:</span>
             <div className="relative">
               <select
                 value={sortBy}
@@ -172,13 +171,12 @@ export default function Gallery() {
             }`}
           >
             <div className="flex items-center justify-between pb-4 border-b border-white/10">
-              <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold-400 font-semibold">
-                <Filter size={14} />
-                <span>Refine Search</span>
+              <div className="text-xs uppercase tracking-widest text-gold-400 font-semibold">
+                <span>Filters</span>
               </div>
               <button
                 onClick={clearFilters}
-                className="text-[11px] text-ink-400 hover:text-gold-300 flex items-center gap-1 font-mono"
+                className="text-[11px] text-ink-300 hover:text-gold-300 flex items-center gap-1 font-mono"
               >
                 <RefreshCw size={12} /> Clear
               </button>
@@ -186,7 +184,7 @@ export default function Gallery() {
 
             {/* Medium Filter */}
             <div className="space-y-3">
-              <h4 className="text-xs uppercase tracking-widest text-ink-200 font-medium">Medium</h4>
+              <h4 className="text-xs uppercase tracking-widest text-ink-100 font-medium">Medium</h4>
               <div className="space-y-1.5">
                 {MEDIUMS.map((med) => (
                   <button
@@ -195,7 +193,7 @@ export default function Gallery() {
                     className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center justify-between ${
                       selectedMedium === med
                         ? 'bg-gold-500/10 border border-gold-500/30 text-gold-300 font-semibold'
-                        : 'text-ink-300 hover:bg-white/5'
+                        : 'text-ink-200 hover:bg-white/5'
                     }`}
                   >
                     <span>{med}</span>
@@ -207,7 +205,7 @@ export default function Gallery() {
 
             {/* Price Slider */}
             <div className="space-y-3 border-t border-white/10 pt-6">
-              <div className="flex items-center justify-between text-xs uppercase tracking-widest text-ink-200 font-medium">
+              <div className="flex items-center justify-between text-xs uppercase tracking-widest text-ink-100 font-medium">
                 <span>Max Price</span>
                 <span className="text-gold-400 font-mono">${maxPrice.toLocaleString()}</span>
               </div>
@@ -220,7 +218,7 @@ export default function Gallery() {
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full accent-gold-500 bg-ink-900 h-1.5 rounded-lg cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-ink-400 font-mono">
+              <div className="flex justify-between text-[10px] text-ink-300 font-mono">
                 <span>$500</span>
                 <span>$50,000+</span>
               </div>
@@ -228,7 +226,7 @@ export default function Gallery() {
 
             {/* Orientation */}
             <div className="space-y-3 border-t border-white/10 pt-6">
-              <h4 className="text-xs uppercase tracking-widest text-ink-200 font-medium">Orientation</h4>
+              <h4 className="text-xs uppercase tracking-widest text-ink-100 font-medium">Orientation</h4>
               <div className="grid grid-cols-2 gap-2">
                 {ORIENTATIONS.map((ori) => (
                   <button
@@ -237,7 +235,7 @@ export default function Gallery() {
                     className={`px-3 py-2 rounded-lg text-xs font-mono transition-colors text-center border ${
                       selectedOrientation === ori
                         ? 'bg-ink-800 border-gold-500 text-gold-300 font-semibold'
-                        : 'border-white/10 text-ink-300 hover:border-gold-500/40'
+                        : 'border-white/10 text-ink-200 hover:border-gold-500/40'
                     }`}
                   >
                     {ori}
@@ -248,7 +246,7 @@ export default function Gallery() {
 
             {/* Dominant Palette Filter */}
             <div className="space-y-3 border-t border-white/10 pt-6">
-              <h4 className="text-xs uppercase tracking-widest text-ink-200 font-medium">Dominant Color</h4>
+              <h4 className="text-xs uppercase tracking-widest text-ink-100 font-medium">Dominant Color</h4>
               <div className="flex flex-wrap gap-2">
                 {COLOR_OPTIONS.map((col) => (
                   <button
@@ -274,7 +272,7 @@ export default function Gallery() {
               </div>
             ) : filteredAndSorted.length === 0 ? (
               <div className="text-center py-28 glass-panel rounded-2xl border border-white/10">
-                <p className="text-ink-300 font-light text-lg">No artworks match your current filter criteria.</p>
+                <p className="text-ink-200 font-light text-lg">No artworks match your current filter criteria.</p>
                 <button
                   onClick={clearFilters}
                   className="mt-6 btn-outline-gold rounded-sm !py-2.5 !px-6 text-xs uppercase"

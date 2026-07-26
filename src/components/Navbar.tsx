@@ -24,7 +24,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [currencyMenu, setCurrencyMenu] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
 
@@ -52,7 +51,6 @@ export default function Navbar() {
   useEffect(() => {
     setOpen(false);
     setCurrencyMenu(false);
-    setActiveDropdown(null);
     setSearchExpanded(false);
     setShowMegaMenu(false);
   }, [location.pathname]);
@@ -82,60 +80,24 @@ export default function Navbar() {
   // 5 Primary Navigation Items
   const primaryNavItems = [
     {
-      id: 'collection',
-      label: 'Collection',
-      to: '/gallery',
-      icon: Layers,
-      subItems: [
-        { label: 'All Artworks', to: '/gallery' },
-        { label: 'Paintings', to: '/gallery?medium=Painting' },
-        { label: 'Sculptures', to: '/gallery?medium=Sculpture' },
-        { label: 'Photography', to: '/gallery?medium=Photography' },
-        { label: 'Limited Editions', to: '/gallery?medium=Edition' },
-        { label: 'Drawings', to: '/gallery?medium=Drawing' },
-        { label: 'New Arrivals', to: '/gallery?sort=newest' },
-      ],
-    },
-    {
-      id: 'artists',
-      label: 'Artists',
-      to: '/about',
-      icon: Award,
-      subItems: [
-        { label: 'Artist Roster', to: '/about' },
-        { label: 'Emerging Voices', to: '/gallery?search=emerging' },
-        { label: 'Established Masters', to: '/gallery?search=master' },
-      ],
-    },
-    {
-      id: 'exhibitions',
-      label: 'Exhibitions',
-      to: '/about',
-      icon: BookOpen,
-      subItems: [
-        { label: 'Current Shows', to: '/about' },
-        { label: 'Curatorial Editorial', to: '/about' },
-      ],
+      id: 'home',
+      label: 'Home',
+      to: '/',
     },
     {
       id: 'about',
       label: 'About',
       to: '/about',
-      icon: Sparkles,
-      subItems: [
-        { label: 'Our House & Philosophy', to: '/about' },
-        { label: 'Advisory Concierge', to: '/contact' },
-      ],
+    },
+    {
+      id: 'collection',
+      label: 'Collection',
+      to: '/gallery',
     },
     {
       id: 'contact',
       label: 'Contact',
       to: '/contact',
-      icon: MapPin,
-      subItems: [
-        { label: 'Visit Gallery', to: '/contact' },
-        { label: 'Request Consultation', to: '/contact' },
-      ],
     },
   ];
 
@@ -170,7 +132,7 @@ export default function Navbar() {
                     ART
                   </span>
                 </div>
-                <span className="text-[9px] uppercase tracking-[0.35em] text-ink-400 font-sans mt-0.5 font-medium">
+                <span className="text-[9px] uppercase tracking-[0.35em] text-ink-300 font-sans mt-0.5 font-medium">
                   Contemporary Gallery
                 </span>
               </div>
@@ -179,15 +141,11 @@ export default function Navbar() {
             {/* COLUMN 2: Centered Airy Main Navigation (Center Grid) */}
             <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-10">
               {primaryNavItems.map((item) => {
-                const isActive = location.pathname.startsWith(item.to);
-                const isHovered = activeDropdown === item.id;
+                const isActive = item.to === '/' 
+                  ? location.pathname === '/' 
+                  : location.pathname.startsWith(item.to);
                 return (
-                  <div
-                    key={item.id}
-                    className="relative group"
-                    onMouseEnter={() => setActiveDropdown(item.id)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
+                  <div key={item.id} className="relative group">
                     <Link
                       to={item.to}
                       className="relative py-2 text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-300 flex items-center gap-1 group/link"
@@ -196,17 +154,11 @@ export default function Navbar() {
                         className={
                           isActive
                             ? 'gold-text-gradient font-semibold'
-                            : 'text-ink-300 group-hover/link:text-ink-50'
+                            : 'text-ink-200 group-hover/link:text-ink-50'
                         }
                       >
                         {item.label}
                       </span>
-                      <ChevronDown
-                        size={12}
-                        className={`text-ink-400 group-hover/link:text-gold-300 transition-transform duration-300 ${
-                          isHovered ? 'rotate-180 text-gold-300' : ''
-                        }`}
-                      />
 
                       {/* Animated Gold Underline Indicator */}
                       <span
@@ -217,88 +169,11 @@ export default function Navbar() {
                         }`}
                       />
                     </Link>
-
-                    {/* Luxury Glass Submenu Dropdown */}
-                    {isHovered && (
-                      <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 rounded-2xl glass-panel p-2 shadow-2xl border border-gold-500/30 z-50 fade-up">
-                        <div className="p-2 border-b border-white/5 mb-1 flex items-center gap-2 text-[10px] text-gold-400 uppercase tracking-widest font-mono">
-                          <item.icon size={12} />
-                          <span>{item.label}</span>
-                        </div>
-                        {item.subItems.map((sub) => (
-                          <Link
-                            key={sub.label}
-                            to={sub.to}
-                            className="group/sub flex items-center justify-between px-3.5 py-2 rounded-xl text-xs text-ink-200 hover:text-gold-300 hover:bg-gold-500/10 transition-all font-normal"
-                          >
-                            <span>{sub.label}</span>
-                            <ArrowUpRight size={13} className="opacity-0 group-hover/sub:opacity-100 transition-opacity text-gold-400" />
-                          </Link>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 );
               })}
 
-              {/* "Menu" Mega Dropdown Trigger */}
-              <div
-                className="relative"
-                onMouseEnter={() => setShowMegaMenu(true)}
-                onMouseLeave={() => setShowMegaMenu(false)}
-              >
-                <button
-                  onClick={() => setShowMegaMenu(!showMegaMenu)}
-                  className="flex items-center gap-1.5 text-gold-400 hover:text-gold-300 font-mono text-xs uppercase tracking-widest py-1 transition-colors group"
-                >
-                  <MenuIcon size={14} className="group-hover:rotate-90 transition-transform duration-300" />
-                  <span className="font-semibold gold-text-gradient">Menu</span>
-                  <ChevronDown size={12} className={`transition-transform duration-300 ${showMegaMenu ? 'rotate-180' : ''}`} />
-                </button>
 
-                {showMegaMenu && (
-                  <div className="absolute right-0 mt-2 w-[650px] rounded-2xl glass-panel p-6 shadow-2xl border border-gold-500/40 z-50 fade-up">
-                    <div className="grid grid-cols-3 gap-6 text-left">
-                      <div className="space-y-3">
-                        <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
-                          Catalogue
-                        </h5>
-                        <ul className="space-y-2 text-xs font-normal">
-                          <li><Link to="/gallery" className="text-ink-200 hover:text-gold-300 transition-colors block">All Artworks</Link></li>
-                          <li><Link to="/gallery?medium=Painting" className="text-ink-200 hover:text-gold-300 transition-colors block">Paintings</Link></li>
-                          <li><Link to="/gallery?medium=Sculpture" className="text-ink-200 hover:text-gold-300 transition-colors block">Sculptures</Link></li>
-                          <li><Link to="/gallery?medium=Photography" className="text-ink-200 hover:text-gold-300 transition-colors block">Photography</Link></li>
-                          <li><Link to="/gallery?medium=Edition" className="text-ink-200 hover:text-gold-300 transition-colors block">Limited Editions</Link></li>
-                          <li><Link to="/gallery?sort=newest" className="text-ink-200 hover:text-gold-300 transition-colors block">New Arrivals</Link></li>
-                        </ul>
-                      </div>
-                      <div className="space-y-3">
-                        <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
-                          Artists & News
-                        </h5>
-                        <ul className="space-y-2 text-xs font-normal">
-                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Artist Roster</Link></li>
-                          <li><Link to="/gallery?search=emerging" className="text-ink-200 hover:text-gold-300 transition-colors block">Emerging Voices</Link></li>
-                          <li><Link to="/gallery?search=master" className="text-ink-200 hover:text-gold-300 transition-colors block">Established Masters</Link></li>
-                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Current Exhibitions</Link></li>
-                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Curatorial Editorial</Link></li>
-                        </ul>
-                      </div>
-                      <div className="space-y-3">
-                        <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
-                          Gallery Services
-                        </h5>
-                        <ul className="space-y-2 text-xs font-normal">
-                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Our House & Philosophy</Link></li>
-                          <li><Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">Advisory Concierge</Link></li>
-                          <li><Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">Visit Gallery</Link></li>
-                          <li><Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">Request Consultation</Link></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
             </nav>
 
             {/* COLUMN 3: Right Secondary Actions & Sleek Expandable Search (Right) */}
@@ -315,12 +190,12 @@ export default function Navbar() {
                       placeholder="Search works, artists..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-48 sm:w-64 bg-ink-900/90 border border-gold-500/40 rounded-full py-1.5 pl-9 pr-8 text-xs text-ink-50 placeholder-ink-400 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-all font-light shadow-lg"
+                      className="w-48 sm:w-64 bg-ink-900/90 border border-gold-500/40 rounded-full py-1.5 pl-9 pr-8 text-xs text-ink-50 placeholder-ink-300 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-all font-light shadow-lg"
                     />
                     <button
                       type="button"
                       onClick={() => setSearchExpanded(false)}
-                      className="absolute right-2 text-ink-400 hover:text-gold-300 p-1"
+                      className="absolute right-2 text-ink-300 hover:text-gold-300 p-1"
                     >
                       <X size={14} />
                     </button>
@@ -331,7 +206,7 @@ export default function Navbar() {
                       setSearchExpanded(true);
                       openSearch();
                     }}
-                    className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-all shadow-md group"
+                    className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-all shadow-md group"
                     aria-label="Expand Search"
                   >
                     <Search size={16} className="group-hover:scale-110 transition-transform" />
@@ -343,10 +218,10 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setCurrencyMenu(!currencyMenu)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-white/10 text-xs font-mono text-ink-200 hover:border-gold-500/40 hover:text-gold-300 transition-colors shadow-md"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-white/10 text-xs font-mono text-ink-100 hover:border-gold-500/40 hover:text-gold-300 transition-colors shadow-md"
                 >
                   <span className="gold-text-gradient font-bold">{currency === 'USD' ? '$ USD' : '€ EUR'}</span>
-                  <ChevronDown size={12} className="text-ink-400" />
+                  <ChevronDown size={12} className="text-ink-300" />
                 </button>
 
                 {currencyMenu && (
@@ -357,7 +232,7 @@ export default function Navbar() {
                         setCurrencyMenu(false);
                       }}
                       className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        currency === 'USD' ? 'bg-gold-500/10 text-gold-300 font-semibold' : 'text-ink-300 hover:bg-white/5'
+                        currency === 'USD' ? 'bg-gold-500/10 text-gold-300 font-semibold' : 'text-ink-200 hover:bg-white/5'
                       }`}
                     >
                       USD ($)
@@ -368,7 +243,7 @@ export default function Navbar() {
                         setCurrencyMenu(false);
                       }}
                       className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        currency === 'EUR' ? 'bg-gold-500/10 text-gold-300 font-semibold' : 'text-ink-300 hover:bg-white/5'
+                        currency === 'EUR' ? 'bg-gold-500/10 text-gold-300 font-semibold' : 'text-ink-200 hover:bg-white/5'
                       }`}
                     >
                       EUR (€)
@@ -380,7 +255,7 @@ export default function Navbar() {
               {/* Wishlist Button */}
               <button
                 onClick={openWishlist}
-                className="relative w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
+                className="relative w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
                 aria-label="Saved Wishlist"
               >
                 <Heart size={16} className={wishlist.length > 0 ? 'text-gold-400 fill-gold-400' : ''} />
@@ -394,7 +269,7 @@ export default function Navbar() {
               {/* Shopping Cart Button */}
               <button
                 onClick={openCart}
-                className="relative w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
+                className="relative w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
                 aria-label="Collector Bag"
               >
                 <ShoppingBag size={16} className={cartCount > 0 ? 'text-gold-400' : ''} />
@@ -408,7 +283,7 @@ export default function Navbar() {
               {/* Account / Admin Portal */}
               <Link
                 to="/admin"
-                className="hidden sm:flex w-9 h-9 rounded-full bg-ink-900 border border-white/10 items-center justify-center text-ink-200 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
+                className="hidden sm:flex w-9 h-9 rounded-full bg-ink-900 border border-white/10 items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
                 aria-label="Admin Portal"
               >
                 <User size={16} />
@@ -440,7 +315,7 @@ export default function Navbar() {
       >
         <div className="space-y-6 my-auto overflow-y-auto max-h-[65vh] pr-1">
           {primaryNavItems.map((item) => (
-            <div key={item.id} className="border-b border-white/10 pb-4 space-y-2">
+            <div key={item.id} className="border-b border-white/10 pb-4">
               <Link
                 to={item.to}
                 onClick={() => setOpen(false)}
@@ -448,23 +323,11 @@ export default function Navbar() {
               >
                 {item.label}
               </Link>
-              <div className="pl-3 space-y-1.5 pt-1">
-                {item.subItems.map((sub) => (
-                  <Link
-                    key={sub.label}
-                    to={sub.to}
-                    onClick={() => setOpen(false)}
-                    className="block text-xs text-ink-300 hover:text-gold-300 font-mono"
-                  >
-                    → {sub.label}
-                  </Link>
-                ))}
-              </div>
             </div>
           ))}
         </div>
 
-        <div className="glass-panel p-5 rounded-xl border border-white/10 space-y-3 text-xs text-ink-300">
+        <div className="glass-panel p-5 rounded-xl border border-white/10 space-y-3 text-xs text-ink-200">
           <div className="flex items-center gap-2">
             <MapPin size={14} className="text-gold-500 shrink-0" />
             <span>2719 Tropical Point, Fort Worth, TX, USA</span>
@@ -475,10 +338,10 @@ export default function Navbar() {
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-white/10">
             <div className="flex gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-ink-300 hover:text-gold-300">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-ink-200 hover:text-gold-300">
                 <Instagram size={16} />
               </a>
-              <a href="mailto:hello@nousart.gallery" className="text-ink-300 hover:text-gold-300">
+              <a href="mailto:hello@nousart.gallery" className="text-ink-200 hover:text-gold-300">
                 <Mail size={16} />
               </a>
             </div>

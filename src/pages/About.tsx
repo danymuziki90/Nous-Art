@@ -45,7 +45,7 @@ export default function About() {
           </div>
 
           {/* Editorial Content */}
-          <div className="lg:col-span-6 space-y-6 text-ink-200 leading-relaxed font-light text-base">
+          <div className="lg:col-span-6 space-y-6 text-ink-100 leading-relaxed font-light text-base">
             <p className="text-lg text-ink-100 font-normal">
               NOUS ART was founded in 2014 with a single conviction: that contemporary art should be encountered, not merely consumed. We exist for the collector who buys with their eyes open — for the patient, the curious, the deeply engaged.
             </p>
@@ -78,7 +78,7 @@ export default function About() {
                     <Icon size={18} />
                   </div>
                   <p className="font-display text-4xl sm:text-5xl font-semibold gold-text-gradient">{s.n}</p>
-                  <p className="text-xs uppercase tracking-widest text-ink-300 font-sans">{s.l}</p>
+                  <p className="text-xs uppercase tracking-widest text-ink-200 font-sans">{s.l}</p>
                 </div>
               );
             })}

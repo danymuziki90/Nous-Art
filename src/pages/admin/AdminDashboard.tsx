@@ -212,14 +212,13 @@ export default function AdminDashboard() {
         {/* Top Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 border-b border-white/10 pb-8">
           <div>
-            <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-2">
-              <ShieldCheck size={14} />
-              <span>Admin Panel</span>
+            <div className="text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-2">
+              <span>Dashboard</span>
             </div>
             <h1 className="font-display text-4xl md:text-5xl text-ink-50 font-light">
               Collection <span className="font-serif italic gold-text-gradient">Management</span>
             </h1>
-            <p className="text-xs text-ink-400 font-mono mt-1">Signed in as: {user?.email}</p>
+            <p className="text-xs text-ink-300 font-mono mt-1">Signed in as: {user?.email}</p>
           </div>
 
           <div className="flex flex-wrap gap-3">
@@ -250,12 +249,11 @@ export default function AdminDashboard() {
         <div className="mb-14 glass-panel p-6 md:p-8 rounded-xl border border-white/10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-widest font-semibold mb-1">
-                <Sparkles size={14} />
-                <span>Home Page Settings</span>
+              <div className="text-gold-400 text-xs uppercase tracking-widest font-semibold mb-1">
+                <span>Admin Privileges</span>
               </div>
               <h2 className="font-display text-2xl text-ink-50 font-light">Hero Media Header</h2>
-              <p className="text-xs text-ink-400 font-light">Choose an HD image or video clip for the home page landing section background.</p>
+              <p className="text-xs text-ink-300 font-light">Choose an HD image or video clip for the home page landing section background.</p>
             </div>
           </div>
 
@@ -266,7 +264,7 @@ export default function AdminDashboard() {
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs uppercase tracking-widest font-medium transition-all ${
                 heroMediaType === 'image'
                   ? 'bg-gold-gradient text-ink-950 font-semibold'
-                  : 'bg-ink-900 border border-white/10 text-ink-300 hover:text-ink-50'
+                  : 'bg-ink-900 border border-white/10 text-ink-200 hover:text-ink-50'
               }`}
             >
               <ImageIcon size={14} /> Image
@@ -277,7 +275,7 @@ export default function AdminDashboard() {
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs uppercase tracking-widest font-medium transition-all ${
                 heroMediaType === 'video'
                   ? 'bg-gold-gradient text-ink-950 font-semibold'
-                  : 'bg-ink-900 border border-white/10 text-ink-300 hover:text-ink-50'
+                  : 'bg-ink-900 border border-white/10 text-ink-200 hover:text-ink-50'
               }`}
             >
               <Film size={14} /> Video Clip
@@ -303,7 +301,7 @@ export default function AdminDashboard() {
             ) : (
               <label className="flex flex-col items-center justify-center gap-3 aspect-[16/9] rounded-lg border border-dashed border-white/20 hover:border-gold-500/60 bg-ink-900/50 cursor-pointer transition-all">
                 {heroMediaType === 'video' ? <Film className="text-gold-400" size={28} /> : <Upload className="text-gold-400" size={28} />}
-                <span className="text-xs text-ink-300 uppercase tracking-widest">
+                <span className="text-xs text-ink-200 uppercase tracking-widest">
                   Click to upload a {heroMediaType === 'video' ? 'video clip (MP4, WebM)' : 'image file'}
                 </span>
                 <input
@@ -315,7 +313,7 @@ export default function AdminDashboard() {
               </label>
             )}
             {heroPreview && !heroFile && (
-              <label className="mt-3 inline-flex items-center gap-2 text-xs text-ink-300 hover:text-gold-300 cursor-pointer">
+              <label className="mt-3 inline-flex items-center gap-2 text-xs text-ink-200 hover:text-gold-300 cursor-pointer">
                 <Upload size={14} /> Replace {heroMediaType === 'video' ? 'video' : 'image'} file
                 <input
                   type="file"
@@ -345,7 +343,7 @@ export default function AdminDashboard() {
                 <h2 className="font-display text-2xl text-ink-50 font-light">
                   {editingId ? 'Edit Artwork' : 'Add New Artwork to Catalogue'}
                 </h2>
-                <button onClick={resetForm} className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-300 hover:text-gold-300">
+                <button onClick={resetForm} className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-200 hover:text-gold-300">
                   <X size={18} />
                 </button>
               </div>
@@ -353,13 +351,13 @@ export default function AdminDashboard() {
               <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
                 {/* Format toggle */}
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-3 font-medium">Media Format</label>
+                  <label className="block text-xs uppercase tracking-widest text-ink-200 mb-3 font-medium">Media Format</label>
                   <div className="flex gap-3">
                     <button
                       type="button"
                       onClick={() => switchMediaType('image')}
                       className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-md text-xs uppercase tracking-widest font-medium transition-all ${
-                        form.media_type === 'image' ? 'bg-gold-gradient text-ink-950 font-semibold' : 'bg-ink-900 border border-white/10 text-ink-300'
+                        form.media_type === 'image' ? 'bg-gold-gradient text-ink-950 font-semibold' : 'bg-ink-900 border border-white/10 text-ink-200'
                       }`}
                     >
                       <ImageIcon size={15} /> Image / Painting
@@ -368,7 +366,7 @@ export default function AdminDashboard() {
                       type="button"
                       onClick={() => switchMediaType('video')}
                       className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-md text-xs uppercase tracking-widest font-medium transition-all ${
-                        form.media_type === 'video' ? 'bg-gold-gradient text-ink-950 font-semibold' : 'bg-ink-900 border border-white/10 text-ink-300'
+                        form.media_type === 'video' ? 'bg-gold-gradient text-ink-950 font-semibold' : 'bg-ink-900 border border-white/10 text-ink-200'
                       }`}
                     >
                       <Film size={15} /> Video Work
@@ -378,7 +376,7 @@ export default function AdminDashboard() {
 
                 {/* Upload Section */}
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-3 font-medium">
+                  <label className="block text-xs uppercase tracking-widest text-ink-200 mb-3 font-medium">
                     {form.media_type === 'video' ? 'Artwork Video File' : 'Artwork HD Image'}
                   </label>
                   {mediaPreview ? (
@@ -399,7 +397,7 @@ export default function AdminDashboard() {
                   ) : (
                     <label className="flex flex-col items-center justify-center gap-3 aspect-[16/10] rounded-lg border border-dashed border-white/20 hover:border-gold-500/60 bg-ink-900/50 cursor-pointer transition-all">
                       {form.media_type === 'video' ? <Film className="text-gold-400" size={28} /> : <Upload className="text-gold-400" size={28} />}
-                      <span className="text-xs text-ink-300 uppercase tracking-widest">
+                      <span className="text-xs text-ink-200 uppercase tracking-widest">
                         Select a {form.media_type === 'video' ? 'video file (MP4, WebM)' : 'image file'}
                       </span>
                       <input
@@ -411,7 +409,7 @@ export default function AdminDashboard() {
                     </label>
                   )}
                   {mediaPreview && !mediaFile && (
-                    <label className="mt-3 inline-flex items-center gap-2 text-xs text-ink-300 hover:text-gold-300 cursor-pointer">
+                    <label className="mt-3 inline-flex items-center gap-2 text-xs text-ink-200 hover:text-gold-300 cursor-pointer">
                       <Upload size={14} /> Replace visual element
                       <input
                         type="file"
@@ -441,21 +439,21 @@ export default function AdminDashboard() {
                       >
                         <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-ink-950 transition-transform ${form.featured ? 'translate-x-6' : ''}`} />
                       </button>
-                      <span className="text-xs uppercase tracking-widest text-ink-300 flex items-center gap-1.5 font-medium">
-                        <Star size={14} className={form.featured ? 'text-gold-400 fill-gold-400' : 'text-ink-500'} /> Feature on Home Page
+                      <span className="text-xs uppercase tracking-widest text-ink-200 flex items-center gap-1.5 font-medium">
+                        <Star size={14} className={form.featured ? 'text-gold-400 fill-gold-400' : 'text-ink-400'} /> Feature on Home Page
                       </span>
                     </label>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">Editorial Description</label>
+                  <label className="block text-xs uppercase tracking-widest text-ink-200 mb-2 font-medium">Editorial Description</label>
                   <textarea
                     rows={4}
                     placeholder="Provide artwork details and provenance..."
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    className="w-full bg-ink-900 border border-white/10 rounded-md px-4 py-3 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 text-sm resize-none"
+                    className="w-full bg-ink-900 border border-white/10 rounded-md px-4 py-3 text-ink-50 placeholder-ink-300 focus:outline-none focus:border-gold-500 text-sm resize-none"
                   />
                 </div>
 
@@ -494,7 +492,7 @@ export default function AdminDashboard() {
           </div>
         ) : pieces.length === 0 ? (
           <div className="text-center py-24 glass-panel rounded-xl border border-white/10">
-            <p className="text-ink-300 mb-4 font-light">No artworks in the catalogue yet.</p>
+            <p className="text-ink-200 mb-4 font-light">No artworks in the catalogue yet.</p>
             <button onClick={() => { resetForm(); setShowForm(true); }} className="btn-gold rounded-sm inline-flex items-center gap-2">
               <Plus size={16} /> Add First Artwork
             </button>
@@ -547,7 +545,7 @@ export default function AdminDashboard() {
 
                   <div className="p-5">
                     <h3 className="font-display text-2xl text-ink-50 font-medium">{p.title}</h3>
-                    <p className="text-xs text-ink-300 font-sans mt-1">{p.artist}{p.year ? `, ${p.year}` : ''}</p>
+                    <p className="text-xs text-ink-200 font-sans mt-1">{p.artist}{p.year ? `, ${p.year}` : ''}</p>
                     {p.price != null && (
                       <p className="text-sm font-display text-gold-400 font-semibold mt-3">
                         {p.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
@@ -569,7 +567,7 @@ function Field({
 }: { label: string; value: string; onChange: (v: string) => void; required?: boolean; placeholder?: string }) {
   return (
     <div>
-      <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">
+      <label className="block text-xs uppercase tracking-widest text-ink-200 mb-2 font-medium">
         {label}{required && <span className="text-gold-400 ml-1">*</span>}
       </label>
       <input
@@ -577,7 +575,7 @@ function Field({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-ink-900 border border-white/10 rounded-md px-4 py-3 text-ink-50 focus:outline-none focus:border-gold-500 text-sm placeholder-ink-500"
+        className="w-full bg-ink-900 border border-white/10 rounded-md px-4 py-3 text-ink-50 focus:outline-none focus:border-gold-500 text-sm placeholder-ink-300"
       />
     </div>
   );

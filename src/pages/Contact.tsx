@@ -39,7 +39,7 @@ export default function Contact() {
           <h1 className="font-display text-5xl md:text-7xl text-ink-50 font-light leading-tight">
             Begin a <span className="font-serif italic gold-text-gradient">conversation</span>
           </h1>
-          <p className="text-ink-300 mt-6 leading-relaxed font-light text-base">
+          <p className="text-ink-200 mt-6 leading-relaxed font-light text-base">
             Whether you are enquiring about a specific work, seeking advice on a collection, or wish to visit the gallery in person — we would be glad to hear from you.
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function Contact() {
                   <CheckCircle2 size={32} />
                 </div>
                 <h3 className="font-display text-3xl gold-text-gradient font-medium">Thank You</h3>
-                <p className="text-ink-200 font-light text-base leading-relaxed max-w-md mx-auto">
+                <p className="text-ink-100 font-light text-base leading-relaxed max-w-md mx-auto">
                   Your message has been received. A curator from NOUS ART Gallery will be in touch with you shortly.
                 </p>
                 <button
@@ -72,13 +72,13 @@ export default function Contact() {
                   <h3 className="font-title text-sm uppercase tracking-widest text-gold-400 font-semibold">
                     Inquiry Form
                   </h3>
-                  <p className="text-xs text-ink-400 font-light mt-1">
+                  <p className="text-xs text-ink-300 font-light mt-1">
                     Please provide your contact details below.
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 font-medium mb-3">
+                  <label className="block text-xs uppercase tracking-widest text-ink-200 font-medium mb-3">
                     Name <span className="text-gold-400">*</span>
                   </label>
                   <input
@@ -87,12 +87,12 @@ export default function Contact() {
                     placeholder="Jane Doe"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
+                    className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-300 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 font-medium mb-3">
+                  <label className="block text-xs uppercase tracking-widest text-ink-200 font-medium mb-3">
                     Email Address <span className="text-gold-400">*</span>
                   </label>
                   <input
@@ -101,12 +101,12 @@ export default function Contact() {
                     placeholder="jane.doe@example.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
+                    className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-300 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 font-medium mb-3">
+                  <label className="block text-xs uppercase tracking-widest text-ink-200 font-medium mb-3">
                     Message <span className="text-gold-400">*</span>
                   </label>
                   <textarea
@@ -115,7 +115,7 @@ export default function Contact() {
                     placeholder="Detail your inquiry or requested appointment date..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm resize-none"
+                    className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-300 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm resize-none"
                   />
                 </div>
 
@@ -142,7 +142,7 @@ export default function Contact() {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Gallery Address</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-200 font-medium mb-1">Gallery Address</h4>
                   <p className="text-ink-100 font-light text-sm leading-relaxed">
                     2719 Tropical Point<br />
                     Fort Worth, TX, USA
@@ -155,7 +155,7 @@ export default function Contact() {
                   <Mail size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Email</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-200 font-medium mb-1">Email</h4>
                   <p className="text-ink-100 font-light text-sm">hello@nousart.gallery</p>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function Contact() {
                   <Clock size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Opening Hours</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-200 font-medium mb-1">Opening Hours</h4>
                   <p className="text-ink-100 font-light text-sm leading-relaxed">
                     Tuesday – Saturday<br />
                     11:00 AM – 7:00 PM (or by appointment)
