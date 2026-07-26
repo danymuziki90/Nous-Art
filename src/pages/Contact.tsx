@@ -168,7 +168,7 @@ export default function Contact() {
                   <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Opening Hours</h4>
                   <p className="text-ink-100 font-light text-sm leading-relaxed">
                     Tuesday – Saturday<br />
-                    11:00 – 19:00 (or by appointment)
+                    11:00 AM – 7:00 PM (or by appointment)
                   </p>
                 </div>
               </div>

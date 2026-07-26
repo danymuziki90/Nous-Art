@@ -15,6 +15,7 @@ import {
   Layers,
   Award,
   BookOpen,
+  Menu as MenuIcon,
   X,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
@@ -25,6 +26,7 @@ export default function Navbar() {
   const [currencyMenu, setCurrencyMenu] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -52,6 +54,7 @@ export default function Navbar() {
     setCurrencyMenu(false);
     setActiveDropdown(null);
     setSearchExpanded(false);
+    setShowMegaMenu(false);
   }, [location.pathname]);
 
   // Lock body scroll when mobile menu is open
@@ -237,6 +240,65 @@ export default function Navbar() {
                   </div>
                 );
               })}
+
+              {/* "Menu" Mega Dropdown Trigger */}
+              <div
+                className="relative"
+                onMouseEnter={() => setShowMegaMenu(true)}
+                onMouseLeave={() => setShowMegaMenu(false)}
+              >
+                <button
+                  onClick={() => setShowMegaMenu(!showMegaMenu)}
+                  className="flex items-center gap-1.5 text-gold-400 hover:text-gold-300 font-mono text-xs uppercase tracking-widest py-1 transition-colors group"
+                >
+                  <MenuIcon size={14} className="group-hover:rotate-90 transition-transform duration-300" />
+                  <span className="font-semibold gold-text-gradient">Menu</span>
+                  <ChevronDown size={12} className={`transition-transform duration-300 ${showMegaMenu ? 'rotate-180' : ''}`} />
+                </button>
+
+                {showMegaMenu && (
+                  <div className="absolute right-0 mt-2 w-[650px] rounded-2xl glass-panel p-6 shadow-2xl border border-gold-500/40 z-50 fade-up">
+                    <div className="grid grid-cols-3 gap-6 text-left">
+                      <div className="space-y-3">
+                        <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
+                          Catalogue
+                        </h5>
+                        <ul className="space-y-2 text-xs font-normal">
+                          <li><Link to="/gallery" className="text-ink-200 hover:text-gold-300 transition-colors block">All Artworks</Link></li>
+                          <li><Link to="/gallery?medium=Painting" className="text-ink-200 hover:text-gold-300 transition-colors block">Paintings</Link></li>
+                          <li><Link to="/gallery?medium=Sculpture" className="text-ink-200 hover:text-gold-300 transition-colors block">Sculptures</Link></li>
+                          <li><Link to="/gallery?medium=Photography" className="text-ink-200 hover:text-gold-300 transition-colors block">Photography</Link></li>
+                          <li><Link to="/gallery?medium=Edition" className="text-ink-200 hover:text-gold-300 transition-colors block">Limited Editions</Link></li>
+                          <li><Link to="/gallery?sort=newest" className="text-ink-200 hover:text-gold-300 transition-colors block">New Arrivals</Link></li>
+                        </ul>
+                      </div>
+                      <div className="space-y-3">
+                        <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
+                          Artists & News
+                        </h5>
+                        <ul className="space-y-2 text-xs font-normal">
+                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Artist Roster</Link></li>
+                          <li><Link to="/gallery?search=emerging" className="text-ink-200 hover:text-gold-300 transition-colors block">Emerging Voices</Link></li>
+                          <li><Link to="/gallery?search=master" className="text-ink-200 hover:text-gold-300 transition-colors block">Established Masters</Link></li>
+                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Current Exhibitions</Link></li>
+                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Curatorial Editorial</Link></li>
+                        </ul>
+                      </div>
+                      <div className="space-y-3">
+                        <h5 className="text-[10px] uppercase tracking-widest text-gold-400 font-mono font-semibold border-b border-white/10 pb-2">
+                          Gallery Services
+                        </h5>
+                        <ul className="space-y-2 text-xs font-normal">
+                          <li><Link to="/about" className="text-ink-200 hover:text-gold-300 transition-colors block">Our House & Philosophy</Link></li>
+                          <li><Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">Advisory Concierge</Link></li>
+                          <li><Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">Visit Gallery</Link></li>
+                          <li><Link to="/contact" className="text-ink-200 hover:text-gold-300 transition-colors block">Request Consultation</Link></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </nav>
 
             {/* COLUMN 3: Right Secondary Actions & Sleek Expandable Search (Right) */}
@@ -409,7 +471,7 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-gold-500 shrink-0" />
-            <span>Tue – Sat 11:00 – 19:00</span>
+            <span>Tuesday – Saturday: 11:00 AM – 7:00 PM</span>
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-white/10">
             <div className="flex gap-3">
