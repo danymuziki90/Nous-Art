@@ -1,18 +1,55 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Sparkles, Compass, ShieldCheck } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, Sparkles, Compass, ShieldCheck, Search, Award, Flame, Star, Layers } from 'lucide-react';
 import { supabase, type ArtPiece, type SiteSettings } from '@/lib/supabase';
-import { MediaDisplay } from '@/components/MediaDisplay';
+import { ArtworkCard } from '@/components/ArtworkCard';
+import { useStore } from '@/context/StoreContext';
 
 const DEFAULT_HERO = {
   hero_media_url: 'https://images.pexels.com/photos/1839919/pexels-photo-1839919.jpeg?auto=compress&cs=tinysrgb&w=2000',
   hero_media_type: 'image' as const,
 };
 
+const CATEGORY_BLOCKS = [
+  {
+    title: 'Paintings',
+    medium: 'Painting',
+    count: '45+ Works',
+    image: 'https://images.pexels.com/photos/1585325/pexels-photo-1585325.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Sculptures',
+    medium: 'Sculpture',
+    count: '24+ Works',
+    image: 'https://images.pexels.com/photos/3004909/pexels-photo-3004909.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Photography',
+    medium: 'Photography',
+    count: '32+ Works',
+    image: 'https://images.pexels.com/photos/2123337/pexels-photo-2123337.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Limited Editions',
+    medium: 'Edition',
+    count: '18+ Works',
+    image: 'https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+];
+
+const ARTIST_PROFILES = [
+  { title: 'Emerging Voices', icon: Star, desc: 'Fresh perspectives from visionary contemporary talent.', query: 'emerging' },
+  { title: 'Established Masters', icon: Award, desc: 'Museum-represented artists with global acclaim.', query: 'master' },
+  { title: 'Curator Favorites', icon: Flame, desc: 'Highly coveted works selected by NOUS ART advisors.', query: 'favorite' },
+];
+
 export default function Home() {
   const [featured, setFeatured] = useState<ArtPiece[]>([]);
   const [loading, setLoading] = useState(true);
   const [hero, setHero] = useState<SiteSettings | null>(null);
+  const [heroSearch, setHeroSearch] = useState('');
+  const navigate = useNavigate();
+  const { openSearch } = useStore();
 
   useEffect(() => {
     supabase
@@ -34,14 +71,23 @@ export default function Home() {
       .then(({ data }) => setHero(data));
   }, []);
 
+  const handleHeroSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (heroSearch.trim()) {
+      navigate(`/gallery?search=${encodeURIComponent(heroSearch.trim())}`);
+    } else {
+      openSearch();
+    }
+  };
+
   const heroUrl = hero?.hero_media_url ?? DEFAULT_HERO.hero_media_url;
   const heroType = hero?.hero_media_type ?? DEFAULT_HERO.hero_media_type;
 
   return (
-    <div className="bg-ink-950 text-ink-50 overflow-hidden">
+    <div className="bg-ink-950 text-ink-50 overflow-hidden pt-28">
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
-        {/* Background Media Container */}
+      <section className="relative h-[85vh] min-h-[650px] flex items-center justify-center overflow-hidden">
+        {/* Background Media */}
         <div className="absolute inset-0 z-0">
           {heroType === 'video' && heroUrl ? (
             <video
@@ -50,188 +96,236 @@ export default function Home() {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover scale-105 filter brightness-[0.7] contrast-[1.1] image-reveal"
+              className="w-full h-full object-cover scale-105 filter brightness-[0.6] contrast-[1.1] image-reveal"
             />
           ) : (
             <img
               src={heroUrl}
               alt="Gallery Interior"
-              className="w-full h-full object-cover scale-105 filter brightness-[0.7] contrast-[1.1] image-reveal"
+              className="w-full h-full object-cover scale-105 filter brightness-[0.6] contrast-[1.1] image-reveal"
             />
           )}
-          {/* Multi-layered Gradients for Deep Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/80 via-ink-950/50 to-ink-950" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/30 to-ink-950" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/80 via-ink-950/40 to-ink-950" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/40 to-ink-950" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 mx-auto max-w-6xl px-6 text-center pt-20">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-900/80 border border-gold-500/30 backdrop-blur-md mb-8 fade-up shadow-xl" style={{ animationDelay: '0.1s' }}>
+        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-900/80 border border-gold-500/30 backdrop-blur-md mb-6 fade-up shadow-xl">
             <Sparkles size={13} className="text-gold-400" />
             <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
-              Contemporary Art Gallery
+              Contemporary Art Marketplace
             </span>
           </div>
 
-          {/* Main Title */}
           <h1
-            className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-ink-50 leading-[0.95] fade-up text-balance font-light"
-            style={{ animationDelay: '0.3s' }}
+            className="font-display text-5xl sm:text-7xl md:text-8xl tracking-tight text-ink-50 leading-[0.95] fade-up font-light text-balance"
+            style={{ animationDelay: '0.2s' }}
           >
             Where vision <br />
             <em className="font-serif italic gold-text-gradient font-normal">becomes</em> collection
           </h1>
 
-          {/* Subtitle */}
           <p
-            className="mt-8 text-base md:text-xl text-ink-200 max-w-2xl mx-auto leading-relaxed font-light fade-up"
-            style={{ animationDelay: '0.5s' }}
+            className="mt-6 text-base md:text-lg text-ink-200 max-w-2xl mx-auto leading-relaxed font-light fade-up"
+            style={{ animationDelay: '0.4s' }}
           >
-            NOUS ART curates exceptional contemporary works — a meeting point between visionary artists, discerning collectors, and the timeless pursuit of beauty.
+            Discover and acquire curated original artworks from premier emerging and established masters worldwide.
           </p>
 
-          {/* CTA Buttons */}
+          {/* Integrated Search Bar on Hero (Artsper Style) */}
+          <form
+            onSubmit={handleHeroSearch}
+            className="mt-10 max-w-xl mx-auto relative fade-up"
+            style={{ animationDelay: '0.6s' }}
+          >
+            <div className="relative flex items-center">
+              <Search size={20} className="absolute left-5 text-gold-400" />
+              <input
+                type="text"
+                placeholder="Search for an artwork, artist, style..."
+                value={heroSearch}
+                onChange={(e) => setHeroSearch(e.target.value)}
+                onClick={openSearch}
+                className="w-full bg-ink-950/90 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-md"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 btn-gold rounded-full !py-2.5 !px-5 !text-[11px] font-semibold"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+
+          {/* Quick links */}
           <div
-            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5 fade-up"
+            className="mt-8 flex items-center justify-center gap-6 text-xs text-ink-300 font-mono fade-up"
             style={{ animationDelay: '0.7s' }}
           >
-            <Link to="/gallery" className="btn-gold rounded-sm group w-full sm:w-auto">
-              <span>Explore Collection</span>
-              <ArrowRight size={16} className="ml-2.5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <Link to="/about" className="btn-outline-gold rounded-sm group w-full sm:w-auto">
-              <span>Our Philosophy</span>
-            </Link>
+            <span>Trending:</span>
+            {['Abstract Paintings', 'Bronze Sculptures', 'Fine Art Prints'].map((term) => (
+              <Link
+                key={term}
+                to={`/gallery?search=${encodeURIComponent(term)}`}
+                className="hover:text-gold-300 underline underline-offset-4 decoration-gold-500/40 transition-colors"
+              >
+                {term}
+              </Link>
+            ))}
           </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 z-10 pointer-events-none">
-          <span className="text-[9px] uppercase tracking-[0.4em] text-ink-300 font-sans">Scroll</span>
-          <div className="w-[1px] h-14 bg-gradient-to-b from-gold-400 via-gold-500/50 to-transparent animate-pulse-subtle" />
         </div>
       </section>
 
-      {/* Featured Works Section */}
-      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-28 md:py-36 z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-white/10 pb-8">
+      {/* Featured by NOUS ART (Product Grid) */}
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 md:py-32 z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 border-b border-white/10 pb-8">
           <div>
             <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
               <Compass size={14} />
               <span>Curatorial Selection</span>
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-ink-50 font-light">
-              Selected Works
+            <h2 className="font-display text-4xl sm:text-5xl text-ink-50 font-light">
+              Featured by NOUS ART
             </h2>
           </div>
+
           <Link
             to="/gallery"
             className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-ink-300 hover:text-gold-300 transition-colors"
           >
-            <span>View All Works</span>
+            <span>Explore Full Collection</span>
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="aspect-[4/5] bg-ink-900/60 rounded-lg animate-pulse border border-white/5" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="aspect-[4/5] bg-ink-900/60 rounded-xl animate-pulse border border-white/5" />
             ))}
           </div>
-        ) : featured.length === 0 ? (
-          <div className="text-center py-24 glass-panel rounded-xl border border-white/10">
-            <p className="text-ink-300 font-light">The collection is currently being curated. Please check back soon.</p>
-          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
             {featured.map((piece, i) => (
-              <Link
-                key={piece.id}
-                to={`/artwork/${piece.id}`}
-                className="group block fade-up"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                {/* Artwork Media Card */}
-                <div className="relative overflow-hidden aspect-[4/5] bg-ink-900 rounded-lg border border-white/10 transition-all duration-500 group-hover:border-gold-500/50 shadow-xl group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.8)]">
-                  <MediaDisplay piece={piece} autoPlay muted showBadge />
-                  
-                  {/* Subtle Dark Overlay on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                    <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest2 gold-text-gradient font-medium translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                      View Artwork <ArrowUpRight size={14} />
-                    </span>
-                  </div>
-                </div>
-
-                {/* Metadata */}
-                <div className="mt-5 flex items-start justify-between">
-                  <div>
-                    <h3 className="font-display text-2xl text-ink-50 group-hover:text-gold-300 transition-colors font-medium">
-                      {piece.title}
-                    </h3>
-                    <p className="text-xs text-ink-300 font-sans mt-1.5 tracking-wider">
-                      {piece.artist}{piece.year ? `, ${piece.year}` : ''}
-                    </p>
-                  </div>
-                  {piece.price != null && (
-                    <span className="text-sm font-display text-gold-400 font-semibold bg-gold-500/10 px-3 py-1 rounded border border-gold-500/20 whitespace-nowrap mt-1">
-                      {piece.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
-                    </span>
-                  )}
-                </div>
-              </Link>
+              <ArtworkCard key={piece.id} piece={piece} animationDelay={`${i * 0.08}s`} />
             ))}
           </div>
         )}
       </section>
 
-      {/* Editorial Section */}
-      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 md:py-36 border-t border-white/10">
+      {/* Browse by Category Blocks (Artsper Feature) */}
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-20 border-t border-white/10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-2">
+              <Layers size={14} />
+              <span>Browse Marketplace</span>
+            </div>
+            <h2 className="font-display text-4xl text-ink-50 font-light">
+              Browse by Medium
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {CATEGORY_BLOCKS.map((cat) => (
+            <Link
+              key={cat.title}
+              to={`/gallery?medium=${cat.medium}`}
+              className="group relative h-80 rounded-2xl overflow-hidden border border-white/10 shadow-xl block"
+            >
+              <img
+                src={cat.image}
+                alt={cat.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-[0.7]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/30 to-transparent" />
+              
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                <div>
+                  <h3 className="font-display text-2xl text-ink-50 group-hover:text-gold-300 transition-colors font-medium">
+                    {cat.title}
+                  </h3>
+                  <p className="text-xs text-ink-300 font-mono mt-1">{cat.count}</p>
+                </div>
+                <div className="w-9 h-9 rounded-full bg-ink-900/80 border border-white/15 flex items-center justify-center text-gold-400 group-hover:border-gold-500 group-hover:bg-gold-500/20 transition-all">
+                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Artist Profile Blocks */}
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {ARTIST_PROFILES.map((prof) => {
+            const Icon = prof.icon;
+            return (
+              <Link
+                key={prof.title}
+                to="/gallery"
+                className="glass-panel p-8 rounded-2xl border border-white/10 hover:border-gold-500/40 transition-all group duration-300"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 mb-6 group-hover:scale-110 transition-transform">
+                  <Icon size={22} />
+                </div>
+                <h3 className="font-display text-2xl text-ink-50 group-hover:text-gold-300 transition-colors font-medium">
+                  {prof.title}
+                </h3>
+                <p className="text-xs text-ink-300 leading-relaxed font-light mt-2">
+                  {prof.desc}
+                </p>
+                <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest gold-text-gradient font-medium">
+                  <span>Explore Section</span>
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Artist Spotlight & Editorial Magazine */}
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 border-t border-white/10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Gallery Image Container */}
           <div className="lg:col-span-6 relative">
-            <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 shadow-2xl group">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
               <img
                 src="https://images.pexels.com/photos/695409/pexels-photo-695409.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt="Gallery Space"
+                alt="Editorial Exhibition"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-ink-950/60 via-transparent to-transparent" />
             </div>
-            
-            {/* Accent Glass Card Overlay */}
-            <div className="hidden sm:block absolute -bottom-8 -right-6 glass-panel-gold p-6 rounded-xl max-w-xs border border-gold-500/30 shadow-2xl">
+
+            <div className="hidden sm:block absolute -bottom-6 -right-6 glass-panel-gold p-6 rounded-xl max-w-xs border border-gold-500/30 shadow-2xl">
               <div className="flex items-center gap-2 text-gold-400 text-xs font-semibold uppercase tracking-widest mb-1">
                 <ShieldCheck size={16} />
                 <span>Authenticity Guaranteed</span>
               </div>
               <p className="text-xs text-ink-200 leading-relaxed font-light">
-                Every piece is accompanied by a physical certificate of authenticity issued by our curators.
+                Every acquisition includes a signed certificate of authenticity and provenance history.
               </p>
             </div>
           </div>
 
-          {/* Philosophy Text */}
           <div className="lg:col-span-6 space-y-6">
             <p className="text-xs uppercase tracking-[0.35em] text-gold-400 font-semibold">
-              Our Manifesto
+              Editorial Spotlight
             </p>
             <h2 className="font-display text-4xl sm:text-5xl text-ink-50 leading-[1.15] font-light text-balance">
               Art is not decoration.<br />
               <em className="font-serif italic gold-text-gradient font-normal">It is a way of seeing.</em>
             </h2>
             <p className="text-ink-200 leading-relaxed font-light text-base">
-              We believe in the quiet power of a single work to transform a room, a mood, a life. Every piece in our collection is chosen for its conceptual integrity and aesthetic brilliance.
-            </p>
-            <p className="text-ink-300 leading-relaxed font-light text-sm">
-              NOUS ART collaborates directly with emerging voices and established masters to build meaningful collections.
+              NOUS ART curates solo and group exhibitions, uniting classical techniques with radical contemporary expressions.
             </p>
             <div className="pt-4">
               <Link to="/about" className="btn-outline-gold rounded-sm group">
-                <span>Discover Our House</span>
+                <span>Discover Gallery History</span>
                 <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

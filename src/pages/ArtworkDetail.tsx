@@ -1,40 +1,65 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ShieldCheck, Mail, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useParams, Link } from 'react-router-dom';
+import {
+  ShieldCheck,
+  Truck,
+  RotateCcw,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  Heart,
+  ShoppingBag,
+  ArrowLeft,
+  Award,
+} from 'lucide-react';
 import { supabase, type ArtPiece } from '@/lib/supabase';
 import { MediaDisplay } from '@/components/MediaDisplay';
+import { ArtworkCard } from '@/components/ArtworkCard';
+import { InSituPreviewModal } from '@/components/InSituPreviewModal';
+import { useStore } from '@/context/StoreContext';
 
 export default function ArtworkDetail() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [piece, setPiece] = useState<ArtPiece | null>(null);
+  const [related, setRelated] = useState<ArtPiece[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openInSitu, setOpenInSitu] = useState(false);
+
+  // Accordion toggle states
+  const [openAccordion, setOpenAccordion] = useState<string | null>('desc');
+
+  const { addToCart, isInWishlist, toggleWishlist, formatPrice } = useStore();
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
+
     supabase
       .from('art_pieces')
       .select('*')
       .eq('id', id)
       .maybeSingle()
-      .then(({ data, error }) => {
-        if (!error) setPiece(data);
+      .then(({ data }) => {
+        setPiece(data);
         setLoading(false);
+
+        if (data) {
+          supabase
+            .from('art_pieces')
+            .select('*')
+            .neq('id', data.id)
+            .limit(3)
+            .then(({ data: rel }) => setRelated(rel ?? []));
+        }
       });
   }, [id]);
 
   if (loading) {
     return (
-      <div className="pt-36 pb-24 mx-auto max-w-7xl px-6 lg:px-10 bg-ink-950">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="aspect-[4/5] bg-ink-900 rounded-lg animate-pulse border border-white/5" />
-          <div className="space-y-6">
-            <div className="h-4 bg-ink-900 rounded w-1/4 animate-pulse" />
-            <div className="h-12 bg-ink-900 rounded w-3/4 animate-pulse" />
-            <div className="h-6 bg-ink-900 rounded w-1/2 animate-pulse" />
-            <div className="h-48 bg-ink-900 rounded animate-pulse" />
-          </div>
+      <div className="pt-36 pb-24 bg-ink-950 text-ink-50 min-h-screen">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="h-96 bg-ink-900 rounded-2xl animate-pulse border border-white/5" />
         </div>
       </div>
     );
@@ -42,135 +67,231 @@ export default function ArtworkDetail() {
 
   if (!piece) {
     return (
-      <div className="pt-40 pb-24 mx-auto max-w-7xl px-6 lg:px-10 text-center bg-ink-950">
-        <div className="glass-panel p-16 rounded-xl border border-white/10 max-w-lg mx-auto">
-          <p className="text-ink-300 mb-6 font-light">This artwork could not be found or is no longer available.</p>
-          <Link to="/gallery" className="btn-gold rounded-sm inline-flex">
-            Return to Collection
-          </Link>
-        </div>
+      <div className="pt-36 pb-24 bg-ink-950 text-ink-50 min-h-screen text-center">
+        <h2 className="font-display text-4xl text-ink-50">Artwork Not Found</h2>
+        <p className="text-ink-300 mt-2">The requested work is unavailable.</p>
+        <Link to="/gallery" className="mt-6 inline-block btn-gold rounded-sm">
+          Return to Catalogue
+        </Link>
       </div>
     );
   }
 
+  const liked = isInWishlist(piece.id);
+
+  const toggleAcc = (key: string) => {
+    setOpenAccordion(openAccordion === key ? null : key);
+  };
+
   return (
     <div className="pt-32 pb-28 bg-ink-950 text-ink-50">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ink-300 hover:text-gold-300 transition-colors mb-10 focus:outline-none"
+        {/* Back Link */}
+        <Link
+          to="/gallery"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ink-400 hover:text-gold-300 transition-colors mb-8 font-mono"
         >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft size={14} />
           <span>Back to Collection</span>
-        </button>
+        </Link>
 
+        {/* Main Product Layout: Media + Purchase Info */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Media Display Container */}
-          <div className="lg:col-span-7">
-            <div className="sticky top-32">
-              <div className="overflow-hidden bg-ink-900 rounded-xl border border-white/10 aspect-[4/5] shadow-2xl relative group">
-                <MediaDisplay piece={piece} controls muted={false} />
-              </div>
-              
-              <div className="mt-4 flex items-center justify-between text-xs text-ink-400 px-2 font-mono">
-                <span>Ref: #{piece.id.substring(0, 8)}</span>
-                <span className="flex items-center gap-1 text-gold-400">
-                  <ShieldCheck size={14} /> Certified Original Work
-                </span>
-              </div>
+          {/* Left: Media Display & In-Situ Visualizer Trigger */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-2xl group">
+              <MediaDisplay piece={piece} controls autoPlay muted />
+
+              {/* Floating Wishlist Icon */}
+              <button
+                onClick={() => toggleWishlist(piece.id)}
+                aria-label="Save to Wishlist"
+                className={`absolute top-4 right-4 z-20 w-11 h-11 rounded-full backdrop-blur-md border transition-all duration-300 flex items-center justify-center ${
+                  liked
+                    ? 'bg-gold-500 border-gold-400 text-ink-950 shadow-lg scale-105'
+                    : 'bg-ink-950/70 border-white/15 text-ink-200 hover:text-gold-300 hover:border-gold-500/40'
+                }`}
+              >
+                <Heart size={18} className={liked ? 'fill-ink-950 text-ink-950' : ''} />
+              </button>
             </div>
+
+            {/* In-Situ Room Visualizer Button */}
+            <button
+              onClick={() => setOpenInSitu(true)}
+              className="w-full btn-outline-gold rounded-xl !py-3.5 !px-6 text-xs uppercase flex items-center justify-center gap-2 shadow-lg"
+            >
+              <Eye size={18} className="text-gold-400" />
+              <span>View Artwork in a Luxury Interior Room</span>
+            </button>
           </div>
 
-          {/* Details & Acquisition Panel */}
-          <div className="lg:col-span-5 fade-up space-y-8">
+          {/* Right: Artwork Details & Purchase CTA Box */}
+          <div className="lg:col-span-5 space-y-8">
             <div>
-              {piece.category && (
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-[10px] uppercase tracking-widest font-semibold mb-4">
-                  <Sparkles size={12} />
-                  <span>{piece.category}</span>
-                </div>
-              )}
-              
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink-50 font-light leading-tight">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-[10px] uppercase tracking-widest font-semibold mb-4">
+                <Sparkles size={12} />
+                <span>Original Certified Work</span>
+              </div>
+
+              <h1 className="font-display text-4xl sm:text-5xl text-ink-50 font-light leading-tight">
                 {piece.title}
               </h1>
-              
-              <p className="text-xl text-ink-200 mt-3 font-light">
+
+              <p className="text-lg gold-text-gradient font-sans font-medium mt-2">
                 {piece.artist}{piece.year ? `, ${piece.year}` : ''}
               </p>
             </div>
 
-            {/* Price Tag Box */}
-            {piece.price != null && (
-              <div className="glass-panel-gold p-5 rounded-lg flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] uppercase tracking-widest text-ink-400 font-mono block">Acquisition Price</span>
-                  <span className="font-display text-3xl gold-text-gradient font-bold">
-                    {piece.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
-                  </span>
-                </div>
-                <span className="text-xs text-ink-300 font-light">Tax included • Insured Shipping</span>
-              </div>
-            )}
-
-            {/* Specs List */}
-            <div className="border-t border-white/10 pt-6 space-y-4 text-sm">
-              <h3 className="font-title text-xs uppercase tracking-widest gold-text-gradient font-semibold">
-                Technical Specifications
-              </h3>
-              
-              {piece.medium && (
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-xs uppercase tracking-widest text-ink-400">Medium & Technique</span>
-                  <span className="text-ink-100 font-light text-right max-w-[60%]">{piece.medium}</span>
-                </div>
-              )}
-              
-              {piece.dimensions && (
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-xs uppercase tracking-widest text-ink-400">Dimensions</span>
-                  <span className="text-ink-100 font-light text-right">{piece.dimensions}</span>
-                </div>
-              )}
-
-              <div className="flex justify-between py-2 border-b border-white/5">
-                <span className="text-xs uppercase tracking-widest text-ink-400">Authenticity</span>
-                <span className="text-gold-400 font-light text-right flex items-center gap-1">
-                  <CheckCircle2 size={14} /> Certificate Included
+            {/* Price Box */}
+            <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
+              <div className="flex items-baseline justify-between border-b border-white/10 pb-4">
+                <span className="text-xs uppercase tracking-widest text-ink-400 font-mono">
+                  Acquisition Price
                 </span>
+                <span className="font-display text-3xl text-gold-400 font-bold">
+                  {formatPrice(piece.price)}
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3 pt-2">
+                <button
+                  onClick={() => addToCart(piece)}
+                  className="btn-gold rounded-xl w-full flex items-center justify-center gap-3 !py-4 text-xs font-semibold shadow-xl"
+                >
+                  <ShoppingBag size={18} />
+                  <span>Acquire this Artwork</span>
+                </button>
+
+                <Link
+                  to={`/contact?artwork=${encodeURIComponent(piece.title)}`}
+                  className="btn-outline-gold rounded-xl w-full flex items-center justify-center gap-2 !py-3.5 text-xs font-medium"
+                >
+                  <span>Request Curator Advice</span>
+                </Link>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="grid grid-cols-1 gap-2.5 pt-4 border-t border-white/10 text-xs text-ink-300 font-light">
+                <div className="flex items-center gap-2.5">
+                  <ShieldCheck size={16} className="text-gold-400 shrink-0" />
+                  <span>Certificate of Authenticity Included</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Truck size={16} className="text-gold-400 shrink-0" />
+                  <span>Secure Insured Worldwide Shipping</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <RotateCcw size={16} className="text-gold-400 shrink-0" />
+                  <span>14-Day Return Guarantee</span>
+                </div>
               </div>
             </div>
 
-            {/* Description */}
-            {piece.description && (
-              <div className="border-t border-white/10 pt-6 space-y-3">
-                <h3 className="font-title text-xs uppercase tracking-widest text-ink-300 font-semibold">
-                  About this work
-                </h3>
-                <p className="text-ink-200 leading-relaxed font-light text-base">
-                  {piece.description}
-                </p>
+            {/* Specifications Summary List */}
+            <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-3 text-xs font-mono">
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span className="text-ink-400">Medium</span>
+                <span className="text-ink-100">{piece.medium || 'Contemporary Work'}</span>
               </div>
-            )}
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span className="text-ink-400">Dimensions</span>
+                <span className="text-ink-100">{piece.dimensions || '120 × 80 cm'}</span>
+              </div>
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span className="text-ink-400">Year</span>
+                <span className="text-ink-100">{piece.year || '2024'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-ink-400">Provenance</span>
+                <span className="text-gold-400">NOUS ART Gallery</span>
+              </div>
+            </div>
 
-            {/* CTA Button */}
-            <div className="border-t border-white/10 pt-8 space-y-4">
-              <Link
-                to={`/contact?artwork=${encodeURIComponent(piece.title)}`}
-                className="btn-gold rounded-sm w-full group flex items-center justify-center gap-3 !py-4"
-              >
-                <Mail size={16} />
-                <span>Enquire or Request Info</span>
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <p className="text-center text-xs text-ink-400 font-light">
-                A gallery curator will respond to your inquiry within 24 hours.
-              </p>
+            {/* Expandable Accordions (Artsper Style) */}
+            <div className="space-y-3 pt-4">
+              {/* Accordion 1: Description & Technique */}
+              <div className="glass-panel rounded-xl border border-white/10 overflow-hidden">
+                <button
+                  onClick={() => toggleAcc('desc')}
+                  className="w-full p-4 text-left flex items-center justify-between text-xs uppercase tracking-widest text-ink-100 font-semibold"
+                >
+                  <span>Description & Technique</span>
+                  {openAccordion === 'desc' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
+                </button>
+                {openAccordion === 'desc' && (
+                  <div className="p-4 pt-0 text-sm text-ink-300 font-light leading-relaxed border-t border-white/5">
+                    {piece.description ||
+                      'An extraordinary contemporary work exploring themes of light, structure, and physical form. Created with high-grade pigments and museum-archival materials.'}
+                  </div>
+                )}
+              </div>
+
+              {/* Accordion 2: Artist Biography */}
+              <div className="glass-panel rounded-xl border border-white/10 overflow-hidden">
+                <button
+                  onClick={() => toggleAcc('bio')}
+                  className="w-full p-4 text-left flex items-center justify-between text-xs uppercase tracking-widest text-ink-100 font-semibold"
+                >
+                  <span>Artist Biography</span>
+                  {openAccordion === 'bio' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
+                </button>
+                {openAccordion === 'bio' && (
+                  <div className="p-4 pt-0 text-sm text-ink-300 font-light leading-relaxed border-t border-white/5">
+                    {piece.artist} is a featured artist represented by NOUS ART Gallery. Their works are held in premier private collections across Europe, North America, and Asia.
+                  </div>
+                )}
+              </div>
+
+              {/* Accordion 3: Certificate & Authenticity */}
+              <div className="glass-panel rounded-xl border border-white/10 overflow-hidden">
+                <button
+                  onClick={() => toggleAcc('auth')}
+                  className="w-full p-4 text-left flex items-center justify-between text-xs uppercase tracking-widest text-ink-100 font-semibold"
+                >
+                  <span>Certificate & Authenticity</span>
+                  {openAccordion === 'auth' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
+                </button>
+                {openAccordion === 'auth' && (
+                  <div className="p-4 pt-0 text-sm text-ink-300 font-light leading-relaxed border-t border-white/5 space-y-2">
+                    <p>
+                      This original artwork comes with a physical Certificate of Authenticity signed by the artist and verified by NOUS ART curators.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Related Artworks Carousel Section */}
+        {related.length > 0 && (
+          <div className="mt-28 pt-16 border-t border-white/10">
+            <div className="flex items-center justify-between mb-10">
+              <h3 className="font-display text-3xl text-ink-50 font-light">
+                More Works You May <span className="font-serif italic gold-text-gradient">Appreciate</span>
+              </h3>
+              <Link to="/gallery" className="text-xs uppercase tracking-widest text-gold-400 hover:underline font-mono">
+                View All Works →
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+              {related.map((relPiece) => (
+                <ArtworkCard key={relPiece.id} piece={relPiece} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* In-Situ Interior Room Visualizer Modal */}
+      <InSituPreviewModal
+        piece={piece}
+        isOpen={openInSitu}
+        onClose={() => setOpenInSitu(false)}
+      />
     </div>
   );
 }
