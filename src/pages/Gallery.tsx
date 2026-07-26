@@ -117,7 +117,7 @@ export default function Gallery() {
         {/* Count Bar */}
         <div className="flex items-center justify-between text-xs text-ink-400 mb-8 px-2 font-mono">
           <span>{filtered.length} work{filtered.length !== 1 ? 's' : ''} found</span>
-          <span>Paris Gallery • 75001</span>
+          <span>Fort Worth, TX</span>
         </div>
 
         {/* Grid Display */}

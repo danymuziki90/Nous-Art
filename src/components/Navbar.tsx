@@ -68,7 +68,7 @@ export default function Navbar() {
                 </span>
               </div>
               <span className="text-[9px] uppercase tracking-[0.35em] text-ink-400 font-sans mt-0.5">
-                Contemporary Gallery Paris
+                Contemporary Gallery
               </span>
             </div>
           </Link>
@@ -183,10 +183,10 @@ export default function Navbar() {
 
         {/* Footer Info inside Mobile Menu */}
         <div className="border-t border-white/10 pt-6 space-y-4">
-          <div className="flex items-center justify-between text-xs text-ink-300">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-ink-300 gap-2">
             <div className="flex items-center gap-2">
-              <MapPin size={14} className="text-gold-500" />
-              <span>12 Rue Saint-Honoré, 75001 Paris</span>
+              <MapPin size={14} className="text-gold-500 shrink-0" />
+              <span>2719 Tropical Point, Fort Worth, TX, USA</span>
             </div>
             <span className="text-gold-500">Tue – Sat 11:00 – 19:00</span>
           </div>

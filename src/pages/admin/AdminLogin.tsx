@@ -41,7 +41,7 @@ export default function AdminLogin() {
             Admin <span className="font-serif italic gold-text-gradient">Portal</span>
           </h1>
           <p className="text-xs uppercase tracking-widest text-ink-400 mt-2 font-mono">
-            NOUS ART Gallery Paris
+            NOUS ART Gallery
           </p>
         </div>
 

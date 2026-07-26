@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MapPin, Phone, Mail, Send, Sparkles, CheckCircle2, Clock } from 'lucide-react';
+import { MapPin, Mail, Send, Sparkles, CheckCircle2, Clock } from 'lucide-react';
 
 export default function Contact() {
   const [searchParams] = useSearchParams();
@@ -34,7 +34,7 @@ export default function Contact() {
         <div className="max-w-2xl fade-up">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-[10px] uppercase tracking-widest font-semibold mb-6">
             <Sparkles size={12} />
-            <span>Paris Gallery • Advisory Concierge</span>
+            <span>Advisory Concierge</span>
           </div>
           <h1 className="font-display text-5xl md:text-7xl text-ink-50 font-light leading-tight">
             Begin a <span className="font-serif italic gold-text-gradient">conversation</span>
@@ -142,21 +142,11 @@ export default function Contact() {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Gallery Space</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Gallery Address</h4>
                   <p className="text-ink-100 font-light text-sm leading-relaxed">
-                    12 Rue Saint-Honoré<br />
-                    75001 Paris, France
+                    2719 Tropical Point<br />
+                    Fort Worth, TX, USA
                   </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 shrink-0">
-                  <Phone size={20} />
-                </div>
-                <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Telephone</h4>
-                  <p className="text-ink-100 font-light text-sm">+33 1 42 60 30 30</p>
                 </div>
               </div>
 

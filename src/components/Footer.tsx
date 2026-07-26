@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Mail, ArrowUp, Send, MapPin, Clock, Phone } from 'lucide-react';
+import { Instagram, Mail, ArrowUp, Send, MapPin, Clock } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Footer() {
@@ -98,23 +98,19 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Visit & Hours */}
+          {/* Col 4: Visit & Location */}
           <div>
             <h4 className="font-title text-xs uppercase tracking-widest2 gold-text-gradient mb-6 font-semibold">
-              Paris Gallery
+              Gallery Location
             </h4>
             <div className="space-y-4 text-xs text-ink-300">
               <div className="flex items-start gap-3">
                 <MapPin size={16} className="text-gold-500 mt-0.5 shrink-0" />
-                <span>12 Rue Saint-Honoré<br />75001 Paris, France</span>
+                <span>2719 Tropical Point<br />Fort Worth, TX, USA</span>
               </div>
               <div className="flex items-start gap-3">
                 <Clock size={16} className="text-gold-500 mt-0.5 shrink-0" />
                 <span>Tuesday – Saturday<br />11:00 – 19:00</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone size={16} className="text-gold-500 shrink-0" />
-                <span>+33 1 42 60 30 30</span>
               </div>
             </div>
           </div>

@@ -43,9 +43,9 @@
     <!-- Divider Line -->
     <line x1="0" y1="46" x2="220" y2="46" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.6" />
 
-    <!-- Subtitle: CONTEMPORARY ART • PARIS -->
-    <text x="2" y="60" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="8.5" font-weight="500" letter-spacing="4" fill="#A3A099">
-      CONTEMPORARY ART • PARIS
+    <!-- Subtitle: CONTEMPORARY ART GALLERY -->
+    <text x="2" y="60" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="8" font-weight="500" letter-spacing="3.5" fill="#A3A099">
+      CONTEMPORARY ART GALLERY
     </text>
   </g>
 </svg>

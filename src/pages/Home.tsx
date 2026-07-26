@@ -71,7 +71,7 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-900/80 border border-gold-500/30 backdrop-blur-md mb-8 fade-up shadow-xl" style={{ animationDelay: '0.1s' }}>
             <Sparkles size={13} className="text-gold-400" />
             <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
-              Contemporary Art Gallery • Paris
+              Contemporary Art Gallery
             </span>
           </div>
 
@@ -227,7 +227,7 @@ export default function Home() {
               We believe in the quiet power of a single work to transform a room, a mood, a life. Every piece in our collection is chosen for its conceptual integrity and aesthetic brilliance.
             </p>
             <p className="text-ink-300 leading-relaxed font-light text-sm">
-              Located in the heart of Paris, NOUS ART collaborates directly with emerging voices and established masters to build meaningful collections.
+              NOUS ART collaborates directly with emerging voices and established masters to build meaningful collections.
             </p>
             <div className="pt-4">
               <Link to="/about" className="btn-outline-gold rounded-sm group">
