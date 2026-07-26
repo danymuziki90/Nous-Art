@@ -34,7 +34,7 @@ export function MediaDisplay({
         />
         {showBadge && (
           <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-950/80 backdrop-blur-md border border-gold-500/30 text-gold-300 text-[10px] uppercase tracking-widest font-semibold shadow-lg">
-            <Film size={12} className="text-gold-400" /> Vidéo
+            <Film size={12} className="text-gold-400" /> Video
           </span>
         )}
       </div>

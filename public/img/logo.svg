@@ -23,18 +23,12 @@
     <polygon points="50,10 90,28 90,72 50,90 10,72 10,28" fill="none" stroke="url(#goldGrad)" stroke-width="0.75" opacity="0.4" />
     
     <!-- Central Geometric "N & A" Intersection -->
-    <!-- Line N Left -->
     <line x1="32" y1="30" x2="32" y2="70" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linecap="round" />
-    <!-- Diagonal N/A -->
     <line x1="32" y1="30" x2="68" y2="70" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" />
-    <!-- Line A Right -->
     <line x1="68" y1="70" x2="68" y2="30" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linecap="round" />
-    <!-- Line A Apex -->
     <line x1="32" y1="70" x2="50" y2="30" stroke="url(#goldGrad)" stroke-width="1.5" stroke-linecap="round" />
-    <!-- Crossbar A -->
     <line x1="40" y1="52" x2="62" y2="52" stroke="url(#goldGrad)" stroke-width="1.5" stroke-linecap="round" />
 
-    <!-- Subtle Accent Dots -->
     <circle cx="50" cy="20" r="1.5" fill="url(#goldGrad)" />
     <circle cx="50" cy="80" r="1.5" fill="url(#goldGrad)" />
   </g>
@@ -49,9 +43,9 @@
     <!-- Divider Line -->
     <line x1="0" y1="46" x2="220" y2="46" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.6" />
 
-    <!-- Subtitle: GALERIE D'ART • PARIS -->
-    <text x="2" y="60" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="9" font-weight="500" letter-spacing="5" fill="#A3A099">
-      GALERIE D'ART • PARIS
+    <!-- Subtitle: CONTEMPORARY ART • PARIS -->
+    <text x="2" y="60" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="8.5" font-weight="500" letter-spacing="4" fill="#A3A099">
+      CONTEMPORARY ART • PARIS
     </text>
   </g>
 </svg>

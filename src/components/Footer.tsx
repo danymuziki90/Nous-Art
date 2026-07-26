@@ -36,13 +36,13 @@ export default function Footer() {
                   NOUS <span className="gold-text-gradient font-bold">ART</span>
                 </span>
                 <span className="text-[9px] uppercase tracking-[0.35em] text-ink-400">
-                  Galerie d'Art Contemporain
+                  Contemporary Art Gallery
                 </span>
               </div>
             </Link>
 
             <p className="text-sm text-ink-300 leading-relaxed max-w-md font-light">
-              Espace d'exposition et d'acquisition dédié à la création contemporaine. Nous accompagnons les collectionneurs et passionnés à travers une sélection rigoureuse d’œuvres uniques.
+              A curated exhibition and acquisition space dedicated to contemporary creation. We assist collectors and enthusiasts in discovering exceptional original works.
             </p>
 
             <div className="pt-2 flex items-center gap-4">
@@ -74,25 +74,25 @@ export default function Footer() {
               <li>
                 <Link to="/" className="text-sm text-ink-300 hover:text-gold-300 transition-colors flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Accueil
+                  Home
                 </Link>
               </li>
               <li>
                 <Link to="/gallery" className="text-sm text-ink-300 hover:text-gold-300 transition-colors flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  La Collection
+                  Collection
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="text-sm text-ink-300 hover:text-gold-300 transition-colors flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Maison & Philosophie
+                  About & Philosophy
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-sm text-ink-300 hover:text-gold-300 transition-colors flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Contact & Visites
+                  Contact & Visit
                 </Link>
               </li>
             </ul>
@@ -101,7 +101,7 @@ export default function Footer() {
           {/* Col 4: Visit & Hours */}
           <div>
             <h4 className="font-title text-xs uppercase tracking-widest2 gold-text-gradient mb-6 font-semibold">
-              Galerie Paris
+              Paris Gallery
             </h4>
             <div className="space-y-4 text-xs text-ink-300">
               <div className="flex items-start gap-3">
@@ -110,7 +110,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-3">
                 <Clock size={16} className="text-gold-500 mt-0.5 shrink-0" />
-                <span>Mardi – Samedi<br />11h00 – 19h00</span>
+                <span>Tuesday – Saturday<br />11:00 – 19:00</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone size={16} className="text-gold-500 shrink-0" />
@@ -122,21 +122,21 @@ export default function Footer() {
           {/* Col 5: Gazette & Newsletter */}
           <div>
             <h4 className="font-title text-xs uppercase tracking-widest2 gold-text-gradient mb-6 font-semibold">
-              La Gazette
+              Newsletter
             </h4>
             <p className="text-xs text-ink-300 leading-relaxed mb-4">
-              Inscrivez-vous pour recevoir les vernissages privés et nouveautés en avant-première.
+              Subscribe to receive private view invitations and exclusive preview announcements.
             </p>
             {subscribed ? (
               <div className="p-3 bg-gold-500/10 border border-gold-500/30 rounded text-xs text-gold-300">
-                Merci. Votre inscription a bien été enregistrée.
+                Thank you. Your subscription has been confirmed.
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="relative">
                 <input
                   type="email"
                   required
-                  placeholder="votre@email.com"
+                  placeholder="your@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-ink-900 border border-white/10 rounded-sm py-2.5 px-3 pr-10 text-xs text-ink-50 placeholder-ink-400 focus:outline-none focus:border-gold-500 transition-colors"
@@ -155,18 +155,18 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-ink-400">
-          <p>© {new Date().getFullYear()} NOUS ART GALERIE. Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} NOUS ART GALLERY. All rights reserved.</p>
 
           <div className="flex items-center gap-6">
             <Link to="/admin" className="hover:text-gold-300 transition-colors">
-              Espace Administrateur
+              Admin Portal
             </Link>
             <button
               onClick={scrollToTop}
               className="group flex items-center gap-2 text-ink-300 hover:text-gold-300 transition-colors focus:outline-none"
               aria-label="Back to top"
             >
-              <span className="uppercase tracking-widest text-[10px]">Haut de page</span>
+              <span className="uppercase tracking-widest text-[10px]">Back to top</span>
               <div className="w-7 h-7 rounded-full bg-ink-900 border border-white/10 group-hover:border-gold-500 flex items-center justify-center transition-colors">
                 <ArrowUp size={14} className="group-hover:-translate-y-0.5 transition-transform" />
               </div>

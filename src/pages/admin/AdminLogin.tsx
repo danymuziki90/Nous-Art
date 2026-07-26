@@ -38,10 +38,10 @@ export default function AdminLogin() {
           </Link>
           
           <h1 className="font-display text-4xl text-ink-50 font-light">
-            Espace <span className="font-serif italic gold-text-gradient">Administration</span>
+            Admin <span className="font-serif italic gold-text-gradient">Portal</span>
           </h1>
           <p className="text-xs uppercase tracking-widest text-ink-400 mt-2 font-mono">
-            Galerie NOUS ART Paris
+            NOUS ART Gallery Paris
           </p>
         </div>
 
@@ -49,13 +49,13 @@ export default function AdminLogin() {
         <div className="glass-panel p-8 sm:p-10 rounded-2xl border border-white/10 shadow-2xl space-y-6">
           <div className="flex items-center gap-3 text-gold-400 border-b border-white/10 pb-4">
             <Lock size={18} />
-            <span className="text-xs uppercase tracking-widest font-semibold">Connexion Sécurisée</span>
+            <span className="text-xs uppercase tracking-widest font-semibold">Secure Authentication</span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">
-                Adresse Email
+                Email Address
               </label>
               <input
                 required
@@ -69,7 +69,7 @@ export default function AdminLogin() {
 
             <div>
               <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">
-                Mot de Passe
+                Password
               </label>
               <input
                 required
@@ -93,7 +93,7 @@ export default function AdminLogin() {
               disabled={submitting}
               className="btn-gold rounded-md w-full group flex items-center justify-center gap-3 !py-4 disabled:opacity-50"
             >
-              <span>{submitting ? 'Authentification...' : 'Se Connecter'}</span>
+              <span>{submitting ? 'Authenticating...' : 'Sign In'}</span>
               {!submitting && <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />}
             </button>
           </form>
@@ -101,7 +101,7 @@ export default function AdminLogin() {
 
         <div className="text-center mt-8">
           <Link to="/" className="text-xs text-ink-400 hover:text-gold-300 transition-colors uppercase tracking-widest">
-            ← Retourner au site public
+            ← Return to public website
           </Link>
         </div>
       </div>

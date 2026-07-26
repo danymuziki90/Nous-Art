@@ -30,9 +30,9 @@ export default function Navbar() {
   }, [open]);
 
   const links = [
-    { to: '/', label: 'Accueil', num: '01' },
+    { to: '/', label: 'Home', num: '01' },
     { to: '/gallery', label: 'Collection', num: '02' },
-    { to: '/about', label: 'À Propos', num: '03' },
+    { to: '/about', label: 'About', num: '03' },
     { to: '/contact', label: 'Contact', num: '04' },
   ];
 
@@ -54,11 +54,9 @@ export default function Navbar() {
                 alt="Nous Art Logo"
                 className="w-7 h-7 object-contain transition-transform duration-500 group-hover:scale-110"
                 onError={(e) => {
-                  // Fallback if SVG fails to load
                   (e.target as HTMLElement).style.display = 'none';
                 }}
               />
-              <span className="font-display font-bold text-gold-500 text-lg hidden">N</span>
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 leading-none">
@@ -70,7 +68,7 @@ export default function Navbar() {
                 </span>
               </div>
               <span className="text-[9px] uppercase tracking-[0.35em] text-ink-400 font-sans mt-0.5">
-                Galerie Paris
+                Contemporary Gallery Paris
               </span>
             </div>
           </Link>
@@ -108,7 +106,7 @@ export default function Navbar() {
               to="/gallery"
               className="ml-4 btn-outline-gold !py-2.5 !px-5 !text-[11px] rounded-sm group"
             >
-              <span>Explorer</span>
+              <span>Explore</span>
               <ArrowUpRight size={14} className="ml-1.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
@@ -190,7 +188,7 @@ export default function Navbar() {
               <MapPin size={14} className="text-gold-500" />
               <span>12 Rue Saint-Honoré, 75001 Paris</span>
             </div>
-            <span className="text-gold-500">Mar – Sam 11h-19h</span>
+            <span className="text-gold-500">Tue – Sat 11:00 – 19:00</span>
           </div>
 
           <div className="flex items-center justify-between pt-2">
@@ -218,7 +216,7 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className="btn-gold !py-2.5 !px-5 !text-[10px] rounded-sm"
             >
-              Prendre Rendez-vous
+              Book Appointment
             </Link>
           </div>
         </div>

@@ -31,8 +31,8 @@
       NOUS <tspan fill="url(#goldGrad)" font-weight="400">ART</tspan>
     </text>
     <line x1="0" y1="46" x2="220" y2="46" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.6" />
-    <text x="2" y="60" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="9" font-weight="500" letter-spacing="5" fill="#A3A099">
-      GALERIE D'ART • PARIS
+    <text x="2" y="60" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="8.5" font-weight="500" letter-spacing="4" fill="#A3A099">
+      CONTEMPORARY ART • PARIS
     </text>
   </g>
 </svg>

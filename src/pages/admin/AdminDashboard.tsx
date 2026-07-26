@@ -127,7 +127,7 @@ export default function AdminDashboard() {
       if (mediaFile) {
         mediaUrl = await uploadMedia(mediaFile, form.media_type);
       } else if (!mediaUrl && !editingId) {
-        throw new Error(`Veuillez sélectionner une ${form.media_type === 'video' ? 'vidéo' : 'image'}.`);
+        throw new Error(`Please select a ${form.media_type === 'video' ? 'video' : 'image'} file.`);
       }
 
       const payload = {
@@ -155,14 +155,14 @@ export default function AdminDashboard() {
       resetForm();
       loadPieces();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur s’est produite.');
+      setError(err instanceof Error ? err.message : 'An error occurred while saving.');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Voulez-vous supprimer cette œuvre ? Cette action est irréversible.')) return;
+    if (!confirm('Are you sure you want to delete this artwork? This action cannot be undone.')) return;
     const { error } = await supabase.from('art_pieces').delete().eq('id', id);
     if (error) { setError(error.message); return; }
     loadPieces();
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
       setHeroFile(null);
       setHeroSettings({ id: 1, ...payload });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Impossible d’enregistrer le média Hero.');
+      setError(err instanceof Error ? err.message : 'Could not save Hero media.');
     } finally {
       setHeroSaving(false);
     }
@@ -214,12 +214,12 @@ export default function AdminDashboard() {
           <div>
             <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-2">
               <ShieldCheck size={14} />
-              <span>Panneau d'Administration</span>
+              <span>Admin Panel</span>
             </div>
             <h1 className="font-display text-4xl md:text-5xl text-ink-50 font-light">
-              Gestion du <span className="font-serif italic gold-text-gradient">Catalogue</span>
+              Collection <span className="font-serif italic gold-text-gradient">Management</span>
             </h1>
-            <p className="text-xs text-ink-400 font-mono mt-1">Connecté en tant que : {user?.email}</p>
+            <p className="text-xs text-ink-400 font-mono mt-1">Signed in as: {user?.email}</p>
           </div>
 
           <div className="flex flex-wrap gap-3">
@@ -228,14 +228,14 @@ export default function AdminDashboard() {
               className="btn-gold rounded-sm group flex items-center gap-2 !py-3 !px-5"
             >
               <Plus size={16} />
-              <span>Ajouter une Œuvre</span>
+              <span>Add New Artwork</span>
             </button>
             <button
               onClick={handleSignOut}
               className="btn-outline-gold rounded-sm group flex items-center gap-2 !py-3 !px-5 hover:!border-red-400 hover:!text-red-400"
             >
               <LogOut size={16} />
-              <span>Déconnexion</span>
+              <span>Sign Out</span>
             </button>
           </div>
         </div>
@@ -252,10 +252,10 @@ export default function AdminDashboard() {
             <div>
               <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-widest font-semibold mb-1">
                 <Sparkles size={14} />
-                <span>Page d'Accueil</span>
+                <span>Home Page Settings</span>
               </div>
-              <h2 className="font-display text-2xl text-ink-50 font-light">Média Principal (Hero)</h2>
-              <p className="text-xs text-ink-400 font-light">Choisissez une image HD ou une vidéo de fond pour l'en-tête de la page d'accueil.</p>
+              <h2 className="font-display text-2xl text-ink-50 font-light">Hero Media Header</h2>
+              <p className="text-xs text-ink-400 font-light">Choose an HD image or video clip for the home page landing section background.</p>
             </div>
           </div>
 
@@ -280,7 +280,7 @@ export default function AdminDashboard() {
                   : 'bg-ink-900 border border-white/10 text-ink-300 hover:text-ink-50'
               }`}
             >
-              <Film size={14} /> Clip Vidéo
+              <Film size={14} /> Video Clip
             </button>
           </div>
 
@@ -304,7 +304,7 @@ export default function AdminDashboard() {
               <label className="flex flex-col items-center justify-center gap-3 aspect-[16/9] rounded-lg border border-dashed border-white/20 hover:border-gold-500/60 bg-ink-900/50 cursor-pointer transition-all">
                 {heroMediaType === 'video' ? <Film className="text-gold-400" size={28} /> : <Upload className="text-gold-400" size={28} />}
                 <span className="text-xs text-ink-300 uppercase tracking-widest">
-                  Cliquez pour téléverser un {heroMediaType === 'video' ? 'clip vidéo (MP4, WebM)' : 'fichier image'}
+                  Click to upload a {heroMediaType === 'video' ? 'video clip (MP4, WebM)' : 'image file'}
                 </span>
                 <input
                   type="file"
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
             )}
             {heroPreview && !heroFile && (
               <label className="mt-3 inline-flex items-center gap-2 text-xs text-ink-300 hover:text-gold-300 cursor-pointer">
-                <Upload size={14} /> Remplacer le fichier {heroMediaType === 'video' ? 'vidéo' : 'image'}
+                <Upload size={14} /> Replace {heroMediaType === 'video' ? 'video' : 'image'} file
                 <input
                   type="file"
                   accept={heroMediaType === 'video' ? 'video/*' : 'image/*'}
@@ -333,7 +333,7 @@ export default function AdminDashboard() {
             className="btn-gold rounded-sm inline-flex items-center gap-2 !py-3 !px-6 disabled:opacity-50"
           >
             {heroSaving ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-            <span>Enregistrer le Média Hero</span>
+            <span>Save Hero Media</span>
           </button>
         </div>
 
@@ -343,7 +343,7 @@ export default function AdminDashboard() {
             <div className="relative w-full max-w-3xl glass-panel bg-ink-950 border border-white/10 rounded-2xl my-auto shadow-2xl overflow-hidden">
               <div className="flex items-center justify-between p-6 border-b border-white/10">
                 <h2 className="font-display text-2xl text-ink-50 font-light">
-                  {editingId ? 'Modifier l’œuvre' : 'Nouvelle œuvre au catalogue'}
+                  {editingId ? 'Edit Artwork' : 'Add New Artwork to Catalogue'}
                 </h2>
                 <button onClick={resetForm} className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-300 hover:text-gold-300">
                   <X size={18} />
@@ -353,7 +353,7 @@ export default function AdminDashboard() {
               <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
                 {/* Format toggle */}
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-3 font-medium">Format Média</label>
+                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-3 font-medium">Media Format</label>
                   <div className="flex gap-3">
                     <button
                       type="button"
@@ -362,7 +362,7 @@ export default function AdminDashboard() {
                         form.media_type === 'image' ? 'bg-gold-gradient text-ink-950 font-semibold' : 'bg-ink-900 border border-white/10 text-ink-300'
                       }`}
                     >
-                      <ImageIcon size={15} /> Image / Peinture
+                      <ImageIcon size={15} /> Image / Painting
                     </button>
                     <button
                       type="button"
@@ -371,7 +371,7 @@ export default function AdminDashboard() {
                         form.media_type === 'video' ? 'bg-gold-gradient text-ink-950 font-semibold' : 'bg-ink-900 border border-white/10 text-ink-300'
                       }`}
                     >
-                      <Film size={15} /> Œuvre Vidéo
+                      <Film size={15} /> Video Work
                     </button>
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export default function AdminDashboard() {
                 {/* Upload Section */}
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-ink-300 mb-3 font-medium">
-                    {form.media_type === 'video' ? 'Vidéo de l’œuvre' : 'Fichier Visuel HD'}
+                    {form.media_type === 'video' ? 'Artwork Video File' : 'Artwork HD Image'}
                   </label>
                   {mediaPreview ? (
                     <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-ink-900 border border-white/10 group">
@@ -400,7 +400,7 @@ export default function AdminDashboard() {
                     <label className="flex flex-col items-center justify-center gap-3 aspect-[16/10] rounded-lg border border-dashed border-white/20 hover:border-gold-500/60 bg-ink-900/50 cursor-pointer transition-all">
                       {form.media_type === 'video' ? <Film className="text-gold-400" size={28} /> : <Upload className="text-gold-400" size={28} />}
                       <span className="text-xs text-ink-300 uppercase tracking-widest">
-                        Sélectionner un {form.media_type === 'video' ? 'fichier vidéo (MP4, WebM)' : 'fichier image'}
+                        Select a {form.media_type === 'video' ? 'video file (MP4, WebM)' : 'image file'}
                       </span>
                       <input
                         type="file"
@@ -412,7 +412,7 @@ export default function AdminDashboard() {
                   )}
                   {mediaPreview && !mediaFile && (
                     <label className="mt-3 inline-flex items-center gap-2 text-xs text-ink-300 hover:text-gold-300 cursor-pointer">
-                      <Upload size={14} /> Remplacer l'élément visuel
+                      <Upload size={14} /> Replace visual element
                       <input
                         type="file"
                         accept={form.media_type === 'video' ? 'video/*' : 'image/*'}
@@ -424,13 +424,13 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Field label="Titre de l'œuvre" required value={form.title} onChange={(v) => setForm({ ...form, title: v })} placeholder="Ex: Composition No. 7" />
-                  <Field label="Artiste" required value={form.artist} onChange={(v) => setForm({ ...form, artist: v })} placeholder="Ex: Jean-Luc Moreau" />
-                  <Field label="Catégorie" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="Peinture, Sculpture, Tirage..." />
-                  <Field label="Année de création" value={form.year} onChange={(v) => setForm({ ...form, year: v })} placeholder="2024" />
-                  <Field label="Médium & Technique" value={form.medium} onChange={(v) => setForm({ ...form, medium: v })} placeholder="Huile sur toile" />
+                  <Field label="Artwork Title" required value={form.title} onChange={(v) => setForm({ ...form, title: v })} placeholder="Ex: Composition No. 7" />
+                  <Field label="Artist" required value={form.artist} onChange={(v) => setForm({ ...form, artist: v })} placeholder="Ex: Jean-Luc Moreau" />
+                  <Field label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="Painting, Sculpture, Print..." />
+                  <Field label="Creation Year" value={form.year} onChange={(v) => setForm({ ...form, year: v })} placeholder="2024" />
+                  <Field label="Medium & Technique" value={form.medium} onChange={(v) => setForm({ ...form, medium: v })} placeholder="Oil on canvas" />
                   <Field label="Dimensions" value={form.dimensions} onChange={(v) => setForm({ ...form, dimensions: v })} placeholder="120 x 90 cm" />
-                  <Field label="Prix (EUR)" value={form.price} onChange={(v) => setForm({ ...form, price: v })} placeholder="Laisser vide si sur demande" />
+                  <Field label="Price (USD)" value={form.price} onChange={(v) => setForm({ ...form, price: v })} placeholder="Leave empty if Price on Request" />
                   
                   <div className="flex items-end pt-2">
                     <label className="flex items-center gap-3 cursor-pointer">
@@ -442,17 +442,17 @@ export default function AdminDashboard() {
                         <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-ink-950 transition-transform ${form.featured ? 'translate-x-6' : ''}`} />
                       </button>
                       <span className="text-xs uppercase tracking-widest text-ink-300 flex items-center gap-1.5 font-medium">
-                        <Star size={14} className={form.featured ? 'text-gold-400 fill-gold-400' : 'text-ink-500'} /> Mettre en Vedette (Home)
+                        <Star size={14} className={form.featured ? 'text-gold-400 fill-gold-400' : 'text-ink-500'} /> Feature on Home Page
                       </span>
                     </label>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">Description Éditoriale</label>
+                  <label className="block text-xs uppercase tracking-widest text-ink-300 mb-2 font-medium">Editorial Description</label>
                   <textarea
                     rows={4}
-                    placeholder="Présentation et histoire de l'œuvre..."
+                    placeholder="Provide artwork details and provenance..."
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     className="w-full bg-ink-900 border border-white/10 rounded-md px-4 py-3 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 text-sm resize-none"
@@ -466,14 +466,14 @@ export default function AdminDashboard() {
                     className="btn-gold rounded-sm group flex items-center gap-2 !py-3.5 !px-8 disabled:opacity-50"
                   >
                     {saving ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-                    <span>{editingId ? 'Enregistrer les Modifications' : 'Créer l’œuvre'}</span>
+                    <span>{editingId ? 'Save Changes' : 'Create Artwork'}</span>
                   </button>
                   <button
                     type="button"
                     onClick={resetForm}
                     className="btn-outline-gold rounded-sm !py-3.5 !px-8"
                   >
-                    Annuler
+                    Cancel
                   </button>
                 </div>
               </form>
@@ -484,7 +484,7 @@ export default function AdminDashboard() {
         {/* Pieces Grid */}
         <div className="mb-6">
           <h2 className="font-display text-2xl text-ink-50 mb-6 font-light">
-            Catalogue Actuel ({pieces.length})
+            Current Catalogue ({pieces.length})
           </h2>
         </div>
 
@@ -494,9 +494,9 @@ export default function AdminDashboard() {
           </div>
         ) : pieces.length === 0 ? (
           <div className="text-center py-24 glass-panel rounded-xl border border-white/10">
-            <p className="text-ink-300 mb-4 font-light">Aucune œuvre enregistrée au catalogue.</p>
+            <p className="text-ink-300 mb-4 font-light">No artworks in the catalogue yet.</p>
             <button onClick={() => { resetForm(); setShowForm(true); }} className="btn-gold rounded-sm inline-flex items-center gap-2">
-              <Plus size={16} /> Ajouter une première œuvre
+              <Plus size={16} /> Add First Artwork
             </button>
           </div>
         ) : (
@@ -516,12 +516,12 @@ export default function AdminDashboard() {
                     <div className="absolute top-3 left-3 flex items-center gap-2">
                       {isVideo && (
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink-950/80 backdrop-blur-md border border-gold-500/30 text-gold-300 text-[10px] uppercase tracking-widest font-semibold">
-                          <Film size={10} /> Vidéo
+                          <Film size={10} /> Video
                         </span>
                       )}
                       {p.featured && (
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gold-gradient text-ink-950 text-[10px] uppercase tracking-widest font-semibold">
-                          <Star size={10} className="fill-ink-950" /> Vedette
+                          <Star size={10} className="fill-ink-950" /> Featured
                         </span>
                       )}
                     </div>
@@ -531,14 +531,14 @@ export default function AdminDashboard() {
                       <button
                         onClick={() => startEdit(p)}
                         className="w-9 h-9 rounded-full bg-ink-950/80 border border-white/10 backdrop-blur-md flex items-center justify-center text-ink-100 hover:text-gold-300 transition-colors"
-                        title="Modifier"
+                        title="Edit"
                       >
                         <Pencil size={14} />
                       </button>
                       <button
                         onClick={() => handleDelete(p.id)}
                         className="w-9 h-9 rounded-full bg-ink-950/80 border border-white/10 backdrop-blur-md flex items-center justify-center text-ink-100 hover:text-red-400 transition-colors"
-                        title="Supprimer"
+                        title="Delete"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -550,7 +550,7 @@ export default function AdminDashboard() {
                     <p className="text-xs text-ink-300 font-sans mt-1">{p.artist}{p.year ? `, ${p.year}` : ''}</p>
                     {p.price != null && (
                       <p className="text-sm font-display text-gold-400 font-semibold mt-3">
-                        {p.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}
+                        {p.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
                       </p>
                     )}
                   </div>

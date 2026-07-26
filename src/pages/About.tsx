@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 export default function About() {
   const stats = [
-    { n: '120+', l: 'Artistes Représentés', icon: Users },
-    { n: '40', l: 'Expositions Organisées', icon: Award },
-    { n: '1,200+', l: 'Œuvres Placées', icon: Building2 },
-    { n: '11', l: 'Années d’Expertise', icon: MapPin },
+    { n: '120+', l: 'Artists Represented', icon: Users },
+    { n: '40', l: 'Exhibitions Mounted', icon: Award },
+    { n: '1,200+', l: 'Works Placed', icon: Building2 },
+    { n: '11', l: 'Years of Curating', icon: MapPin },
   ];
 
   return (
@@ -16,10 +16,10 @@ export default function About() {
         <div className="max-w-3xl fade-up">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-[10px] uppercase tracking-widest font-semibold mb-6">
             <Sparkles size={12} />
-            <span>Fondée à Paris en 2014</span>
+            <span>Founded in Paris • Est. 2014</span>
           </div>
           <h1 className="font-display text-5xl sm:text-6xl md:text-7xl text-ink-50 leading-[1.1] font-light text-balance">
-            Une galerie bâtie sur la <span className="font-serif italic gold-text-gradient">conviction</span>, non sur la mode.
+            A gallery built on <span className="font-serif italic gold-text-gradient">conviction</span>, not trend.
           </h1>
         </div>
 
@@ -30,7 +30,7 @@ export default function About() {
             <div className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/10 shadow-2xl group">
               <img
                 src="https://images.pexels.com/photos/1839919/pexels-photo-1839919.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Galerie Nous Art Paris"
+                alt="Nous Art Gallery Paris"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-transparent" />
@@ -39,7 +39,7 @@ export default function About() {
             {/* Badge overlay */}
             <div className="absolute bottom-6 left-6 right-6 glass-panel p-6 rounded-lg border border-white/10 backdrop-blur-xl">
               <p className="font-display text-xl gold-text-gradient italic">
-                "Chaque acquisition est le début d'une relation, non la fin d'une transaction."
+                "Every acquisition is the beginning of a relationship, not the end of a transaction."
               </p>
             </div>
           </div>
@@ -47,21 +47,21 @@ export default function About() {
           {/* Editorial Content */}
           <div className="lg:col-span-6 space-y-6 text-ink-200 leading-relaxed font-light text-base">
             <p className="text-lg text-ink-100 font-normal">
-              La Galerie NOUS ART a été fondée en 2014 avec une certitude : l’art contemporain doit être une rencontre authentique et exigeante. Nous existons pour les collectionneurs qui achètent les yeux ouverts — pour les curieux, les passionnés et les esthètes.
+              NOUS ART was founded in 2014 with a single conviction: that contemporary art should be encountered, not merely consumed. We exist for the collector who buys with their eyes open — for the patient, the curious, the deeply engaged.
             </p>
             <p>
-              Depuis notre espace au cœur du premier arrondissement de Paris, nous présentons un programme d'expositions individuelles et collectives. Nous travaillons main dans la main avec des artistes dont les pratiques défient les classifications simples. Peinture, sculpture, vidéo et travaux sur papier dialoguent en toute liberté.
+              From our space in the first arrondissement of Paris, we present a programme of solo and group exhibitions, working closely with a roster of artists whose practices resist easy categorisation. Painting, sculpture, photography, and works on paper sit in dialogue with one another.
             </p>
             <p>
-              Au-delà des murs de la galerie, nous conseillons les collections privées et institutionnelles dans le placement d’œuvres qui conservent leur profondeur à travers le temps.
+              Beyond the gallery walls, we advise private and corporate collections, placing works that hold their meaning over time.
             </p>
 
             <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4">
               <Link to="/gallery" className="btn-gold rounded-sm">
-                Découvrir nos Œuvres
+                Explore Collection
               </Link>
               <Link to="/contact" className="btn-outline-gold rounded-sm">
-                Prendre Rendez-vous
+                Schedule a Visit
               </Link>
             </div>
           </div>

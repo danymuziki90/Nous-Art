@@ -55,7 +55,7 @@ export default function Home() {
           ) : (
             <img
               src={heroUrl}
-              alt="Interieur de la Galerie Nous Art"
+              alt="Gallery Interior"
               className="w-full h-full object-cover scale-105 filter brightness-[0.7] contrast-[1.1] image-reveal"
             />
           )}
@@ -71,7 +71,7 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-900/80 border border-gold-500/30 backdrop-blur-md mb-8 fade-up shadow-xl" style={{ animationDelay: '0.1s' }}>
             <Sparkles size={13} className="text-gold-400" />
             <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
-              Galerie d'Art Contemporain • Paris
+              Contemporary Art Gallery • Paris
             </span>
           </div>
 
@@ -80,8 +80,8 @@ export default function Home() {
             className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-ink-50 leading-[0.95] fade-up text-balance font-light"
             style={{ animationDelay: '0.3s' }}
           >
-            Quand la vision <br />
-            <em className="font-serif italic gold-text-gradient font-normal">devient</em> collection
+            Where vision <br />
+            <em className="font-serif italic gold-text-gradient font-normal">becomes</em> collection
           </h1>
 
           {/* Subtitle */}
@@ -89,7 +89,7 @@ export default function Home() {
             className="mt-8 text-base md:text-xl text-ink-200 max-w-2xl mx-auto leading-relaxed font-light fade-up"
             style={{ animationDelay: '0.5s' }}
           >
-            NOUS ART sélectionne et présente des œuvres contemporaines d'exception — le point de rencontre entre artistes visionnaires et collectionneurs exigeants.
+            NOUS ART curates exceptional contemporary works — a meeting point between visionary artists, discerning collectors, and the timeless pursuit of beauty.
           </p>
 
           {/* CTA Buttons */}
@@ -98,18 +98,18 @@ export default function Home() {
             style={{ animationDelay: '0.7s' }}
           >
             <Link to="/gallery" className="btn-gold rounded-sm group w-full sm:w-auto">
-              <span>Explorer la Collection</span>
+              <span>Explore Collection</span>
               <ArrowRight size={16} className="ml-2.5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link to="/about" className="btn-outline-gold rounded-sm group w-full sm:w-auto">
-              <span>Notre Philosophie</span>
+              <span>Our Philosophy</span>
             </Link>
           </div>
         </div>
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 z-10 pointer-events-none">
-          <span className="text-[9px] uppercase tracking-[0.4em] text-ink-300 font-sans">Découvrir</span>
+          <span className="text-[9px] uppercase tracking-[0.4em] text-ink-300 font-sans">Scroll</span>
           <div className="w-[1px] h-14 bg-gradient-to-b from-gold-400 via-gold-500/50 to-transparent animate-pulse-subtle" />
         </div>
       </section>
@@ -120,17 +120,17 @@ export default function Home() {
           <div>
             <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
               <Compass size={14} />
-              <span>Sélection Curatoriale</span>
+              <span>Curatorial Selection</span>
             </div>
             <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-ink-50 font-light">
-              Œuvres Majeures
+              Selected Works
             </h2>
           </div>
           <Link
             to="/gallery"
             className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-ink-300 hover:text-gold-300 transition-colors"
           >
-            <span>Voir toute la collection</span>
+            <span>View All Works</span>
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -143,7 +143,7 @@ export default function Home() {
           </div>
         ) : featured.length === 0 ? (
           <div className="text-center py-24 glass-panel rounded-xl border border-white/10">
-            <p className="text-ink-300 font-light">La collection est en cours de sélection. Revenez très bientôt.</p>
+            <p className="text-ink-300 font-light">The collection is currently being curated. Please check back soon.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
@@ -161,7 +161,7 @@ export default function Home() {
                   {/* Subtle Dark Overlay on Hover */}
                   <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                     <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest2 gold-text-gradient font-medium translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                      Explorer l'œuvre <ArrowUpRight size={14} />
+                      View Artwork <ArrowUpRight size={14} />
                     </span>
                   </div>
                 </div>
@@ -178,7 +178,7 @@ export default function Home() {
                   </div>
                   {piece.price != null && (
                     <span className="text-sm font-display text-gold-400 font-semibold bg-gold-500/10 px-3 py-1 rounded border border-gold-500/20 whitespace-nowrap mt-1">
-                      {piece.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}
+                      {piece.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
                     </span>
                   )}
                 </div>
@@ -196,7 +196,7 @@ export default function Home() {
             <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 shadow-2xl group">
               <img
                 src="https://images.pexels.com/photos/695409/pexels-photo-695409.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt="Espace Galerie Nous Art"
+                alt="Gallery Space"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-ink-950/60 via-transparent to-transparent" />
@@ -206,10 +206,10 @@ export default function Home() {
             <div className="hidden sm:block absolute -bottom-8 -right-6 glass-panel-gold p-6 rounded-xl max-w-xs border border-gold-500/30 shadow-2xl">
               <div className="flex items-center gap-2 text-gold-400 text-xs font-semibold uppercase tracking-widest mb-1">
                 <ShieldCheck size={16} />
-                <span>Authenticité Garantie</span>
+                <span>Authenticity Guaranteed</span>
               </div>
               <p className="text-xs text-ink-200 leading-relaxed font-light">
-                Chaque pièce est accompagnée d'un certificat d'authenticité signé par l'artiste et nos experts.
+                Every piece is accompanied by a physical certificate of authenticity issued by our curators.
               </p>
             </div>
           </div>
@@ -217,21 +217,21 @@ export default function Home() {
           {/* Philosophy Text */}
           <div className="lg:col-span-6 space-y-6">
             <p className="text-xs uppercase tracking-[0.35em] text-gold-400 font-semibold">
-              Notre Manifeste
+              Our Manifesto
             </p>
             <h2 className="font-display text-4xl sm:text-5xl text-ink-50 leading-[1.15] font-light text-balance">
-              L'art n'est pas une décoration.<br />
-              <em className="font-serif italic gold-text-gradient font-normal">C'est un regard.</em>
+              Art is not decoration.<br />
+              <em className="font-serif italic gold-text-gradient font-normal">It is a way of seeing.</em>
             </h2>
             <p className="text-ink-200 leading-relaxed font-light text-base">
-              Nous croyons au pouvoir intemporel d'une œuvre singulière capable d'élever un espace, une émotion, une vie. Chaque création de notre collection est choisie pour son intégrité conceptuelle et sa puissance esthétique.
+              We believe in the quiet power of a single work to transform a room, a mood, a life. Every piece in our collection is chosen for its conceptual integrity and aesthetic brilliance.
             </p>
             <p className="text-ink-300 leading-relaxed font-light text-sm">
-              Située au cœur du premier arrondissement de Paris, la Galerie NOUS ART collabore étroitement avec des artistes émergents et des figures établies pour construire des collections pérennes.
+              Located in the heart of Paris, NOUS ART collaborates directly with emerging voices and established masters to build meaningful collections.
             </p>
             <div className="pt-4">
               <Link to="/about" className="btn-outline-gold rounded-sm group">
-                <span>Découvrir la Maison</span>
+                <span>Discover Our House</span>
                 <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

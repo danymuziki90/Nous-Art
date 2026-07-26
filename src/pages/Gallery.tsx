@@ -43,13 +43,13 @@ export default function Gallery() {
         <div className="mb-14 fade-up">
           <div className="flex items-center gap-2 text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">
             <Sparkles size={14} />
-            <span>Catalogue Officiel</span>
+            <span>Official Catalogue</span>
           </div>
           <h1 className="font-display text-5xl md:text-7xl text-ink-50 font-light">
-            La Collection <span className="font-serif italic gold-text-gradient">Permanente</span>
+            The Permanent <span className="font-serif italic gold-text-gradient">Collection</span>
           </h1>
           <p className="mt-4 text-ink-300 max-w-2xl font-light text-base leading-relaxed">
-            Découvrez l'ensemble de nos œuvres disponibles et présentées à la galerie. Peinture, sculpture, œuvres vidéo et tirages d'art.
+            Explore our curated selection of available contemporary works. Featuring painting, sculpture, video art, and fine art prints.
           </p>
         </div>
 
@@ -58,15 +58,15 @@ export default function Gallery() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
             <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-ink-300 font-medium">
               <Filter size={14} className="text-gold-400" />
-              <span>Filtrer par format</span>
+              <span>Filter by format</span>
             </div>
             
             {/* Media Type Tabs */}
             <div className="flex flex-wrap gap-2">
               {[
-                { id: 'all', label: 'Tous les Médias', icon: null },
-                { id: 'image', label: 'Images & Toiles', icon: ImageIcon },
-                { id: 'video', label: 'Œuvres Vidéo', icon: Film },
+                { id: 'all', label: 'All Media', icon: null },
+                { id: 'image', label: 'Images & Paintings', icon: ImageIcon },
+                { id: 'video', label: 'Video Works', icon: Film },
               ].map((m) => {
                 const Icon = m.icon;
                 const active = mediaFilter === m.id;
@@ -92,7 +92,7 @@ export default function Gallery() {
           {categories.length > 1 && (
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="text-[11px] uppercase tracking-widest text-ink-400 mr-2 font-mono">
-                Catégorie:
+                Category:
               </span>
               {categories.map((c) => {
                 const active = category === c;
@@ -106,7 +106,7 @@ export default function Gallery() {
                         : 'bg-transparent text-ink-400 hover:text-ink-200'
                     }`}
                   >
-                    {c === 'All' ? 'Toutes' : c}
+                    {c}
                   </button>
                 );
               })}
@@ -116,8 +116,8 @@ export default function Gallery() {
 
         {/* Count Bar */}
         <div className="flex items-center justify-between text-xs text-ink-400 mb-8 px-2 font-mono">
-          <span>{filtered.length} œuvre{filtered.length > 1 ? 's' : ''} trouvée{filtered.length > 1 ? 's' : ''}</span>
-          <span>Galerie Paris • 75001</span>
+          <span>{filtered.length} work{filtered.length !== 1 ? 's' : ''} found</span>
+          <span>Paris Gallery • 75001</span>
         </div>
 
         {/* Grid Display */}
@@ -129,7 +129,7 @@ export default function Gallery() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-32 glass-panel rounded-xl border border-white/10">
-            <p className="text-ink-300 font-light text-lg">Aucune œuvre ne correspond à vos critères de recherche.</p>
+            <p className="text-ink-300 font-light text-lg">No works match your current filter criteria.</p>
             <button
               onClick={() => {
                 setCategory('All');
@@ -137,7 +137,7 @@ export default function Gallery() {
               }}
               className="mt-6 text-xs uppercase tracking-widest text-gold-400 hover:underline"
             >
-              Réinitialiser les filtres
+              Reset All Filters
             </button>
           </div>
         ) : (
@@ -171,7 +171,7 @@ export default function Gallery() {
                   </div>
                   {piece.price != null && (
                     <span className="text-sm font-display text-gold-400 font-semibold whitespace-nowrap bg-gold-500/10 px-3 py-1 rounded border border-gold-500/20">
-                      {piece.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}
+                      {piece.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
                     </span>
                   )}
                 </div>

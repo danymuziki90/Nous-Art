@@ -44,9 +44,9 @@ export default function ArtworkDetail() {
     return (
       <div className="pt-40 pb-24 mx-auto max-w-7xl px-6 lg:px-10 text-center bg-ink-950">
         <div className="glass-panel p-16 rounded-xl border border-white/10 max-w-lg mx-auto">
-          <p className="text-ink-300 mb-6 font-light">Cette œuvre n'a pas pu être trouvée ou n'est plus disponible.</p>
+          <p className="text-ink-300 mb-6 font-light">This artwork could not be found or is no longer available.</p>
           <Link to="/gallery" className="btn-gold rounded-sm inline-flex">
-            Retourner à la collection
+            Return to Collection
           </Link>
         </div>
       </div>
@@ -62,7 +62,7 @@ export default function ArtworkDetail() {
           className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ink-300 hover:text-gold-300 transition-colors mb-10 focus:outline-none"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span>Retour à la liste</span>
+          <span>Back to Collection</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -74,9 +74,9 @@ export default function ArtworkDetail() {
               </div>
               
               <div className="mt-4 flex items-center justify-between text-xs text-ink-400 px-2 font-mono">
-                <span>Réf: #{piece.id.substring(0, 8)}</span>
+                <span>Ref: #{piece.id.substring(0, 8)}</span>
                 <span className="flex items-center gap-1 text-gold-400">
-                  <ShieldCheck size={14} /> Pièce originale certifiée
+                  <ShieldCheck size={14} /> Certified Original Work
                 </span>
               </div>
             </div>
@@ -105,24 +105,24 @@ export default function ArtworkDetail() {
             {piece.price != null && (
               <div className="glass-panel-gold p-5 rounded-lg flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase tracking-widest text-ink-400 font-mono block">Prix d'acquisition</span>
+                  <span className="text-[10px] uppercase tracking-widest text-ink-400 font-mono block">Acquisition Price</span>
                   <span className="font-display text-3xl gold-text-gradient font-bold">
-                    {piece.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}
+                    {piece.price.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
                   </span>
                 </div>
-                <span className="text-xs text-ink-300 font-light">TVA incluse • Livraison sécurisée</span>
+                <span className="text-xs text-ink-300 font-light">Tax included • Insured Shipping</span>
               </div>
             )}
 
             {/* Specs List */}
             <div className="border-t border-white/10 pt-6 space-y-4 text-sm">
               <h3 className="font-title text-xs uppercase tracking-widest gold-text-gradient font-semibold">
-                Spécifications Techniques
+                Technical Specifications
               </h3>
               
               {piece.medium && (
                 <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-xs uppercase tracking-widest text-ink-400">Technique & Médium</span>
+                  <span className="text-xs uppercase tracking-widest text-ink-400">Medium & Technique</span>
                   <span className="text-ink-100 font-light text-right max-w-[60%]">{piece.medium}</span>
                 </div>
               )}
@@ -135,9 +135,9 @@ export default function ArtworkDetail() {
               )}
 
               <div className="flex justify-between py-2 border-b border-white/5">
-                <span className="text-xs uppercase tracking-widest text-ink-400">Authenticité</span>
+                <span className="text-xs uppercase tracking-widest text-ink-400">Authenticity</span>
                 <span className="text-gold-400 font-light text-right flex items-center gap-1">
-                  <CheckCircle2 size={14} /> Certificat fourni
+                  <CheckCircle2 size={14} /> Certificate Included
                 </span>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function ArtworkDetail() {
             {piece.description && (
               <div className="border-t border-white/10 pt-6 space-y-3">
                 <h3 className="font-title text-xs uppercase tracking-widest text-ink-300 font-semibold">
-                  À propos de l'œuvre
+                  About this work
                 </h3>
                 <p className="text-ink-200 leading-relaxed font-light text-base">
                   {piece.description}
@@ -161,11 +161,11 @@ export default function ArtworkDetail() {
                 className="btn-gold rounded-sm w-full group flex items-center justify-center gap-3 !py-4"
               >
                 <Mail size={16} />
-                <span>Acquérir ou Demander des Informations</span>
+                <span>Enquire or Request Info</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <p className="text-center text-xs text-ink-400 font-light">
-                Un curateur de la galerie vous répondra sous 24 heures.
+                A gallery curator will respond to your inquiry within 24 hours.
               </p>
             </div>
           </div>

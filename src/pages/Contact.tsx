@@ -10,14 +10,14 @@ export default function Contact() {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    message: artworkParam ? `Bonjour, je souhaite obtenir des informations concernant l'œuvre "${artworkParam}".` : '',
+    message: artworkParam ? `Hello, I would like to inquire about the work "${artworkParam}".` : '',
   });
 
   useEffect(() => {
     if (artworkParam) {
       setForm((prev) => ({
         ...prev,
-        message: `Bonjour, je souhaite obtenir des informations concernant l'œuvre "${artworkParam}".`,
+        message: `Hello, I would like to inquire about the work "${artworkParam}".`,
       }));
     }
   }, [artworkParam]);
@@ -34,13 +34,13 @@ export default function Contact() {
         <div className="max-w-2xl fade-up">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-[10px] uppercase tracking-widest font-semibold mb-6">
             <Sparkles size={12} />
-            <span>Galerie Paris • Conciergerie</span>
+            <span>Paris Gallery • Advisory Concierge</span>
           </div>
           <h1 className="font-display text-5xl md:text-7xl text-ink-50 font-light leading-tight">
-            Engager une <span className="font-serif italic gold-text-gradient">conversation</span>
+            Begin a <span className="font-serif italic gold-text-gradient">conversation</span>
           </h1>
           <p className="text-ink-300 mt-6 leading-relaxed font-light text-base">
-            Que vous souhaitiez vous renseigner sur une œuvre, bénéficier de conseils pour votre collection ou planifier une visite privée à la galerie — notre équipe est à votre écoute.
+            Whether you are enquiring about a specific work, seeking advice on a collection, or wish to visit the gallery in person — we would be glad to hear from you.
           </p>
         </div>
 
@@ -52,9 +52,9 @@ export default function Contact() {
                 <div className="w-16 h-16 mx-auto rounded-full bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400">
                   <CheckCircle2 size={32} />
                 </div>
-                <h3 className="font-display text-3xl gold-text-gradient font-medium">Message Transmis avec Succès</h3>
+                <h3 className="font-display text-3xl gold-text-gradient font-medium">Thank You</h3>
                 <p className="text-ink-200 font-light text-base leading-relaxed max-w-md mx-auto">
-                  Nous avons bien reçu votre demande. Un curateur de la Galerie NOUS ART prendra contact avec vous dans les plus brefs délais.
+                  Your message has been received. A curator from NOUS ART Gallery will be in touch with you shortly.
                 </p>
                 <button
                   onClick={() => {
@@ -63,28 +63,28 @@ export default function Contact() {
                   }}
                   className="btn-outline-gold rounded-sm !py-2.5 !px-6 text-xs uppercase"
                 >
-                  Envoyer un autre message
+                  Send Another Message
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="glass-panel p-8 sm:p-10 rounded-xl border border-white/10 space-y-8 fade-up">
                 <div className="border-b border-white/10 pb-4">
                   <h3 className="font-title text-sm uppercase tracking-widest text-gold-400 font-semibold">
-                    Formulaire de Contact
+                    Inquiry Form
                   </h3>
                   <p className="text-xs text-ink-400 font-light mt-1">
-                    Veuillez remplir vos coordonnées ci-dessous.
+                    Please provide your contact details below.
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-ink-300 font-medium mb-3">
-                    Nom & Prénom <span className="text-gold-400">*</span>
+                    Name <span className="text-gold-400">*</span>
                   </label>
                   <input
                     required
                     type="text"
-                    placeholder="M. / Mme Jean Dupont"
+                    placeholder="Jane Doe"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
@@ -93,12 +93,12 @@ export default function Contact() {
 
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-ink-300 font-medium mb-3">
-                    Adresse Email <span className="text-gold-400">*</span>
+                    Email Address <span className="text-gold-400">*</span>
                   </label>
                   <input
                     required
                     type="email"
-                    placeholder="jean.dupont@domaine.com"
+                    placeholder="jane.doe@example.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm"
@@ -107,12 +107,12 @@ export default function Contact() {
 
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-ink-300 font-medium mb-3">
-                    Votre Message <span className="text-gold-400">*</span>
+                    Message <span className="text-gold-400">*</span>
                   </label>
                   <textarea
                     required
                     rows={6}
-                    placeholder="Précisez votre demande ou vos disponibilités pour une visite..."
+                    placeholder="Detail your inquiry or requested appointment date..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     className="w-full bg-ink-900/80 border border-white/10 rounded-md py-3.5 px-4 text-ink-50 placeholder-ink-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all text-sm resize-none"
@@ -123,7 +123,7 @@ export default function Contact() {
                   type="submit"
                   className="btn-gold rounded-sm w-full group flex items-center justify-center gap-3 !py-4"
                 >
-                  <span>Envoyer la Demande</span>
+                  <span>Send Message</span>
                   <Send size={16} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </form>
@@ -134,7 +134,7 @@ export default function Contact() {
           <div className="lg:col-span-5 space-y-8 fade-up" style={{ animationDelay: '0.2s' }}>
             <div className="glass-panel p-8 rounded-xl border border-white/10 space-y-8">
               <h3 className="font-title text-sm uppercase tracking-widest text-gold-400 font-semibold border-b border-white/10 pb-4">
-                Informations Pratiques
+                Gallery Location & Info
               </h3>
 
               <div className="flex gap-4 items-start">
@@ -142,7 +142,7 @@ export default function Contact() {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Galerie Principale</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Gallery Space</h4>
                   <p className="text-ink-100 font-light text-sm leading-relaxed">
                     12 Rue Saint-Honoré<br />
                     75001 Paris, France
@@ -155,7 +155,7 @@ export default function Contact() {
                   <Phone size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Téléphone</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Telephone</h4>
                   <p className="text-ink-100 font-light text-sm">+33 1 42 60 30 30</p>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function Contact() {
                   <Mail size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Courriel</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Email</h4>
                   <p className="text-ink-100 font-light text-sm">hello@nousart.gallery</p>
                 </div>
               </div>
@@ -175,10 +175,10 @@ export default function Contact() {
                   <Clock size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Horaires d'Ouverture</h4>
+                  <h4 className="text-xs uppercase tracking-widest text-ink-300 font-medium mb-1">Opening Hours</h4>
                   <p className="text-ink-100 font-light text-sm leading-relaxed">
-                    Mardi – Samedi<br />
-                    11:00 – 19:00 (ou sur rendez-vous)
+                    Tuesday – Saturday<br />
+                    11:00 – 19:00 (or by appointment)
                   </p>
                 </div>
               </div>
