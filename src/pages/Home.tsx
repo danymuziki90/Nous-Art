@@ -479,7 +479,13 @@ export default function Home() {
       {/* Editorial Spotlight */}
       <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 border-t border-white/10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-6 relative">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="lg:col-span-6 relative"
+          >
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
               <img
                 src="https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?q=80&w=1600&auto=format&fit=crop"
@@ -494,17 +500,29 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-tr from-ink-950/60 via-transparent to-transparent" />
             </div>
 
-            <div className="hidden sm:block absolute -bottom-6 -right-6 glass-panel p-6 rounded-xl max-w-xs border border-white/10 shadow-2xl">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, x: 20 }}
+              whileInView={{ opacity: 1, scale: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className="hidden sm:block absolute -bottom-6 -right-6 glass-panel p-6 rounded-xl max-w-xs border border-white/10 shadow-2xl"
+            >
               <div className="text-gold-400 text-xs font-semibold uppercase tracking-widest mb-1">
                 <span>Authenticity Guaranteed</span>
               </div>
               <p className="text-xs text-ink-100 leading-relaxed font-light">
                 Every acquisition includes a signed certificate of authenticity and provenance history.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="lg:col-span-6 space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="lg:col-span-6 space-y-6"
+          >
             <p className="text-xs uppercase tracking-[0.35em] text-gold-400 font-semibold">
               Editorial Spotlight
             </p>
@@ -521,7 +539,7 @@ export default function Home() {
                 <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

@@ -111,11 +111,11 @@ export default function Navbar() {
               : 'bg-gradient-to-b from-ink-950/90 via-ink-950/50 to-transparent py-5 border-b border-white/5'
           }`}
         >
-          <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between gap-6">
+          <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-10 flex items-center justify-between gap-2 sm:gap-6">
             
             {/* COLUMN 1: Logo Brand (Left) */}
-            <Link to="/" className="group flex items-center gap-3.5 shrink-0 focus:outline-none">
-              <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-ink-900 border border-gold-500/40 group-hover:border-gold-500 transition-all duration-500 shadow-md group-hover:shadow-[0_0_20px_rgba(212,173,118,0.4)] overflow-hidden shrink-0">
+            <Link to="/" className="group flex items-center gap-2 md:gap-3.5 shrink-0 focus:outline-none">
+              <div className="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-xl bg-ink-900 border border-gold-500/40 group-hover:border-gold-500 transition-all duration-500 shadow-md group-hover:shadow-[0_0_20px_rgba(212,173,118,0.4)] overflow-hidden shrink-0">
                 <img
                   src="/img/logo.jpeg?v=2"
                   alt="Nous Art Logo"
@@ -123,15 +123,15 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-1.5 leading-none">
-                  <span className="font-title text-xl md:text-2xl tracking-[0.25em] text-ink-50 group-hover:text-gold-300 transition-colors">
+                <div className="flex items-center gap-1 md:gap-1.5 leading-none">
+                  <span className="font-title text-lg md:text-2xl tracking-[0.15em] md:tracking-[0.25em] text-ink-50 group-hover:text-gold-300 transition-colors">
                     NOUS
                   </span>
-                  <span className="font-title text-xl md:text-2xl tracking-[0.25em] gold-text-gradient font-bold gold-text-glow">
+                  <span className="font-title text-lg md:text-2xl tracking-[0.15em] md:tracking-[0.25em] gold-text-gradient font-bold gold-text-glow">
                     ART
                   </span>
                 </div>
-                <span className="text-[9px] uppercase tracking-[0.35em] text-ink-300 font-sans mt-0.5 font-medium">
+                <span className="text-[7.5px] md:text-[9px] uppercase tracking-[0.15em] md:tracking-[0.35em] text-ink-300 font-sans mt-0.5 font-medium block">
                   Contemporary Gallery
                 </span>
               </div>
@@ -162,7 +162,7 @@ export default function Navbar() {
             </nav>
 
             {/* COLUMN 3: Right Secondary Actions & Sleek Expandable Search (Right) */}
-            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
               
               {/* Sleek Expandable Search Input / Button */}
               <div className="relative flex items-center">
@@ -175,7 +175,7 @@ export default function Navbar() {
                       placeholder="Search works, artists..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-48 sm:w-64 bg-ink-900/90 border border-gold-500/40 rounded-full py-1.5 pl-9 pr-8 text-xs text-ink-50 placeholder-ink-300 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-all font-light shadow-lg"
+                      className="w-36 sm:w-64 bg-ink-900/90 border border-gold-500/40 rounded-full py-1.5 pl-9 pr-8 text-xs text-ink-50 placeholder-ink-300 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-all font-light shadow-lg"
                     />
                     <button
                       type="button"
@@ -191,7 +191,7 @@ export default function Navbar() {
                       setSearchExpanded(true);
                       openSearch();
                     }}
-                    className="w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-all shadow-md group"
+                    className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-all shadow-md group"
                     aria-label="Expand Search"
                   >
                     <Search size={16} className="group-hover:scale-110 transition-transform" />
@@ -203,7 +203,7 @@ export default function Navbar() {
               {/* Wishlist Button */}
               <button
                 onClick={openWishlist}
-                className="relative w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
+                className="relative w-8 h-8 md:w-9 md:h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
                 aria-label="Saved Wishlist"
               >
                 <Heart size={16} className={wishlist.length > 0 ? 'text-gold-400 fill-gold-400' : ''} />
@@ -217,7 +217,7 @@ export default function Navbar() {
               {/* Shopping Cart Button */}
               <button
                 onClick={openCart}
-                className="relative w-9 h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
+                className="relative w-8 h-8 md:w-9 md:h-9 rounded-full bg-ink-900 border border-white/10 flex items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
                 aria-label="Collector Bag"
               >
                 <ShoppingBag size={16} className={cartCount > 0 ? 'text-gold-400' : ''} />
@@ -231,7 +231,7 @@ export default function Navbar() {
               {/* Account / Admin Portal */}
               <Link
                 to="/admin"
-                className="hidden sm:flex w-9 h-9 rounded-full bg-ink-900 border border-white/10 items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
+                className="hidden sm:flex w-8 h-8 md:w-9 md:h-9 rounded-full bg-ink-900 border border-white/10 items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
                 aria-label="Admin Portal"
               >
                 <User size={16} />
@@ -239,7 +239,7 @@ export default function Navbar() {
 
               {/* Mobile Hamburger Button */}
               <button
-                className="md:hidden relative z-50 w-9 h-9 flex items-center justify-center rounded-xl bg-ink-900 border border-white/10 text-ink-100 hover:text-gold-300 hover:border-gold-500/50 transition-all focus:outline-none"
+                className="md:hidden relative z-50 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-xl bg-ink-900 border border-white/10 text-ink-100 hover:text-gold-300 hover:border-gold-500/50 transition-all focus:outline-none"
                 onClick={() => setOpen(!open)}
                 aria-label="Toggle menu"
               >
@@ -286,10 +286,10 @@ export default function Navbar() {
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-white/10">
             <div className="flex gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-ink-200 hover:text-gold-300">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-ink-200 hover:text-gold-300">
                 <Instagram size={16} />
               </a>
-              <a href="mailto:hello@nousart.gallery" className="text-ink-200 hover:text-gold-300">
+              <a href="mailto:hello@nousart.gallery" aria-label="Email" className="text-ink-200 hover:text-gold-300">
                 <Mail size={16} />
               </a>
             </div>

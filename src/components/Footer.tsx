@@ -153,7 +153,13 @@ export default function Footer() {
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-ink-300">
           <p>© {new Date().getFullYear()} NOUS ART GALLERY. All rights reserved.</p>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 md:gap-6 mt-4 md:mt-0">
+            <Link to="/terms" className="hover:text-gold-300 transition-colors">
+              Terms
+            </Link>
+            <Link to="/privacy" className="hover:text-gold-300 transition-colors">
+              Privacy
+            </Link>
             <Link to="/admin" className="hover:text-gold-300 transition-colors">
               Admin Portal
             </Link>

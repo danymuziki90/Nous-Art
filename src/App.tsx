@@ -11,6 +11,8 @@ import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import AdminLogin from '@/pages/admin/AdminLogin';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
+import Terms from '@/pages/Terms';
+import Privacy from '@/pages/Privacy';
 import { SearchModal } from '@/components/SearchModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { WishlistDrawer } from '@/components/WishlistDrawer';
@@ -65,6 +67,8 @@ export default function App() {
             <Route path="/artwork/:id" element={<PublicLayout><ArtworkDetail /></PublicLayout>} />
             <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
             <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+            <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
+            <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </StoreProvider>
