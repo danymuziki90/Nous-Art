@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { MapPin, Mail, Send, Sparkles, CheckCircle2, Clock } from 'lucide-react';
+import { SEO } from '@/components/SEO';
 
 export default function Contact() {
   const [searchParams] = useSearchParams();
@@ -29,6 +30,7 @@ export default function Contact() {
 
   return (
     <div className="pt-32 pb-28 bg-ink-950 text-ink-50 font-sans">
+      <SEO title="Contact & Visit — NOUS ART" description="Get in touch with our gallery or plan your visit." url="/contact" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-2xl fade-up">

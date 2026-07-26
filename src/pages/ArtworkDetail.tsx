@@ -18,6 +18,7 @@ import { MediaDisplay } from '@/components/MediaDisplay';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { InSituPreviewModal } from '@/components/InSituPreviewModal';
 import { useStore } from '@/context/StoreContext';
+import { SEO } from '@/components/SEO';
 
 export default function ArtworkDetail() {
   const { id } = useParams<{ id: string }>();
@@ -85,6 +86,12 @@ export default function ArtworkDetail() {
 
   return (
     <div className="pt-32 pb-28 bg-ink-950 text-ink-50">
+      <SEO 
+        title={`${piece.title} by ${piece.artist} — NOUS ART`} 
+        description={`${piece.medium}, ${piece.dimensions}. ${piece.description?.substring(0, 150) || 'Discover this contemporary artwork at NOUS ART.'}`}
+        image={piece.media_url}
+        url={`/artwork/${piece.id}`}
+      />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Back Link */}
         <Link

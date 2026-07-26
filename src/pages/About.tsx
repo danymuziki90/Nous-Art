@@ -1,5 +1,6 @@
 import { Sparkles, Award, MapPin, Building2, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SEO } from '@/components/SEO';
 
 export default function About() {
   const stats = [
@@ -11,6 +12,7 @@ export default function About() {
 
   return (
     <div className="pt-32 pb-24 bg-ink-950 text-ink-50 overflow-hidden">
+      <SEO title="About & Philosophy — NOUS ART" description="Learn about the history and vision of NOUS ART." url="/about" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-3xl fade-up">

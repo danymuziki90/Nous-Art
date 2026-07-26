@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, Sparkles, X, ChevronDown, RefreshCw, SlidersHorizontal } from 'lucide-react';
+import { X, ChevronDown, RefreshCw, SlidersHorizontal } from 'lucide-react';
 import { supabase, type ArtPiece } from '@/lib/supabase';
 import { ArtworkCard } from '@/components/ArtworkCard';
+import { SEO } from '@/components/SEO';
 
 const MEDIUMS = ['All', 'Painting', 'Sculpture', 'Photography', 'Edition', 'Drawing'];
 const ORIENTATIONS = ['All', 'Vertical', 'Horizontal', 'Square'];
@@ -95,7 +96,8 @@ export default function Gallery() {
   };
 
   return (
-    <div className="pt-32 pb-24 bg-ink-950 text-ink-50 min-h-screen">
+    <div className="bg-ink-950 min-h-screen pt-32 pb-24 text-ink-50">
+      <SEO title="Collection — NOUS ART" description="Browse our curated collection of contemporary art." url="/gallery" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Page Header */}
         <div className="mb-10 fade-up">

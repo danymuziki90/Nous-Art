@@ -22,6 +22,7 @@ import { supabase, type ArtPiece, type SiteSettings } from '@/lib/supabase';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { MediumCard } from '@/components/MediumCard';
 import { useStore } from '@/context/StoreContext';
+import { SEO } from '@/components/SEO';
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -186,10 +187,13 @@ export default function Home() {
   const heroUrl = hero?.hero_media_url ?? DEFAULT_HERO.hero_media_url;
   const heroType = hero?.hero_media_type ?? DEFAULT_HERO.hero_media_type;
 
-
-
   return (
     <div className="bg-ink-950 text-ink-50 overflow-hidden">
+      <SEO 
+        title="NOUS ART — Contemporary Art Gallery"
+        description="A curated gallery of contemporary art. Discover, collect, and explore exceptional works by emerging and established masters."
+        url="/"
+      />
       {/* Full-Bleed 3D Hero Section */}
       <section 
         className="relative h-screen min-h-[750px] flex items-center justify-center overflow-hidden perspective-[1500px]"
