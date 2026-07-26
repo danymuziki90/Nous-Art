@@ -58,7 +58,7 @@ export default function ArtworkDetail() {
 
   if (loading) {
     return (
-      <div className="pt-36 pb-24 bg-ink-950 text-ink-50 min-h-screen">
+      <div className="pt-28 pb-16 bg-ink-950 text-ink-50 min-h-screen">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="h-96 bg-ink-900 rounded-2xl animate-pulse border border-white/5" />
         </div>
@@ -68,7 +68,7 @@ export default function ArtworkDetail() {
 
   if (!piece) {
     return (
-      <div className="pt-36 pb-24 bg-ink-950 text-ink-50 min-h-screen text-center">
+      <div className="pt-28 pb-16 bg-ink-950 text-ink-50 min-h-screen text-center">
         <h2 className="font-display text-4xl text-ink-50">Artwork Not Found</h2>
         <p className="text-ink-200 mt-2">The requested work is unavailable.</p>
         <Link to="/gallery" className="mt-6 inline-block btn-gold rounded-sm">
@@ -85,7 +85,7 @@ export default function ArtworkDetail() {
   };
 
   return (
-    <div className="pt-32 pb-28 bg-ink-950 text-ink-50">
+    <div className="pt-28 pb-20 bg-ink-950 text-ink-50">
       <SEO 
         title={`${piece.title} by ${piece.artist} — NOUS ART`} 
         description={`${piece.medium}, ${piece.dimensions}. ${piece.description?.substring(0, 150) || 'Discover this contemporary artwork at NOUS ART.'}`}

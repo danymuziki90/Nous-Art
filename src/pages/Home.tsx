@@ -266,7 +266,7 @@ export default function Home() {
           {/* Layer 2: Hero Foreground Content */}
           <motion.div 
             style={{ x: fgX, y: fgY, translateZ: "60px" }}
-            className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-24 md:pt-32"
+            className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-24 md:pt-24"
           >
             {/* Curatorial Badge */}
             <motion.div 
@@ -358,7 +358,7 @@ export default function Home() {
       </section>
 
       {/* Featured by NOUS ART (Horizontal Carousel) */}
-      <section className="relative py-24 md:py-32 z-10 overflow-hidden">
+      <section className="relative py-16 md:py-24 z-10 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 border-b border-white/10 pb-8">
           <div>
             <div className="text-gold-400 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
@@ -404,7 +404,7 @@ export default function Home() {
       </section>
 
       {/* Interactive Magnific-Style "Browse Marketplace — Browse by Medium" Showcase Section */}
-      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 border-t border-white/10">
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16 border-t border-white/10">
         {/* Section Header */}
         <div className="mb-14">
           <div className="text-gold-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">
@@ -481,7 +481,7 @@ export default function Home() {
       </section>
 
       {/* Editorial Spotlight */}
-      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 border-t border-white/10">
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16 border-t border-white/10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}

@@ -11,7 +11,7 @@ export default function About() {
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-ink-950 text-ink-50 overflow-hidden">
+    <div className="pt-28 pb-16 bg-ink-950 text-ink-50 overflow-hidden">
       <SEO title="About & Philosophy — NOUS ART" description="Learn about the history and vision of NOUS ART." url="/about" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header */}
@@ -69,9 +69,9 @@ export default function About() {
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="mt-32 pt-16 pb-20 border-y border-white/10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {/* Core Values / Stats */}
+        <div className="mt-20 pt-12 pb-16 border-y border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
             {stats.map((s) => {
               const Icon = s.icon;
               return (

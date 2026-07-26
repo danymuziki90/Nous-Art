@@ -96,7 +96,7 @@ export default function Gallery() {
   };
 
   return (
-    <div className="bg-ink-950 min-h-screen pt-32 pb-24 text-ink-50">
+    <div className="bg-ink-950 min-h-screen pt-28 pb-16 text-ink-50">
       <SEO title="Collection — NOUS ART" description="Browse our curated collection of contemporary art." url="/gallery" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Page Header */}

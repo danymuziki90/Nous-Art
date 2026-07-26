@@ -6,7 +6,7 @@ export default function Terms() {
   }, []);
 
   return (
-    <div className="bg-ink-950 text-ink-50 min-h-screen pt-32 pb-24">
+    <div className="bg-ink-950 text-ink-50 min-h-screen pt-28 pb-16">
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-ink-50 font-light mb-8">
           Terms & <span className="gold-text-gradient italic">Conditions</span>

@@ -29,7 +29,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-32 pb-28 bg-ink-950 text-ink-50 font-sans">
+    <div className="pt-28 pb-20 bg-ink-950 text-ink-50 font-sans">
       <SEO title="Contact & Visit — NOUS ART" description="Get in touch with our gallery or plan your visit." url="/contact" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header */}
