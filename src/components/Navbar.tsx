@@ -139,30 +139,27 @@ export default function Navbar() {
             </Link>
 
             {/* COLUMN 2: Centered Airy Main Navigation (Center Grid) */}
-            <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-10">
+            <nav className="hidden md:flex items-center justify-center p-1.5 gap-1 rounded-full border border-white/10 bg-ink-950/60 backdrop-blur-md shadow-2xl">
               {primaryNavItems.map((item) => {
                 const isActive = item.to === '/' 
                   ? location.pathname === '/' 
                   : location.pathname.startsWith(item.to);
                 return (
-                  <div key={item.id} className="relative group">
-                    <Link
-                      to={item.to}
-                      className={`relative px-5 py-2.5 text-[10px] md:text-xs uppercase tracking-[0.18em] font-medium transition-all duration-500 flex items-center justify-center rounded-full border backdrop-blur-sm ${
-                        isActive
-                          ? 'border-gold-500/40 bg-gold-500/10 text-gold-400 shadow-[0_0_15px_rgba(212,173,118,0.15)]'
-                          : 'border-white/10 bg-ink-950/40 text-ink-200 hover:border-gold-500/30 hover:bg-gold-500/5 hover:text-gold-300'
-                      }`}
-                    >
-                      <span className={isActive ? 'font-semibold' : ''}>
-                        {item.label}
-                      </span>
-                    </Link>
-                  </div>
+                  <Link
+                    key={item.id}
+                    to={item.to}
+                    className={`relative px-5 lg:px-7 py-2.5 text-[10px] md:text-xs uppercase tracking-[0.18em] font-medium transition-all duration-300 flex items-center justify-center rounded-full ${
+                      isActive
+                        ? 'bg-gold-500/15 text-gold-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] border border-gold-500/20'
+                        : 'text-ink-200 hover:text-ink-50 hover:bg-white/5 border border-transparent'
+                    }`}
+                  >
+                    <span className={isActive ? 'font-semibold' : ''}>
+                      {item.label}
+                    </span>
+                  </Link>
                 );
               })}
-
-
             </nav>
 
             {/* COLUMN 3: Right Secondary Actions & Sleek Expandable Search (Right) */}
