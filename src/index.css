@@ -7,14 +7,14 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #070709;
-    color: #e7e7f0;
+    background-color: #09080a;
+    color: #ece9f2;
   }
   
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #070709;
-    color: #e7e7f0;
+    background-color: #09080a;
+    color: #ece9f2;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -22,8 +22,8 @@
 
   /* Custom Selection styling */
   ::selection {
-    background-color: rgba(212, 175, 55, 0.3);
-    color: #f7f7fc;
+    background-color: rgba(212, 173, 118, 0.3);
+    color: #fce9c1;
   }
 
   /* Premium Custom Scrollbar */
@@ -32,14 +32,14 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #070709;
+    background: #09080a;
   }
   ::-webkit-scrollbar-thumb {
-    background: #262630;
+    background: #2c2930;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #d4af37;
+    background: #d4ad76;
   }
 
   .font-display {
@@ -57,20 +57,20 @@
     text-wrap: balance;
   }
 
-  /* Gold Metallic Text Gradient */
+  /* Gold Metallic Text Gradient Extracted from Logo */
   .gold-text-gradient {
-    background: linear-gradient(135deg, #F4E2B9 0%, #D4AF37 50%, #AA8437 100%);
+    background: linear-gradient(135deg, #fce9c1 0%, #d4ad76 50%, #c69e6a 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .gold-text-glow {
-    text-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    text-shadow: 0 0 25px rgba(212, 173, 118, 0.5);
   }
 
   /* Floating Glass Pill Nav Bar */
   .nav-glass-pill {
-    background: rgba(14, 14, 18, 0.75);
+    background: rgba(18, 17, 20, 0.75);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -78,11 +78,11 @@
   }
 
   .nav-glass-pill-scrolled {
-    background: rgba(7, 7, 9, 0.92);
+    background: rgba(9, 8, 10, 0.92);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.08);
+    border: 1px solid rgba(212, 173, 118, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 173, 118, 0.1);
   }
 
   /* Magnetic Link Indicator */
@@ -96,8 +96,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(212, 175, 55, 0.08);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(212, 173, 118, 0.08);
+    border: 1px solid rgba(212, 173, 118, 0.25);
     border-radius: 9999px;
     opacity: 0;
     transform: scale(0.85);
@@ -113,28 +113,28 @@
   .nav-link-item.active::before {
     opacity: 1;
     transform: scale(1);
-    background: rgba(212, 175, 55, 0.12);
-    border-color: rgba(212, 175, 55, 0.4);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+    background: rgba(212, 173, 118, 0.14);
+    border-color: rgba(212, 173, 118, 0.45);
+    box-shadow: 0 0 15px rgba(212, 173, 118, 0.15);
   }
 
   /* Glassmorphism & Panel Styling */
   .glass-panel {
-    background: rgba(14, 14, 18, 0.7);
+    background: rgba(18, 17, 20, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   .glass-panel-gold {
-    background: rgba(212, 175, 55, 0.04);
+    background: rgba(212, 173, 118, 0.04);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    border: 1px solid rgba(212, 173, 118, 0.25);
   }
 
   .glass-card {
-    background: linear-gradient(180deg, rgba(26, 26, 33, 0.6) 0%, rgba(14, 14, 18, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(31, 29, 34, 0.6) 0%, rgba(18, 17, 20, 0.8) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -142,9 +142,9 @@
   }
 
   .glass-card:hover {
-    border-color: rgba(212, 175, 55, 0.4);
+    border-color: rgba(212, 173, 118, 0.45);
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(212, 173, 118, 0.15);
   }
 
   /* Luxury Gold Button Styling */
@@ -153,8 +153,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #F4E2B9 0%, #D4AF37 50%, #AA8437 100%);
-    color: #070709;
+    background: linear-gradient(135deg, #fce9c1 0%, #d4ad76 50%, #c69e6a 100%);
+    color: #09080a;
     font-weight: 600;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -172,7 +172,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #FFF0CC 0%, #E2BE4B 50%, #D4AF37 100%);
+    background: linear-gradient(135deg, #fff3d8 0%, #e5be88 50%, #d4ad76 100%);
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: -1;
@@ -180,7 +180,7 @@
 
   .btn-gold:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 10px 25px -5px rgba(212, 173, 118, 0.45);
   }
 
   .btn-gold:hover::before {
@@ -193,8 +193,8 @@
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    color: #f7f7fc;
+    border: 1px solid rgba(212, 173, 118, 0.45);
+    color: #ece9f2;
     font-weight: 500;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -204,10 +204,10 @@
   }
 
   .btn-outline-gold:hover {
-    border-color: #d4af37;
-    color: #d4af37;
-    background: rgba(212, 175, 55, 0.06);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    border-color: #d4ad76;
+    color: #d4ad76;
+    background: rgba(212, 173, 118, 0.07);
+    box-shadow: 0 0 20px rgba(212, 173, 118, 0.18);
     transform: translateY(-2px);
   }
 

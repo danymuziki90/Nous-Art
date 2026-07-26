@@ -28,8 +28,8 @@ export default function Footer() {
           {/* Col 1 & 2: Brand Identity */}
           <div className="lg:col-span-2 space-y-6">
             <Link to="/" className="inline-flex items-center gap-3.5 group">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-ink-900 border border-gold-500/40 group-hover:border-gold-500 transition-colors">
-                <img src="/img/logo.svg" alt="Nous Art Logo" className="w-7 h-7 object-contain" />
+              <div className="w-11 h-11 flex items-center justify-center rounded-xl bg-ink-900 border border-gold-500/40 group-hover:border-gold-500 transition-all duration-500 overflow-hidden shrink-0 shadow-md">
+                <img src="/img/logo.jpeg" alt="Nous Art Logo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="flex flex-col">
                 <span className="font-title text-2xl tracking-[0.25em] text-ink-50">

@@ -5,33 +5,33 @@ export default {
     extend: {
       colors: {
         ink: {
-          950: '#070709', // Deep Obsidian Noir
-          900: '#0e0e12', // Dark Charcoal
-          850: '#131318', // Warm Midnight Slate
-          800: '#1a1a21', // Dark Surface
-          700: '#262630', // Surface Border/Hover
-          600: '#383845',
-          500: '#4e4e5e',
-          400: '#757588',
-          300: '#a2a2b3',
-          200: '#cfcfdc',
-          100: '#e7e7f0',
-          50: '#f7f7fc',
+          950: '#09080a', // Dark Obsidian Base
+          900: '#121114', 
+          850: '#17151a',
+          800: '#1f1d22', // Surface
+          700: '#2c2930', 
+          600: '#3e3a45',
+          500: '#544f5e',
+          400: '#7e788a',
+          300: '#ada7b8',
+          200: '#d7d3e0',
+          100: '#ece9f2',
+          50: '#f8f7fa',
         },
         gold: {
-          900: '#4d3910',
-          800: '#6e5218',
-          700: '#8f6c20',
-          600: '#b08729',
-          500: '#d4af37', // Official Champagne Gold
-          400: '#e2be4b',
-          300: '#ebd16b',
-          200: '#f3e39c',
-          100: '#f9f3cf',
-          50: '#fcfaf0',
+          900: '#4a3a22',
+          800: '#6b5431',
+          700: '#8c6e40',
+          600: '#ab874e',
+          500: '#d4ad76', // Primary Logo Gold
+          400: '#e5be88',
+          300: '#f0cf9e',
+          200: '#f9e0b8',
+          100: '#fce9c1', // Bright Logo Highlight
+          50: '#fef7e8',
         },
-        champagne: '#f4e2b9',
-        obsidian: '#0a0a0d',
+        champagne: '#fce9c1',
+        obsidian: '#09080a',
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'serif'],
@@ -67,14 +67,14 @@ export default {
           '100%': { transform: 'translateX(100%)' },
         },
         logoGlow: {
-          '0%': { filter: 'drop-shadow(0 0 2px rgba(212,175,55,0.2))' },
-          '100%': { filter: 'drop-shadow(0 0 10px rgba(212,175,55,0.6))' },
+          '0%': { filter: 'drop-shadow(0 0 2px rgba(212,173,118,0.2))' },
+          '100%': { filter: 'drop-shadow(0 0 10px rgba(212,173,118,0.6))' },
         },
       },
       backgroundImage: {
-        'gold-gradient': 'linear-gradient(135deg, #F4E2B9 0%, #D4AF37 50%, #AA8437 100%)',
-        'gold-gradient-hover': 'linear-gradient(135deg, #FFF0CC 0%, #E2BE4B 50%, #C59D33 100%)',
-        'obsidian-radial': 'radial-gradient(circle at 50% 0%, rgba(212,175,55,0.08) 0%, rgba(7,7,9,0.98) 70%)',
+        'gold-gradient': 'linear-gradient(135deg, #fce9c1 0%, #d4ad76 50%, #c69e6a 100%)',
+        'gold-gradient-hover': 'linear-gradient(135deg, #fff3d8 0%, #e5be88 50%, #d4ad76 100%)',
+        'obsidian-radial': 'radial-gradient(circle at 50% 0%, rgba(212,173,118,0.08) 0%, rgba(9,8,10,0.98) 70%)',
       },
     },
   },

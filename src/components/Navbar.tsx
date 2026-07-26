@@ -50,14 +50,11 @@ export default function Navbar() {
           <nav className="flex items-center justify-between">
             {/* Official Logo Brand */}
             <Link to="/" className="group flex items-center gap-3.5 focus:outline-none">
-              <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-ink-900 border border-gold-500/30 group-hover:border-gold-500 transition-all duration-500 shadow-md group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:scale-105">
+              <div className="relative w-11 h-11 flex items-center justify-center rounded-xl bg-ink-900 border border-gold-500/40 group-hover:border-gold-500 transition-all duration-500 shadow-md group-hover:shadow-[0_0_20px_rgba(212,173,118,0.4)] group-hover:scale-105 overflow-hidden shrink-0">
                 <img
-                  src="/img/logo.svg"
+                  src="/img/logo.jpeg"
                   alt="Nous Art Logo"
-                  className="w-7 h-7 object-contain transition-transform duration-500 group-hover:rotate-6"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <div className="flex flex-col">
@@ -88,7 +85,7 @@ export default function Navbar() {
                     }`}
                   >
                     <span className="relative z-10 flex items-center gap-1.5">
-                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse shadow-[0_0_8px_rgba(212,175,55,1)]" />}
+                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse shadow-[0_0_8px_rgba(212,173,118,1)]" />}
                       {l.label}
                     </span>
                   </Link>

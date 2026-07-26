@@ -32,8 +32,8 @@ export default function AdminLogin() {
         {/* Logo Header */}
         <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-3.5 mb-6 group">
-            <div className="w-12 h-12 rounded-xl bg-ink-900 border border-gold-500/40 flex items-center justify-center shadow-lg group-hover:border-gold-500 transition-colors">
-              <img src="/img/logo.svg" alt="Nous Art Logo" className="w-8 h-8 object-contain" />
+            <div className="w-12 h-12 rounded-xl bg-ink-900 border border-gold-500/40 flex items-center justify-center shadow-lg group-hover:border-gold-500 transition-colors overflow-hidden">
+              <img src="/img/logo.jpeg" alt="Nous Art Logo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             </div>
           </Link>
           
