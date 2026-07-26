@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ArtPiece } from '@/lib/supabase';
 
-export type Currency = 'USD' | 'EUR';
+export type Currency = 'USD';
 
 interface CartItem {
   piece: ArtPiece;
@@ -44,8 +44,7 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-// Conversion Rate: 1 USD = 0.92 EUR
-const EUR_RATE = 0.92;
+// Only USD is supported
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Local storage persisted Wishlist
@@ -157,13 +156,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSearchQuery('');
   };
 
-  // Price Formatter based on Currency
   const formatPrice = (amount: number | null | undefined): string => {
     if (amount == null) return 'Price on Request';
-    if (currency === 'EUR') {
-      const eurValue = Math.round(amount * EUR_RATE);
-      return eurValue.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-    }
     return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
   };
 

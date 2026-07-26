@@ -23,7 +23,6 @@ import { useStore } from '@/context/StoreContext';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [currencyMenu, setCurrencyMenu] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
 
@@ -200,42 +199,10 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Currency Selector (USD / EUR) */}
-              <div className="relative">
-                <button
-                  onClick={() => setCurrencyMenu(!currencyMenu)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-white/10 text-xs font-mono text-ink-100 hover:border-gold-500/40 hover:text-gold-300 transition-colors shadow-md"
-                >
-                  <span className="gold-text-gradient font-bold">{currency === 'USD' ? '$ USD' : '€ EUR'}</span>
-                  <ChevronDown size={12} className="text-ink-300" />
-                </button>
-
-                {currencyMenu && (
-                  <div className="absolute right-0 mt-2 w-28 rounded-xl bg-ink-900 border border-white/10 shadow-2xl p-1.5 z-50 fade-up text-xs font-mono">
-                    <button
-                      onClick={() => {
-                        setCurrency('USD');
-                        setCurrencyMenu(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        currency === 'USD' ? 'bg-gold-500/10 text-gold-300 font-semibold' : 'text-ink-200 hover:bg-white/5'
-                      }`}
-                    >
-                      USD ($)
-                    </button>
-                    <button
-                      onClick={() => {
-                        setCurrency('EUR');
-                        setCurrencyMenu(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        currency === 'EUR' ? 'bg-gold-500/10 text-gold-300 font-semibold' : 'text-ink-200 hover:bg-white/5'
-                      }`}
-                    >
-                      EUR (€)
-                    </button>
-                  </div>
-                )}
+              {/* Currency Badge (USD Only) */}
+              <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-white/10 text-[11px] font-mono shadow-md cursor-default">
+                <span className="text-ink-200">Currency:</span>
+                <span className="gold-text-gradient font-bold">$ USD</span>
               </div>
 
               {/* Wishlist Button */}
