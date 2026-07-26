@@ -148,26 +148,15 @@ export default function Navbar() {
                   <div key={item.id} className="relative group">
                     <Link
                       to={item.to}
-                      className="relative py-2 text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-300 flex items-center gap-1 group/link"
+                      className={`relative px-5 py-2.5 text-[10px] md:text-xs uppercase tracking-[0.18em] font-medium transition-all duration-500 flex items-center justify-center rounded-full border backdrop-blur-sm ${
+                        isActive
+                          ? 'border-gold-500/40 bg-gold-500/10 text-gold-400 shadow-[0_0_15px_rgba(212,173,118,0.15)]'
+                          : 'border-white/10 bg-ink-950/40 text-ink-200 hover:border-gold-500/30 hover:bg-gold-500/5 hover:text-gold-300'
+                      }`}
                     >
-                      <span
-                        className={
-                          isActive
-                            ? 'gold-text-gradient font-semibold'
-                            : 'text-ink-200 group-hover/link:text-ink-50'
-                        }
-                      >
+                      <span className={isActive ? 'font-semibold' : ''}>
                         {item.label}
                       </span>
-
-                      {/* Animated Gold Underline Indicator */}
-                      <span
-                        className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gold-gradient rounded-full transition-all duration-300 ${
-                          isActive
-                            ? 'w-full opacity-100 shadow-[0_0_8px_rgba(212,173,118,0.8)]'
-                            : 'w-0 opacity-0 group-hover/link:w-full group-hover/link:opacity-70'
-                        }`}
-                      />
                     </Link>
                   </div>
                 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, ArrowUpRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import type { ArtPiece } from '@/lib/supabase';
 import { MediaDisplay } from '@/components/MediaDisplay';
 import { useStore } from '@/context/StoreContext';
@@ -48,17 +48,57 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, index = 0, useA
   const motionProps = useAdvancedMotion ? { variants: cardVariants } : {};
   const styleProps = !useAdvancedMotion && animationDelay ? { animationDelay } : {};
 
+  // 3D Parallax Tilt Effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 200, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 200, damping: 30 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
     <Wrapper 
-      className={`group block relative ${!useAdvancedMotion ? 'fade-up perspective-card' : ''}`}
+      className={`group block relative ${!useAdvancedMotion ? 'fade-up' : ''}`}
       style={styleProps}
       {...motionProps}
     >
-      {/* Artwork Media Card Frame with cinematic reveal */}
-      <Link
-        to={`/artwork/${piece.id}`}
-        className="block relative overflow-hidden aspect-[4/5] bg-ink-950 rounded-xl border border-white/5 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-gold-500/10 hover:border-white/10"
+      {/* 3D Container Wrapper */}
+      <motion.div
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        className="relative perspective-[1200px]"
       >
+        {/* Artwork Media Card Frame with cinematic reveal */}
+        <Link
+          to={`/artwork/${piece.id}`}
+          className="block relative overflow-hidden aspect-[4/5] bg-ink-950 rounded-xl border border-white/5 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-gold-500/10 hover:border-white/10"
+        >
         {/* Cinematic Mask Reveal overlay (runs once when parent is in view) */}
         {useAdvancedMotion && (
           <motion.div
@@ -122,7 +162,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, index = 0, useA
             </div>
           </div>
         </div>
-      </Link>
+        </Link>
+      </motion.div>
 
       {/* External Metadata (visible by default below the image) */}
       <div className="mt-5 flex flex-col gap-1.5 px-1 relative z-10 transition-all duration-500 group-hover:-translate-y-2 group-hover:opacity-0">
