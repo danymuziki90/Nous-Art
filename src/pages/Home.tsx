@@ -84,10 +84,10 @@ export default function Home() {
   const heroType = hero?.hero_media_type ?? DEFAULT_HERO.hero_media_type;
 
   return (
-    <div className="bg-ink-950 text-ink-50 overflow-hidden pt-28">
-      {/* Hero Section */}
-      <section className="relative h-[85vh] min-h-[650px] flex items-center justify-center overflow-hidden">
-        {/* Background Media */}
+    <div className="bg-ink-950 text-ink-50 overflow-hidden">
+      {/* Full-Bleed Hero Section with Integrated Overlay Navigation */}
+      <section className="relative h-screen min-h-[750px] flex items-center justify-center overflow-hidden">
+        {/* Hero Background Media */}
         <div className="absolute inset-0 z-0">
           {heroType === 'video' && heroUrl ? (
             <video
@@ -96,36 +96,42 @@ export default function Home() {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover scale-105 filter brightness-[0.6] contrast-[1.1] image-reveal"
+              className="w-full h-full object-cover scale-105 filter brightness-[0.55] contrast-[1.1] image-reveal"
             />
           ) : (
             <img
               src={heroUrl}
               alt="Gallery Interior"
-              className="w-full h-full object-cover scale-105 filter brightness-[0.6] contrast-[1.1] image-reveal"
+              className="w-full h-full object-cover scale-105 filter brightness-[0.55] contrast-[1.1] image-reveal"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/80 via-ink-950/40 to-ink-950" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/40 to-ink-950" />
+
+          {/* Multi-Layered Atmosphere Gradients for Seamless Navbar Overlay Integration */}
+          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/85 via-ink-950/40 to-ink-950" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/40 to-ink-950 opacity-80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent opacity-70 pointer-events-none" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-900/80 border border-gold-500/30 backdrop-blur-md mb-6 fade-up shadow-xl">
+        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-24 md:pt-32">
+          {/* Curatorial Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-950/60 border border-gold-500/35 backdrop-blur-xl mb-6 fade-up shadow-2xl">
             <Sparkles size={13} className="text-gold-400" />
             <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
-              Contemporary Art Marketplace
+              Contemporary Art Gallery & Marketplace
             </span>
           </div>
 
+          {/* Headline Statement */}
           <h1
-            className="font-display text-5xl sm:text-7xl md:text-8xl tracking-tight text-ink-50 leading-[0.95] fade-up font-light text-balance"
+            className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-ink-50 leading-[0.95] fade-up font-light text-balance"
             style={{ animationDelay: '0.2s' }}
           >
             Where vision <br />
-            <em className="font-serif italic gold-text-gradient font-normal">becomes</em> collection
+            <em className="font-serif italic gold-text-gradient font-normal gold-text-glow">becomes</em> collection
           </h1>
 
+          {/* Sub-headline */}
           <p
             className="mt-6 text-base md:text-lg text-ink-200 max-w-2xl mx-auto leading-relaxed font-light fade-up"
             style={{ animationDelay: '0.4s' }}
@@ -133,10 +139,10 @@ export default function Home() {
             Discover and acquire curated original artworks from premier emerging and established masters worldwide.
           </p>
 
-          {/* Integrated Search Bar on Hero (Artsper Style) */}
+          {/* Integrated Search Bar (Hero Integration) */}
           <form
             onSubmit={handleHeroSearch}
-            className="mt-10 max-w-xl mx-auto relative fade-up"
+            className="mt-9 max-w-xl mx-auto relative fade-up"
             style={{ animationDelay: '0.6s' }}
           >
             <div className="relative flex items-center">
@@ -147,23 +153,23 @@ export default function Home() {
                 value={heroSearch}
                 onChange={(e) => setHeroSearch(e.target.value)}
                 onClick={openSearch}
-                className="w-full bg-ink-950/90 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-md"
+                className="w-full bg-ink-950/80 border border-gold-500/40 focus:border-gold-500 rounded-full py-4 pl-14 pr-32 text-sm text-ink-50 placeholder-ink-400 focus:outline-none focus:ring-2 focus:ring-gold-500/30 shadow-2xl backdrop-blur-xl transition-all"
               />
               <button
                 type="submit"
-                className="absolute right-2 btn-gold rounded-full !py-2.5 !px-5 !text-[11px] font-semibold"
+                className="absolute right-2 btn-gold rounded-full !py-2.5 !px-5 !text-[11px] font-semibold shadow-lg"
               >
                 Search
               </button>
             </div>
           </form>
 
-          {/* Quick links */}
+          {/* Quick Filter Term Chips */}
           <div
-            className="mt-8 flex items-center justify-center gap-6 text-xs text-ink-300 font-mono fade-up"
+            className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-ink-300 font-mono fade-up"
             style={{ animationDelay: '0.7s' }}
           >
-            <span>Trending:</span>
+            <span className="text-gold-400">Trending:</span>
             {['Abstract Paintings', 'Bronze Sculptures', 'Fine Art Prints'].map((term) => (
               <Link
                 key={term}
@@ -174,6 +180,12 @@ export default function Home() {
               </Link>
             ))}
           </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 pointer-events-none">
+          <span className="text-[9px] uppercase tracking-[0.4em] text-ink-400 font-sans">Scroll</span>
+          <div className="w-[1px] h-12 bg-gradient-to-b from-gold-400 via-gold-500/50 to-transparent animate-pulse-subtle" />
         </div>
       </section>
 
@@ -214,7 +226,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* Browse by Category Blocks (Artsper Feature) */}
+      {/* Browse by Category Blocks */}
       <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-20 border-t border-white/10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
@@ -288,7 +300,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Artist Spotlight & Editorial Magazine */}
+      {/* Editorial Spotlight */}
       <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 border-t border-white/10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-6 relative">
