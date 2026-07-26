@@ -52,7 +52,7 @@ export default function Navbar() {
             <Link to="/" className="group flex items-center gap-3.5 focus:outline-none">
               <div className="relative w-11 h-11 flex items-center justify-center rounded-xl bg-ink-900 border border-gold-500/40 group-hover:border-gold-500 transition-all duration-500 shadow-md group-hover:shadow-[0_0_20px_rgba(212,173,118,0.4)] group-hover:scale-105 overflow-hidden shrink-0">
                 <img
-                  src="/img/logo.jpeg"
+                  src="/img/logo.jpeg?v=2"
                   alt="Nous Art Logo"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
