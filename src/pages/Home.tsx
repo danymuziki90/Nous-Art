@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import {
   ArrowRight,
   Sparkles,
@@ -116,6 +116,12 @@ export default function Home() {
   const mouseXSpring = useSpring(mouseX, { stiffness: 60, damping: 20 });
   const mouseYSpring = useSpring(mouseY, { stiffness: 60, damping: 20 });
 
+  // Scroll Parallax
+  const { scrollY } = useScroll();
+  const scrollBgY = useTransform(scrollY, [0, 1000], ["0%", "20%"]); 
+  const scrollBgScale = useTransform(scrollY, [0, 1000], [1, 1.15]);
+  const scrollOpacity = useTransform(scrollY, [0, 600], [1, 0.2]);
+
   // Map mouse to rotations (Perspective container)
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
@@ -194,14 +200,19 @@ export default function Home() {
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           className="absolute inset-0 w-full h-full flex items-center justify-center"
         >
-          {/* Layer 0: Deep Hero Background Media */}
-          <motion.div 
-            style={{ x: bgX, y: bgY, translateZ: "-50px" }}
-            initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1.05, opacity: 1 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            className="absolute inset-[-5%] z-0"
+          {/* Scroll Parallax Wrapper */}
+          <motion.div
+            style={{ y: scrollBgY, scale: scrollBgScale, opacity: scrollOpacity }}
+            className="absolute inset-[-20%] z-0"
           >
+            {/* Layer 0: Deep Hero Background Media */}
+            <motion.div 
+              style={{ x: bgX, y: bgY, translateZ: "-50px" }}
+              initial={{ scale: 1.2, opacity: 0 }}
+              animate={{ scale: 1.05, opacity: 1 }}
+              transition={{ duration: 2, ease: "easeOut" }}
+              className="absolute inset-[-5%] z-0"
+            >
             {heroType === 'video' && heroUrl ? (
               <video
                 src={heroUrl}
@@ -223,6 +234,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-b from-ink-950/90 via-ink-950/40 to-ink-950" />
             <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/40 to-ink-950 opacity-80" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-500/15 via-transparent to-transparent opacity-70 pointer-events-none" />
+          </motion.div>
           </motion.div>
 
           {/* Layer 1: Atmospheric Floating Particles */}
