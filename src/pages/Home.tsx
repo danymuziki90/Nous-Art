@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { supabase, type ArtPiece, type SiteSettings } from '@/lib/supabase';
 import { ArtworkCard } from '@/components/ArtworkCard';
+import { MediumCard } from '@/components/MediumCard';
 import { useStore } from '@/context/StoreContext';
 
 const staggerContainer = {
@@ -103,8 +104,7 @@ export default function Home() {
   const [hero, setHero] = useState<SiteSettings | null>(null);
   const [heroSearch, setHeroSearch] = useState('');
   
-  // Active selected medium state for Magnific-style showcase
-  const [activeMediumIndex, setActiveMediumIndex] = useState(0);
+
 
   const navigate = useNavigate();
   const { openSearch } = useStore();
@@ -186,7 +186,7 @@ export default function Home() {
   const heroUrl = hero?.hero_media_url ?? DEFAULT_HERO.hero_media_url;
   const heroType = hero?.hero_media_type ?? DEFAULT_HERO.hero_media_type;
 
-  const currentMedium = MEDIUM_SHOWCASES[activeMediumIndex];
+
 
   return (
     <div className="bg-ink-950 text-ink-50 overflow-hidden">
@@ -414,116 +414,35 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Magnific Asymmetric Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Left / Main Dynamic Featured Banner Showcase */}
-          <div className="lg:col-span-7 relative group rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-ink-900 min-h-[480px] lg:min-h-[560px] flex flex-col justify-end transition-all duration-700">
-            {/* Background Image with Dynamic Fade Transition */}
-            <img
-              key={currentMedium.id}
-              src={currentMedium.image}
-              alt={currentMedium.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 filter brightness-[0.6] contrast-[1.05] fade-in"
-            />
+        {/* Bento Box Gallery Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
+          {MEDIUM_SHOWCASES.map((medium, index) => {
+            // Bento logic: 
+            // 0: Painting (large left)
+            // 1: Sculpture (large right)
+            // 2, 3, 4: Photography, Editions, Drawings (bottom row 3-cols)
+            let colSpan = "lg:col-span-4 md:col-span-1";
+            let minHeight = "min-h-[350px] lg:min-h-[400px]";
+            
+            if (index === 0) {
+              colSpan = "lg:col-span-7 md:col-span-2";
+              minHeight = "min-h-[400px] lg:min-h-[500px]";
+            } else if (index === 1) {
+              colSpan = "lg:col-span-5 md:col-span-1";
+              minHeight = "min-h-[400px] lg:min-h-[500px]";
+            } else if (index === 2) {
+              colSpan = "lg:col-span-4 md:col-span-1";
+            }
 
-            {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-transparent" />
-            <div className="absolute inset-0 bg-radial-gradient from-transparent via-ink-950/30 to-ink-950 opacity-60" />
-
-            {/* Top Badge Overlay */}
-            <div className="absolute top-6 left-6 z-10 glass-panel-gold px-4 py-2 rounded-full border border-gold-500/30 backdrop-blur-md">
-              <span className="text-xs uppercase tracking-widest text-gold-300 font-mono">
-                Featured Roster • {currentMedium.featuredArtist}
-              </span>
-            </div>
-
-            {/* Bottom Content Area */}
-            <div className="relative z-10 p-8 sm:p-10 space-y-4">
-              <div className="inline-block text-xs uppercase tracking-widest text-gold-400 font-mono bg-ink-950/80 px-3 py-1 rounded border border-white/10">
-                {currentMedium.count}
-              </div>
-
-              <h3 className="font-display text-4xl sm:text-5xl text-ink-50 font-light">
-                {currentMedium.title}
-              </h3>
-
-              <p className="text-sm text-ink-100 max-w-lg font-light leading-relaxed">
-                {currentMedium.tagline}
-              </p>
-
-              <div className="pt-4">
-                <Link
-                  to={`/gallery?medium=${currentMedium.medium}`}
-                  className="btn-gold rounded-xl group/btn inline-flex items-center gap-3 !py-3.5 !px-6 text-xs uppercase font-semibold shadow-xl"
-                >
-                  <span>Discover {currentMedium.title}</span>
-                  <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Right / Interactive Vertical Cards List (Tabs) */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-3.5">
-            {MEDIUM_SHOWCASES.map((item, index) => {
-              const Icon = item.icon;
-              const isActive = index === activeMediumIndex;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveMediumIndex(index)}
-                  onMouseEnter={() => setActiveMediumIndex(index)}
-                  className={`w-full text-left p-5 sm:p-6 rounded-2xl border transition-all duration-500 relative overflow-hidden flex items-center justify-between group ${
-                    isActive
-                      ? 'bg-ink-900 border-gold-500/60 shadow-xl shadow-gold-500/10 translate-x-1'
-                      : 'glass-panel border-white/10 hover:border-gold-500/30 hover:bg-ink-900/60'
-                  }`}
-                >
-                  {/* Subtle Active Left Indicator Bar */}
-                  <div
-                    className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gold-gradient transition-all duration-300 ${
-                      isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
-                    }`}
-                  />
-
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-colors shrink-0 ${
-                        isActive
-                          ? 'bg-gold-500/20 border-gold-500/50 text-gold-300 scale-105'
-                          : 'bg-ink-950 border-white/10 text-ink-200 group-hover:text-gold-400 group-hover:border-gold-500/30'
-                      }`}
-                    >
-                      <Icon size={20} />
-                    </div>
-
-                    <div>
-                      <h4
-                        className={`font-display text-2xl transition-colors font-medium ${
-                          isActive ? 'gold-text-gradient' : 'text-ink-50 group-hover:text-gold-300'
-                        }`}
-                      >
-                        {item.title}
-                      </h4>
-                      <p className="text-xs text-ink-300 font-mono mt-0.5">{item.count}</p>
-                    </div>
-                  </div>
-
-                  <div
-                    className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
-                      isActive
-                        ? 'bg-gold-500 text-ink-950 border-gold-400 scale-105'
-                        : 'border-white/10 text-ink-300 opacity-0 group-hover:opacity-100 group-hover:text-gold-300'
-                    }`}
-                  >
-                    {isActive ? <CheckCircle2 size={16} /> : <ArrowRight size={14} />}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
+            return (
+              <MediumCard 
+                key={medium.id} 
+                medium={medium} 
+                index={index} 
+                className={`${colSpan} ${minHeight}`} 
+              />
+            );
+          })}
         </div>
       </section>
 
