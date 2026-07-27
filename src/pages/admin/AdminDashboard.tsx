@@ -3,7 +3,6 @@ import {
   Palette,
   Users,
   Calendar,
-  Cloud,
   Plus,
   ArrowUpRight,
   Sparkles,
@@ -57,7 +56,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {/* Card 1: Artworks */}
           <div className="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-between">
             <div>
@@ -101,20 +100,6 @@ export default function AdminDashboard() {
             </div>
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
               <Calendar size={22} />
-            </div>
-          </div>
-
-          {/* Card 4: Cloudflare R2 */}
-          <div className="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-between">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-ink-400 block mb-1">
-                Media Storage
-              </span>
-              <span className="font-display text-2xl text-emerald-400 font-light">Cloudflare R2</span>
-              <span className="text-[11px] text-emerald-400 font-mono block mt-1">CDN Sync Active</span>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
-              <Cloud size={22} />
             </div>
           </div>
         </div>

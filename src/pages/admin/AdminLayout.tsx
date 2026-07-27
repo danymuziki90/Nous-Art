@@ -109,13 +109,6 @@ export default function AdminLayout() {
           {/* System Status Indicators */}
           <div className="space-y-2 text-[10px] font-mono text-ink-300">
             <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-ink-950 border border-white/5">
-              <div className="flex items-center gap-2 text-emerald-400">
-                <Cloud size={12} />
-                <span>Cloudflare R2</span>
-              </div>
-              <span className="text-emerald-400 font-bold">Active</span>
-            </div>
-            <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-ink-950 border border-white/5">
               <div className="flex items-center gap-2 text-gold-400">
                 <ShieldCheck size={12} />
                 <span>CMS Sync</span>
