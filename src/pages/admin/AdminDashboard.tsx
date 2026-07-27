@@ -5,7 +5,6 @@ import {
   Calendar,
   Plus,
   ArrowUpRight,
-  Sparkles,
   ShieldCheck,
   RotateCcw,
   Film,
@@ -27,8 +26,7 @@ export default function AdminDashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs font-mono uppercase tracking-widest mb-2">
-              <Sparkles size={13} />
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs font-mono uppercase tracking-widest mb-2">
               <span>Back Office Executive Suite</span>
             </div>
             <h1 className="font-display text-3xl md:text-4xl text-ink-50 font-light">
