@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { X, ChevronDown, RefreshCw, SlidersHorizontal } from 'lucide-react';
-import { getAllArtworks, type ArtPiece } from '@/data/artworks';
+import { useCMS } from '@/context/CMSContext';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { SEO } from '@/components/SEO';
 
@@ -16,13 +16,11 @@ const COLOR_OPTIONS = [
 ];
 
 export default function Gallery() {
+  const { artworks: pieces } = useCMS();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchArg = searchParams.get('search') || '';
   const mediumArg = searchParams.get('medium') || 'All';
   const sortArg = searchParams.get('sort') || 'newest';
-
-  const [pieces, setPieces] = useState<ArtPiece[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Filters state
   const [selectedMedium, setSelectedMedium] = useState<string>(mediumArg);
@@ -36,11 +34,6 @@ export default function Gallery() {
     if (mediumArg) setSelectedMedium(mediumArg);
     if (sortArg) setSortBy(sortArg);
   }, [mediumArg, sortArg]);
-
-  useEffect(() => {
-    setPieces(getAllArtworks());
-    setLoading(false);
-  }, []);
 
   const filteredAndSorted = useMemo(() => {
     let result = [...pieces];
@@ -260,13 +253,7 @@ export default function Gallery() {
 
           {/* Product Grid Area */}
           <main className="lg:col-span-9">
-            {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="aspect-[4/5] bg-ink-900 rounded-xl animate-pulse border border-white/5" />
-                ))}
-              </div>
-            ) : filteredAndSorted.length === 0 ? (
+            {filteredAndSorted.length === 0 ? (
               <div className="text-center py-28 glass-panel rounded-2xl border border-white/10">
                 <p className="text-ink-200 font-light text-lg">No artworks match your current filter criteria.</p>
                 <button

@@ -12,14 +12,16 @@ import {
   X,
   Share2,
 } from 'lucide-react';
-import { getArtistById, getArtistByName, type Artist } from '@/data/artists';
-import { getArtworksByArtist, type ArtPiece } from '@/data/artworks';
+import { useCMS } from '@/context/CMSContext';
+import { type Artist } from '@/data/artists';
+import { type ArtPiece } from '@/data/artworks';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { SEO } from '@/components/SEO';
 
 export default function ArtistDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { getArtistById, getArtworksByArtist, artists } = useCMS();
   const [artist, setArtist] = useState<Artist | null>(null);
   const [artworks, setArtworks] = useState<ArtPiece[]>([]);
   const [loadingArtworks, setLoadingArtworks] = useState(true);
@@ -39,14 +41,13 @@ export default function ArtistDetail() {
 
   useEffect(() => {
     if (!id) return;
-    const found = getArtistById(id) || getArtistByName(id);
+    const found = getArtistById(id) || artists.find((a) => a.name.toLowerCase() === id.toLowerCase());
     if (found) {
       setArtist(found);
     } else {
-      // Fallback
       setArtist(null);
     }
-  }, [id]);
+  }, [id, getArtistById, artists]);
 
   useEffect(() => {
     if (!artist) return;
@@ -55,7 +56,7 @@ export default function ArtistDetail() {
     const found = getArtworksByArtist(artist.name);
     setArtworks(found);
     setLoadingArtworks(false);
-  }, [artist]);
+  }, [artist, getArtworksByArtist]);
 
   if (!artist) {
     return (

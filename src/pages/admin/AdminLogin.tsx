@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ShieldCheck, Sparkles, Lock, Mail, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Lock, Mail, ArrowRight } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 import { SEO } from '@/components/SEO';
-
-const DEFAULT_ADMIN_EMAIL = 'genzlismhq@gmail.com';
-const DEFAULT_ADMIN_PASS = 'Gerse@2026';
 
 export default function AdminLogin() {
   const { login, isAuthenticated } = useAdminAuth();
@@ -112,13 +109,6 @@ export default function AdminLogin() {
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
-
-          {/* Footer Security Badge */}
-          <div className="mt-8 pt-6 border-t border-white/10 text-center">
-            <p className="text-[10px] font-mono text-ink-400">
-              Cloudflare R2 Storage & Client Synchronization Active
-            </p>
-          </div>
         </div>
       </div>
     </>

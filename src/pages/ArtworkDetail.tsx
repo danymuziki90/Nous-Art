@@ -14,7 +14,8 @@ import {
   ArrowLeft,
   Award,
 } from 'lucide-react';
-import { getArtworkById, getRelatedArtworks, type ArtPiece } from '@/data/artworks';
+import { useCMS } from '@/context/CMSContext';
+import { type ArtPiece } from '@/data/artworks';
 import { MediaDisplay } from '@/components/MediaDisplay';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { InSituPreviewModal } from '@/components/InSituPreviewModal';
@@ -24,6 +25,7 @@ import { getArtistByName, slugifyArtistName } from '@/data/artists';
 
 export default function ArtworkDetail() {
   const { id } = useParams<{ id: string }>();
+  const { artworks, getArtworkById } = useCMS();
   const [piece, setPiece] = useState<ArtPiece | null>(null);
   const [related, setRelated] = useState<ArtPiece[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,12 +43,13 @@ export default function ArtworkDetail() {
     const found = getArtworkById(id);
     setPiece(found ?? null);
     if (found) {
-      setRelated(getRelatedArtworks(found.id, found.category));
+      const rel = artworks.filter((p) => p.id !== found.id && p.category === found.category).slice(0, 3);
+      setRelated(rel);
     } else {
       setRelated([]);
     }
     setLoading(false);
-  }, [id]);
+  }, [id, artworks, getArtworkById]);
 
   if (loading) {
     return (

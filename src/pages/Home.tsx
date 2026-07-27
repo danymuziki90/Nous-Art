@@ -18,7 +18,7 @@ import {
   Feather,
   CheckCircle2,
 } from 'lucide-react';
-import { getFeaturedArtworks, getSiteSettings, type ArtPiece, type SiteSettings } from '@/data/artworks';
+import { useCMS } from '@/context/CMSContext';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { MediumCard } from '@/components/MediumCard';
 import { useStore } from '@/context/StoreContext';
@@ -100,12 +100,9 @@ const ARTIST_PROFILES = [
 ];
 
 export default function Home() {
-  const [featured, setFeatured] = useState<ArtPiece[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [hero, setHero] = useState<SiteSettings | null>(null);
+  const { artworks, siteSettings: hero } = useCMS();
+  const featured = artworks.filter((p) => p.featured).slice(0, 6);
   const [heroSearch, setHeroSearch] = useState('');
-  
-
 
   const navigate = useNavigate();
   const { openSearch } = useStore();
@@ -154,12 +151,6 @@ export default function Home() {
     mouseX.set(0);
     mouseY.set(0);
   };
-
-  useEffect(() => {
-    setFeatured(getFeaturedArtworks());
-    setHero(getSiteSettings());
-    setLoading(false);
-  }, []);
 
   const handleHeroSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -364,18 +355,8 @@ export default function Home() {
           </Link>
         </div>
 
-        {loading ? (
-          <div className="flex gap-6 lg:gap-8 overflow-hidden pl-6 lg:pl-10">
-            {[...Array(4)].map((_, i) => (
-              <div 
-                key={i} 
-                className="w-[80vw] sm:w-[320px] lg:w-[420px] shrink-0 aspect-[4/5] bg-ink-900/60 rounded-xl animate-pulse border border-white/5"
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="relative w-full group overflow-hidden">
-            <div className="flex gap-6 lg:gap-8 w-max animate-marquee group-hover:[animation-play-state:paused] pl-6 lg:pl-10">
+        <div className="relative w-full group overflow-hidden">
+          <div className="flex gap-6 lg:gap-8 w-max animate-marquee group-hover:[animation-play-state:paused] pl-6 lg:pl-10">
               {[...featured, ...featured, ...featured].map((piece, i) => (
                 <div 
                   key={`${piece.id}-${i}`} 
@@ -386,8 +367,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        )}
-      </section>
+        </section>
 
       {/* Interactive Magnific-Style "Browse Marketplace — Browse by Medium" Showcase Section */}
       <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16 border-t border-white/10">

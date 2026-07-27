@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, X, ArrowUpRight, Sparkles, Filter } from 'lucide-react';
-import { getAllArtworks, type ArtPiece } from '@/data/artworks';
+import { useCMS } from '@/context/CMSContext';
+import { type ArtPiece } from '@/data/artworks';
 import { useStore } from '@/context/StoreContext';
-import { getAllArtists } from '@/data/artists';
 
 export const SearchModal: React.FC = () => {
   const { isSearchOpen, closeSearch, formatPrice } = useStore();
+  const { artworks: allPieces, artists: allArtists } = useCMS();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<ArtPiece[]>([]);
   const [loading, setLoading] = useState(false);
-  const [allPieces, setAllPieces] = useState<ArtPiece[]>([]);
-
-  useEffect(() => {
-    if (isSearchOpen) {
-      setAllPieces(getAllArtworks());
-    }
-  }, [isSearchOpen]);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -41,13 +35,13 @@ export const SearchModal: React.FC = () => {
   const matchingArtists = React.useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase().trim();
-    return getAllArtists().filter(
+    return allArtists.filter(
       (a) =>
         a.name.toLowerCase().includes(q) ||
         a.discipline.toLowerCase().includes(q) ||
         a.mainMediums.some((m) => m.toLowerCase().includes(q))
     );
-  }, [query]);
+  }, [query, allArtists]);
 
   if (!isSearchOpen) return null;
 

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { X, Heart, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
-import { getArtworkById, type ArtPiece } from '@/data/artworks';
+import { useCMS } from '@/context/CMSContext';
+import { type ArtPiece } from '@/data/artworks';
 import { useStore } from '@/context/StoreContext';
 
 export const WishlistDrawer: React.FC = () => {
   const { isWishlistOpen, closeWishlist, wishlist, toggleWishlist, addToCart, formatPrice } = useStore();
+  const { getArtworkById, artworks } = useCMS();
   const [pieces, setPieces] = useState<ArtPiece[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +22,7 @@ export const WishlistDrawer: React.FC = () => {
     } else {
       setPieces([]);
     }
-  }, [isWishlistOpen, wishlist]);
+  }, [isWishlistOpen, wishlist, artworks, getArtworkById]);
 
   if (!isWishlistOpen) return null;
 
