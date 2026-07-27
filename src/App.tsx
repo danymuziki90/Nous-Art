@@ -70,9 +70,9 @@ export default function App() {
               <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
 
               {/* Admin CMS Back Office Routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/nart-admin/login" element={<AdminLogin />} />
               <Route
-                path="/admin"
+                path="/nart-admin"
                 element={
                   <AdminProtectedRoute>
                     <AdminLayout />

@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as any)?.from?.pathname || '/admin';
+  const from = (location.state as any)?.from?.pathname || '/nart-admin';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +17,7 @@ export default function AdminLogin() {
   const [submitting, setSubmitting] = useState(false);
 
   if (isAuthenticated) {
-    navigate('/admin', { replace: true });
+    navigate('/nart-admin', { replace: true });
     return null;
   }
 

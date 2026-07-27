@@ -79,7 +79,7 @@ export const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ c
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+    return <Navigate to="/nart-admin/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;

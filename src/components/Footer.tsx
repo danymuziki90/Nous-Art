@@ -172,7 +172,7 @@ export default function Footer() {
             <Link to="/privacy" className="hover:text-gold-300 transition-colors">
               Privacy
             </Link>
-            <Link to="/admin" className="hover:text-gold-300 transition-colors">
+            <Link to="/nart-admin" className="hover:text-gold-300 transition-colors">
               Admin CMS
             </Link>
             <button

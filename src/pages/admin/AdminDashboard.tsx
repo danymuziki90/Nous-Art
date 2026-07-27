@@ -44,7 +44,7 @@ export default function AdminDashboard() {
               <span>Reset Seed Data</span>
             </button>
             <Link
-              to="/admin/artworks"
+              to="/nart-admin/artworks"
               className="btn-gold flex items-center gap-2 py-2 px-4 text-xs rounded-lg"
             >
               <Plus size={14} />
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <Link
-              to="/admin/artworks"
+              to="/nart-admin/artworks"
               className="w-full btn-gold group flex items-center justify-center gap-2 py-2.5 text-xs rounded-xl font-bold"
             >
               <span>Manage Artworks ({artworks.length})</span>
@@ -146,7 +146,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <Link
-              to="/admin/artists"
+              to="/nart-admin/artists"
               className="w-full btn-gold-outline group flex items-center justify-center gap-2 py-2.5 text-xs rounded-xl font-bold"
             >
               <span>Manage Artists ({artists.length})</span>
@@ -171,7 +171,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <Link
-              to="/admin/exhibitions"
+              to="/nart-admin/exhibitions"
               className="w-full btn-gold-outline group flex items-center justify-center gap-2 py-2.5 text-xs rounded-xl font-bold"
             >
               <span>Manage Exhibitions ({exhibitions.length})</span>
@@ -187,7 +187,7 @@ export default function AdminDashboard() {
               <h3 className="font-display text-2xl text-ink-50 font-light">Hero Media & Site Configuration</h3>
               <p className="text-xs font-mono text-ink-400 mt-1">Current Public Website Banner Media</p>
             </div>
-            <Link to="/admin/settings" className="btn-gold-outline py-2 px-4 text-xs rounded-lg">
+            <Link to="/nart-admin/settings" className="btn-gold-outline py-2 px-4 text-xs rounded-lg">
               Edit Settings
             </Link>
           </div>

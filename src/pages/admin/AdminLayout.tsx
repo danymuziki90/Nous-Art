@@ -23,15 +23,15 @@ export default function AdminLayout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/nart-admin/login');
   };
 
   const navItems = [
-    { label: 'Overview', to: '/admin', icon: LayoutDashboard, end: true },
-    { label: 'Artwork Catalog', to: '/admin/artworks', icon: Palette },
-    { label: 'Artist Roster', to: '/admin/artists', icon: Users },
-    { label: 'Exhibitions', to: '/admin/exhibitions', icon: Calendar },
-    { label: 'Site Settings', to: '/admin/settings', icon: Settings },
+    { label: 'Overview', to: '/nart-admin', icon: LayoutDashboard, end: true },
+    { label: 'Artwork Catalog', to: '/nart-admin/artworks', icon: Palette },
+    { label: 'Artist Roster', to: '/nart-admin/artists', icon: Users },
+    { label: 'Exhibitions', to: '/nart-admin/exhibitions', icon: Calendar },
+    { label: 'Site Settings', to: '/nart-admin/settings', icon: Settings },
   ];
 
   return (
@@ -63,7 +63,7 @@ export default function AdminLayout() {
         <div>
           {/* Logo Brand */}
           <div className="pb-6 border-b border-white/10 mb-6">
-            <Link to="/admin" className="flex items-center gap-3">
+            <Link to="/nart-admin" className="flex items-center gap-3">
               <img
                 src="/img/logo.jpeg"
                 alt="NOUS ART Logo"
