@@ -2,11 +2,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { INITIAL_ARTWORKS, DEFAULT_SITE_SETTINGS, type ArtPiece, type SiteSettings } from '@/data/artworks';
 import { ARTISTS, type Artist } from '@/data/artists';
 import { INITIAL_EXHIBITIONS, type Exhibition } from '@/data/exhibitions';
+import { INITIAL_MEDIUMS, type MediumCategory } from '@/data/mediums';
 
 interface CMSContextType {
   artworks: ArtPiece[];
   artists: Artist[];
   exhibitions: Exhibition[];
+  mediumCategories: MediumCategory[];
   siteSettings: SiteSettings;
 
   // Artwork CRUD
@@ -28,6 +30,11 @@ interface CMSContextType {
   deleteExhibition: (id: string) => void;
   getExhibitionById: (id: string) => Exhibition | undefined;
 
+  // Medium Category CRUD
+  addMediumCategory: (medium: Omit<MediumCategory, 'id'>) => MediumCategory;
+  updateMediumCategory: (id: string, updates: Partial<MediumCategory>) => void;
+  deleteMediumCategory: (id: string) => void;
+
   // Site Settings
   updateSiteSettings: (updates: Partial<SiteSettings>) => void;
   resetToDefaults: () => void;
@@ -36,7 +43,7 @@ interface CMSContextType {
 const CMSContext = createContext<CMSContextType | undefined>(undefined);
 
 export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Artworks state with localStorage persistence
+  // Artworks state
   const [artworks, setArtworks] = useState<ArtPiece[]>(() => {
     try {
       const saved = localStorage.getItem('nous_art_cms_artworks');
@@ -46,7 +53,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   });
 
-  // Artists state with localStorage persistence
+  // Artists state
   const [artists, setArtists] = useState<Artist[]>(() => {
     try {
       const saved = localStorage.getItem('nous_art_cms_artists');
@@ -56,7 +63,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   });
 
-  // Exhibitions state with localStorage persistence
+  // Exhibitions state
   const [exhibitions, setExhibitions] = useState<Exhibition[]>(() => {
     try {
       const saved = localStorage.getItem('nous_art_cms_exhibitions');
@@ -66,7 +73,17 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   });
 
-  // Site Settings state with localStorage persistence
+  // Medium Categories state
+  const [mediumCategories, setMediumCategories] = useState<MediumCategory[]>(() => {
+    try {
+      const saved = localStorage.getItem('nous_art_cms_mediums');
+      return saved ? JSON.parse(saved) : INITIAL_MEDIUMS;
+    } catch {
+      return INITIAL_MEDIUMS;
+    }
+  });
+
+  // Site Settings state
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => {
     try {
       const saved = localStorage.getItem('nous_art_cms_settings');
@@ -88,6 +105,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem('nous_art_cms_exhibitions', JSON.stringify(exhibitions));
   }, [exhibitions]);
+
+  useEffect(() => {
+    localStorage.setItem('nous_art_cms_mediums', JSON.stringify(mediumCategories));
+  }, [mediumCategories]);
 
   useEffect(() => {
     localStorage.setItem('nous_art_cms_settings', JSON.stringify(siteSettings));
@@ -170,6 +191,26 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const getExhibitionById = (id: string) => exhibitions.find((item) => item.id === id);
 
+  // --- Medium Category CRUD Operations ---
+  const addMediumCategory = (data: Omit<MediumCategory, 'id'>): MediumCategory => {
+    const newMedium: MediumCategory = {
+      ...data,
+      id: `medium_${Date.now()}`,
+    };
+    setMediumCategories((prev) => [...prev, newMedium]);
+    return newMedium;
+  };
+
+  const updateMediumCategory = (id: string, updates: Partial<MediumCategory>) => {
+    setMediumCategories((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
+    );
+  };
+
+  const deleteMediumCategory = (id: string) => {
+    setMediumCategories((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // --- Site Settings ---
   const updateSiteSettings = (updates: Partial<SiteSettings>) => {
     setSiteSettings((prev) => ({ ...prev, ...updates, updated_at: new Date().toISOString() }));
@@ -179,10 +220,12 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setArtworks(INITIAL_ARTWORKS);
     setArtists(ARTISTS);
     setExhibitions(INITIAL_EXHIBITIONS);
+    setMediumCategories(INITIAL_MEDIUMS);
     setSiteSettings(DEFAULT_SITE_SETTINGS);
     localStorage.removeItem('nous_art_cms_artworks');
     localStorage.removeItem('nous_art_cms_artists');
     localStorage.removeItem('nous_art_cms_exhibitions');
+    localStorage.removeItem('nous_art_cms_mediums');
     localStorage.removeItem('nous_art_cms_settings');
   };
 
@@ -192,6 +235,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         artworks,
         artists,
         exhibitions,
+        mediumCategories,
         siteSettings,
         addArtwork,
         updateArtwork,
@@ -206,6 +250,9 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateExhibition,
         deleteExhibition,
         getExhibitionById,
+        addMediumCategory,
+        updateMediumCategory,
+        deleteMediumCategory,
         updateSiteSettings,
         resetToDefaults,
       }}

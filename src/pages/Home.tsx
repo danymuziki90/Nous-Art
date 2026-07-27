@@ -100,7 +100,7 @@ const ARTIST_PROFILES = [
 ];
 
 export default function Home() {
-  const { artworks, siteSettings: hero } = useCMS();
+  const { artworks, siteSettings: hero, mediumCategories } = useCMS();
   const featured = artworks.filter((p) => p.featured).slice(0, 6);
   const [heroSearch, setHeroSearch] = useState('');
 
@@ -386,11 +386,11 @@ export default function Home() {
 
         {/* Bento Box Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
-          {MEDIUM_SHOWCASES.map((medium, index) => {
+          {mediumCategories.map((medium, index) => {
             // Bento logic: 
             // 0: Painting (large left)
             // 1: Sculpture (large right)
-            // 2, 3, 4: Photography, Editions, Drawings (bottom row 3-cols)
+            // 2+: Photography, Editions, Drawings, Digital Art (bottom grid)
             let colSpan = "lg:col-span-4 md:col-span-1";
             let minHeight = "min-h-[350px] lg:min-h-[400px]";
             
@@ -400,8 +400,6 @@ export default function Home() {
             } else if (index === 1) {
               colSpan = "lg:col-span-5 md:col-span-1";
               minHeight = "min-h-[400px] lg:min-h-[500px]";
-            } else if (index === 2) {
-              colSpan = "lg:col-span-4 md:col-span-1";
             }
 
             return (

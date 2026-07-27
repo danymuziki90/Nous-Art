@@ -1,36 +1,44 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, type LucideIcon } from 'lucide-react';
+import {
+  Palette,
+  Box,
+  Camera,
+  Stamp,
+  Feather,
+  Sparkles,
+  ArrowRight,
+  type LucideIcon,
+} from 'lucide-react';
+import { type MediumCategory } from '@/data/mediums';
 
-interface MediumShowcase {
-  id: string;
-  title: string;
-  medium: string;
-  count: string;
-  tagline: string;
-  image: string;
-  featuredArtist: string;
-  icon: LucideIcon;
-}
+const ICON_MAP: Record<string, LucideIcon> = {
+  Palette,
+  Box,
+  Camera,
+  Stamp,
+  Feather,
+  Sparkles,
+};
 
 interface MediumCardProps {
-  medium: MediumShowcase;
+  medium: MediumCategory;
   className?: string;
   index: number;
 }
 
-export function MediumCard({ medium, className = "", index }: MediumCardProps) {
+export function MediumCard({ medium, className = '', index }: MediumCardProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const mouseXSpring = useSpring(x, { stiffness: 150, damping: 25 });
   const mouseYSpring = useSpring(y, { stiffness: 150, damping: 25 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
-  
-  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
-  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['5deg', '-5deg']);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-5deg', '5deg']);
+
+  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ['0%', '100%']);
+  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ['0%', '100%']);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -38,7 +46,7 @@ export function MediumCard({ medium, className = "", index }: MediumCardProps) {
     const height = rect.height;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    
+
     x.set(mouseX / width - 0.5);
     y.set(mouseY / height - 0.5);
   };
@@ -48,32 +56,32 @@ export function MediumCard({ medium, className = "", index }: MediumCardProps) {
     y.set(0);
   };
 
-  const Icon = medium.icon;
+  const Icon = ICON_MAP[medium.iconName] || Palette;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
       className={`perspective-[1500px] group ${className}`}
     >
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         className="relative w-full h-full rounded-2xl overflow-hidden cursor-pointer shadow-2xl bg-ink-900 border border-white/5"
       >
         {/* Dynamic Glare Overlay */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay"
           style={{
-            background: "radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 60%)",
+            background: 'radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 60%)',
             left: glareX,
             top: glareY,
-            transform: "translate(-50%, -50%)",
-            width: "200%",
-            height: "200%"
+            transform: 'translate(-50%, -50%)',
+            width: '200%',
+            height: '200%',
           }}
         />
 
@@ -88,9 +96,9 @@ export function MediumCard({ medium, className = "", index }: MediumCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent" />
         </div>
 
-        {/* Default State Content (Always visible, pushes to background on hover) */}
-        <motion.div 
-          style={{ translateZ: "20px" }}
+        {/* Default State Content */}
+        <motion.div
+          style={{ translateZ: '20px' }}
           className="absolute inset-0 z-10 flex flex-col justify-end p-6 transition-all duration-500 group-hover:opacity-0 group-hover:-translate-y-4 pointer-events-none"
         >
           <div className="flex items-center gap-3">
@@ -103,9 +111,9 @@ export function MediumCard({ medium, className = "", index }: MediumCardProps) {
           </div>
         </motion.div>
 
-        {/* Hover State Content (Reveals on hover) */}
-        <motion.div 
-          style={{ translateZ: "40px" }}
+        {/* Hover State Content */}
+        <motion.div
+          style={{ translateZ: '40px' }}
           className="absolute inset-0 z-10 flex flex-col justify-between p-6 opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-[0.16,1,0.3,1] bg-ink-950/40 backdrop-blur-sm"
         >
           <div className="flex justify-between items-start">
