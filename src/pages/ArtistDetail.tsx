@@ -13,7 +13,7 @@ import {
   Share2,
 } from 'lucide-react';
 import { getArtistById, getArtistByName, type Artist } from '@/data/artists';
-import { supabase, type ArtPiece } from '@/lib/supabase';
+import { getArtworksByArtist, type ArtPiece } from '@/data/artworks';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { SEO } from '@/components/SEO';
 
@@ -52,18 +52,9 @@ export default function ArtistDetail() {
     if (!artist) return;
 
     setLoadingArtworks(true);
-    supabase
-      .from('art_pieces')
-      .select('*')
-      .ilike('artist', `%${artist.name}%`)
-      .then(({ data, error }) => {
-        if (!error && data) {
-          setArtworks(data);
-        } else {
-          setArtworks([]);
-        }
-        setLoadingArtworks(false);
-      });
+    const found = getArtworksByArtist(artist.name);
+    setArtworks(found);
+    setLoadingArtworks(false);
   }, [artist]);
 
   if (!artist) {

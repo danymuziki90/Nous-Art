@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, ArrowUpRight } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import type { ArtPiece } from '@/lib/supabase';
+import type { ArtPiece } from '@/data/artworks';
 import { MediaDisplay } from '@/components/MediaDisplay';
 import { useStore } from '@/context/StoreContext';
 import { slugifyArtistName } from '@/data/artists';

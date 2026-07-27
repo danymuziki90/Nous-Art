@@ -1,5 +1,5 @@
 import { Film, Image as ImageIcon } from 'lucide-react';
-import type { ArtPiece } from '@/lib/supabase';
+import type { ArtPiece } from '@/data/artworks';
 
 interface MediaDisplayProps {
   piece: ArtPiece;

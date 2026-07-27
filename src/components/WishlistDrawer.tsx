@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { X, Heart, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
-import { supabase, type ArtPiece } from '@/lib/supabase';
+import { getArtworkById, type ArtPiece } from '@/data/artworks';
 import { useStore } from '@/context/StoreContext';
 
 export const WishlistDrawer: React.FC = () => {
@@ -12,14 +12,11 @@ export const WishlistDrawer: React.FC = () => {
   useEffect(() => {
     if (isWishlistOpen && wishlist.length > 0) {
       setLoading(true);
-      supabase
-        .from('art_pieces')
-        .select('*')
-        .in('id', wishlist)
-        .then(({ data }) => {
-          setPieces(data ?? []);
-          setLoading(false);
-        });
+      const items = wishlist
+        .map((id) => getArtworkById(id))
+        .filter(Boolean) as ArtPiece[];
+      setPieces(items);
+      setLoading(false);
     } else {
       setPieces([]);
     }

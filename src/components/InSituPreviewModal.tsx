@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Eye, Sparkles, CheckCircle2 } from 'lucide-react';
-import type { ArtPiece } from '@/lib/supabase';
+import type { ArtPiece } from '@/data/artworks';
 
 interface InSituPreviewModalProps {
   piece: ArtPiece;

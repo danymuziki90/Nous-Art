@@ -18,7 +18,7 @@ import {
   Feather,
   CheckCircle2,
 } from 'lucide-react';
-import { supabase, type ArtPiece, type SiteSettings } from '@/lib/supabase';
+import { getFeaturedArtworks, getSiteSettings, type ArtPiece, type SiteSettings } from '@/data/artworks';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { MediumCard } from '@/components/MediumCard';
 import { useStore } from '@/context/StoreContext';
@@ -156,23 +156,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    supabase
-      .from('art_pieces')
-      .select('*')
-      .eq('featured', true)
-      .order('created_at', { ascending: false })
-      .limit(6)
-      .then(({ data }) => {
-        setFeatured(data ?? []);
-        setLoading(false);
-      });
-
-    supabase
-      .from('site_settings')
-      .select('*')
-      .eq('id', 1)
-      .maybeSingle()
-      .then(({ data }) => setHero(data));
+    setFeatured(getFeaturedArtworks());
+    setHero(getSiteSettings());
+    setLoading(false);
   }, []);
 
   const handleHeroSearch = (e: React.FormEvent) => {

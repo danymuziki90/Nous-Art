@@ -14,7 +14,7 @@ import {
   ArrowLeft,
   Award,
 } from 'lucide-react';
-import { supabase, type ArtPiece } from '@/lib/supabase';
+import { getArtworkById, getRelatedArtworks, type ArtPiece } from '@/data/artworks';
 import { MediaDisplay } from '@/components/MediaDisplay';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { InSituPreviewModal } from '@/components/InSituPreviewModal';
@@ -38,24 +38,14 @@ export default function ArtworkDetail() {
     if (!id) return;
     setLoading(true);
 
-    supabase
-      .from('art_pieces')
-      .select('*')
-      .eq('id', id)
-      .maybeSingle()
-      .then(({ data }) => {
-        setPiece(data);
-        setLoading(false);
-
-        if (data) {
-          supabase
-            .from('art_pieces')
-            .select('*')
-            .neq('id', data.id)
-            .limit(3)
-            .then(({ data: rel }) => setRelated(rel ?? []));
-        }
-      });
+    const found = getArtworkById(id);
+    setPiece(found ?? null);
+    if (found) {
+      setRelated(getRelatedArtworks(found.id, found.category));
+    } else {
+      setRelated([]);
+    }
+    setLoading(false);
   }, [id]);
 
   if (loading) {

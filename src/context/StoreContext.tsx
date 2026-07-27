@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { ArtPiece } from '@/lib/supabase';
+import type { ArtPiece } from '@/data/artworks';
 
 export type Currency = 'USD';
 

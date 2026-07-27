@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { X, ChevronDown, RefreshCw, SlidersHorizontal } from 'lucide-react';
-import { supabase, type ArtPiece } from '@/lib/supabase';
+import { getAllArtworks, type ArtPiece } from '@/data/artworks';
 import { ArtworkCard } from '@/components/ArtworkCard';
 import { SEO } from '@/components/SEO';
 
@@ -28,7 +28,7 @@ export default function Gallery() {
   const [selectedMedium, setSelectedMedium] = useState<string>(mediumArg);
   const [selectedOrientation, setSelectedOrientation] = useState<string>('All');
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [maxPrice, setMaxPrice] = useState<number>(20000);
+  const [maxPrice, setMaxPrice] = useState<number>(50000);
   const [sortBy, setSortBy] = useState<string>(sortArg);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
@@ -38,14 +38,8 @@ export default function Gallery() {
   }, [mediumArg, sortArg]);
 
   useEffect(() => {
-    supabase
-      .from('art_pieces')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .then(({ data, error }) => {
-        if (!error) setPieces(data ?? []);
-        setLoading(false);
-      });
+    setPieces(getAllArtworks());
+    setLoading(false);
   }, []);
 
   const filteredAndSorted = useMemo(() => {

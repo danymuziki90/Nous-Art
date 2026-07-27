@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, X, ArrowUpRight, Sparkles, Filter } from 'lucide-react';
-import { supabase, type ArtPiece } from '@/lib/supabase';
+import { getAllArtworks, type ArtPiece } from '@/data/artworks';
 import { useStore } from '@/context/StoreContext';
 import { getAllArtists } from '@/data/artists';
 
@@ -14,13 +14,7 @@ export const SearchModal: React.FC = () => {
 
   useEffect(() => {
     if (isSearchOpen) {
-      supabase
-        .from('art_pieces')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .then(({ data }) => {
-          setAllPieces(data ?? []);
-        });
+      setAllPieces(getAllArtworks());
     }
   }, [isSearchOpen]);
 
