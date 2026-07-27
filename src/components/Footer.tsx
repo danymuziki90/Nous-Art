@@ -172,9 +172,7 @@ export default function Footer() {
             <Link to="/privacy" className="hover:text-gold-300 transition-colors">
               Privacy
             </Link>
-            <Link to="/nart-admin" className="hover:text-gold-300 transition-colors">
-              Admin CMS
-            </Link>
+
             <button
               onClick={scrollToTop}
               className="group flex items-center gap-2 text-ink-200 hover:text-gold-300 transition-colors focus:outline-none"
