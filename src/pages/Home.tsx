@@ -17,6 +17,9 @@ import {
   Stamp,
   Feather,
   CheckCircle2,
+  Users,
+  MapPin,
+  Quote,
 } from 'lucide-react';
 import { useCMS } from '@/context/CMSContext';
 import { ArtworkCard } from '@/components/ArtworkCard';
@@ -100,7 +103,7 @@ const ARTIST_PROFILES = [
 ];
 
 export default function Home() {
-  const { artworks, siteSettings: hero, mediumCategories } = useCMS();
+  const { artworks, siteSettings: hero, mediumCategories, artists } = useCMS();
   const featured = artworks.filter((p) => p.featured).slice(0, 6);
   const [heroSearch, setHeroSearch] = useState('');
 
@@ -245,15 +248,14 @@ export default function Home() {
             style={{ x: fgX, y: fgY, translateZ: "60px" }}
             className="relative z-10 mx-auto max-w-5xl px-6 text-center pt-24 md:pt-24"
           >
-            {/* Curatorial Badge */}
+            {/* Curatorial Luxury Header Text */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-950/60 border border-gold-500/35 backdrop-blur-xl mb-6 shadow-2xl"
+              className="inline-flex items-center px-6 py-2 rounded-full bg-ink-950/70 border border-gold-500/30 backdrop-blur-2xl mb-8 shadow-2xl"
             >
-              <Sparkles size={13} className="text-gold-400" />
-              <span className="text-[10px] uppercase tracking-[0.35em] gold-text-gradient font-semibold">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.4em] sm:tracking-[0.5em] text-gold-300 font-medium">
                 Contemporary Art Gallery & Marketplace
               </span>
             </motion.div>
@@ -414,33 +416,103 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Artist Profile Blocks */}
-      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {ARTIST_PROFILES.map((prof) => {
-            const Icon = prof.icon;
-            return (
-              <Link
-                key={prof.title}
-                to="/artists"
-                className="glass-panel p-8 rounded-2xl border border-white/10 hover:border-gold-500/40 transition-all group duration-300"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 mb-6 group-hover:scale-110 transition-transform">
-                  <Icon size={22} />
+      {/* Dynamic Featured Artists Roster Showcase */}
+      <section className="relative mx-auto max-w-7xl px-6 lg:px-10 py-20 border-t border-white/10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs font-mono uppercase tracking-widest mb-3">
+              <Users size={14} />
+              <span>Represented Masters & Visionaries</span>
+            </div>
+            <h2 className="font-display text-4xl sm:text-5xl text-ink-50 font-light leading-tight">
+              Featured Gallery <span className="font-serif italic gold-text-gradient">Artists</span>
+            </h2>
+            <p className="mt-3 text-ink-200 font-light text-base leading-relaxed">
+              Discover the contemporary masters housed in top global collections. Explore their artistic philosophy, studio portraits, and available catalog works.
+            </p>
+          </div>
+
+          <Link
+            to="/artists"
+            className="btn-gold-outline group inline-flex items-center gap-2 py-3 px-6 text-xs rounded-xl font-mono shrink-0"
+          >
+            <span>View Full Roster ({artists.length})</span>
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Dynamic Artists Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {artists.slice(0, 3).map((artist, index) => (
+            <motion.div
+              key={artist.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: index * 0.15 }}
+              className="glass-panel rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between p-6 group hover:border-gold-500/40 transition-all duration-500 shadow-2xl"
+            >
+              <div className="space-y-5">
+                {/* Artist Studio Portrait */}
+                <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-ink-900 border border-white/10">
+                  <img
+                    src={artist.portrait}
+                    alt={artist.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-[0.95]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-transparent" />
+
+                  {/* Discipline Badge */}
+                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-ink-950/80 backdrop-blur-md border border-white/10 text-[10px] font-mono text-gold-400 uppercase tracking-widest">
+                    {artist.discipline}
+                  </div>
                 </div>
-                <h3 className="font-display text-2xl text-ink-50 group-hover:text-gold-300 transition-colors font-medium">
-                  {prof.title}
-                </h3>
-                <p className="text-xs text-ink-200 leading-relaxed font-light mt-2">
-                  {prof.desc}
+
+                {/* Artist Name & Location */}
+                <div>
+                  <h3 className="font-display text-2xl text-ink-50 font-medium group-hover:text-gold-300 transition-colors">
+                    {artist.name}
+                  </h3>
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-gold-400 mt-1">
+                    <MapPin size={13} className="shrink-0" />
+                    <span>{artist.location}</span>
+                  </div>
+                </div>
+
+                {/* Short Bio / Quote */}
+                <p className="text-xs text-ink-300 font-sans font-light leading-relaxed line-clamp-3">
+                  {artist.shortBio || artist.quote}
                 </p>
-                <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest gold-text-gradient font-medium">
-                  <span>Explore Section</span>
-                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+
+                {/* Main Mediums Pills */}
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {artist.mainMediums.slice(0, 2).map((m) => (
+                    <span
+                      key={m}
+                      className="px-2.5 py-1 rounded-md text-[10px] font-mono bg-white/5 border border-white/10 text-ink-200"
+                    >
+                      {m}
+                    </span>
+                  ))}
                 </div>
-              </Link>
-            );
-          })}
+              </div>
+
+              {/* Card Action Link */}
+              <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+                <span className="text-[10px] font-mono text-ink-400 uppercase tracking-widest">
+                  Represented Master
+                </span>
+                <Link
+                  to={`/artist/${artist.id}`}
+                  className="btn-gold group/btn flex items-center gap-2 !py-2 !px-4 text-xs rounded-xl font-bold"
+                >
+                  <span>View Artist</span>
+                  <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
