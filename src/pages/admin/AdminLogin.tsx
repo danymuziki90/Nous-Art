@@ -39,11 +39,6 @@ export default function AdminLogin() {
     }
   };
 
-  const handleQuickFill = () => {
-    setEmail(DEFAULT_ADMIN_EMAIL);
-    setPassword(DEFAULT_ADMIN_PASS);
-  };
-
   return (
     <>
       <SEO title="Admin Login — NOUS ART Gallery CMS" description="Secure Back Office Login" />
@@ -64,25 +59,6 @@ export default function AdminLogin() {
             <p className="text-xs font-mono text-ink-400 uppercase tracking-widest mt-2">
               Content Management System
             </p>
-          </div>
-
-          {/* Quick Fill Credentials Banner */}
-          <div className="mb-6 p-4 rounded-xl bg-gold-500/10 border border-gold-500/20 text-xs text-ink-200">
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-mono text-[10px] text-gold-400 uppercase tracking-widest font-bold flex items-center gap-1.5">
-                <ShieldCheck size={13} />
-                <span>Default Admin Credentials</span>
-              </span>
-              <button
-                type="button"
-                onClick={handleQuickFill}
-                className="text-[10px] font-mono text-gold-300 hover:underline uppercase font-bold"
-              >
-                Auto Fill
-              </button>
-            </div>
-            <p className="text-[11px] font-mono text-ink-300">Email: {DEFAULT_ADMIN_EMAIL}</p>
-            <p className="text-[11px] font-mono text-ink-300">Password: {DEFAULT_ADMIN_PASS}</p>
           </div>
 
           {error && (
