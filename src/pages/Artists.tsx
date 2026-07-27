@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowUpRight, Search, MapPin, Award, Layers } from 'lucide-react';
-import { getAllArtists, type Artist } from '@/data/artists';
+import { useCMS } from '@/context/CMSContext';
+import { type Artist } from '@/data/artists';
 import { SEO } from '@/components/SEO';
 
 const DISCIPLINES = ['All', 'Painting', 'Sculpture', 'Photography', 'Mixed Media'];
 
 export default function Artists() {
-  const allArtists = useMemo(() => getAllArtists(), []);
+  const { artists: allArtists } = useCMS();
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 

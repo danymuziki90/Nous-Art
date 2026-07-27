@@ -93,6 +93,11 @@ export default function Navbar() {
       to: '/artists',
     },
     {
+      id: 'exhibitions',
+      label: 'Exhibitions',
+      to: '/exhibitions',
+    },
+    {
       id: 'about',
       label: 'About',
       to: '/about',
