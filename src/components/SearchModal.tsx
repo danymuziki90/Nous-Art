@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, X, ArrowUpRight, Sparkles, Filter } from 'lucide-react';
 import { supabase, type ArtPiece } from '@/lib/supabase';
 import { useStore } from '@/context/StoreContext';
+import { getAllArtists } from '@/data/artists';
 
 export const SearchModal: React.FC = () => {
   const { isSearchOpen, closeSearch, formatPrice } = useStore();
@@ -42,6 +43,17 @@ export const SearchModal: React.FC = () => {
     setResults(filtered);
     setLoading(false);
   }, [query, allPieces]);
+
+  const matchingArtists = React.useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase().trim();
+    return getAllArtists().filter(
+      (a) =>
+        a.name.toLowerCase().includes(q) ||
+        a.discipline.toLowerCase().includes(q) ||
+        a.mainMediums.some((m) => m.toLowerCase().includes(q))
+    );
+  }, [query]);
 
   if (!isSearchOpen) return null;
 
@@ -119,6 +131,36 @@ export const SearchModal: React.FC = () => {
               </Link>
             )}
           </div>
+
+          {matchingArtists.length > 0 && (
+            <div className="mb-6">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-gold-400 block mb-3">
+                Matching Artists ({matchingArtists.length})
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {matchingArtists.map((artist) => (
+                  <Link
+                    key={artist.id}
+                    to={`/artist/${artist.id}`}
+                    onClick={closeSearch}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-ink-900/80 border border-white/10 hover:border-gold-500/40 hover:bg-ink-900 transition-all"
+                  >
+                    <img
+                      src={artist.portrait}
+                      alt={artist.name}
+                      className="w-12 h-12 rounded-full object-cover shrink-0 border border-white/10"
+                    />
+                    <div className="min-w-0">
+                      <h4 className="font-display text-base text-ink-50 font-medium truncate">
+                        {artist.name}
+                      </h4>
+                      <p className="text-[10px] font-mono text-ink-300 truncate">{artist.location}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {loading ? (
             <div className="space-y-3">

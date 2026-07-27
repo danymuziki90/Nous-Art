@@ -7,6 +7,7 @@ import {
   Sparkles,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   Eye,
   Heart,
   ShoppingBag,
@@ -19,6 +20,7 @@ import { ArtworkCard } from '@/components/ArtworkCard';
 import { InSituPreviewModal } from '@/components/InSituPreviewModal';
 import { useStore } from '@/context/StoreContext';
 import { SEO } from '@/components/SEO';
+import { getArtistByName, slugifyArtistName } from '@/data/artists';
 
 export default function ArtworkDetail() {
   const { id } = useParams<{ id: string }>();
@@ -145,8 +147,14 @@ export default function ArtworkDetail() {
                 {piece.title}
               </h1>
 
-              <p className="text-lg gold-text-gradient font-sans font-medium mt-2">
-                {piece.artist}{piece.year ? `, ${piece.year}` : ''}
+              <p className="text-lg font-sans font-medium mt-2">
+                <Link
+                  to={`/artist/${slugifyArtistName(piece.artist)}`}
+                  className="gold-text-gradient hover:underline inline-block"
+                >
+                  {piece.artist}
+                </Link>
+                {piece.year ? <span className="text-ink-300">, {piece.year}</span> : ''}
               </p>
             </div>
 
@@ -245,8 +253,20 @@ export default function ArtworkDetail() {
                   {openAccordion === 'bio' ? <ChevronUp size={16} className="text-gold-400" /> : <ChevronDown size={16} />}
                 </button>
                 {openAccordion === 'bio' && (
-                  <div className="p-4 pt-0 text-sm text-ink-200 font-light leading-relaxed border-t border-white/5">
-                    {piece.artist} is a featured artist represented by NOUS ART Gallery. Their works are held in premier private collections across Europe, North America, and Asia.
+                  <div className="p-4 pt-0 text-sm text-ink-200 font-light leading-relaxed border-t border-white/5 space-y-3">
+                    <p>
+                      {getArtistByName(piece.artist)?.shortBio ||
+                        `${piece.artist} is a featured contemporary artist represented by NOUS ART Gallery. Their works are held in premier private collections across Europe, North America, and Asia.`}
+                    </p>
+                    <div className="pt-2">
+                      <Link
+                        to={`/artist/${slugifyArtistName(piece.artist)}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-mono text-gold-400 hover:underline font-semibold"
+                      >
+                        <span>View Full Artist Profile, Exhibitions & Dossier</span>
+                        <ChevronRight size={14} />
+                      </Link>
+                    </div>
                   </div>
                 )}
               </div>

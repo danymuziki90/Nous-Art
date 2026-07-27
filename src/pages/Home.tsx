@@ -458,7 +458,7 @@ export default function Home() {
             return (
               <Link
                 key={prof.title}
-                to="/gallery"
+                to="/artists"
                 className="glass-panel p-8 rounded-2xl border border-white/10 hover:border-gold-500/40 transition-all group duration-300"
               >
                 <div className="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 mb-6 group-hover:scale-110 transition-transform">

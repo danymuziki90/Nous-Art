@@ -4,7 +4,6 @@ import {
   Search,
   Heart,
   ShoppingBag,
-  User,
   Sparkles,
   ChevronDown,
   Instagram,
@@ -76,7 +75,7 @@ export default function Navbar() {
     }
   };
 
-  // 5 Primary Navigation Items
+  // Primary Navigation Items
   const primaryNavItems = [
     {
       id: 'home',
@@ -84,14 +83,19 @@ export default function Navbar() {
       to: '/',
     },
     {
-      id: 'about',
-      label: 'About',
-      to: '/about',
-    },
-    {
       id: 'collection',
       label: 'Collection',
       to: '/gallery',
+    },
+    {
+      id: 'artists',
+      label: 'Artists',
+      to: '/artists',
+    },
+    {
+      id: 'about',
+      label: 'About',
+      to: '/about',
     },
     {
       id: 'contact',
@@ -227,15 +231,6 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-
-              {/* Account / Admin Portal */}
-              <Link
-                to="/admin"
-                className="hidden sm:flex w-8 h-8 md:w-9 md:h-9 rounded-full bg-ink-900 border border-white/10 items-center justify-center text-ink-100 hover:text-gold-300 hover:border-gold-500/40 transition-colors shadow-md"
-                aria-label="Admin Portal"
-              >
-                <User size={16} />
-              </Link>
 
               {/* Mobile Hamburger Button */}
               <button

@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import type { ArtPiece } from '@/lib/supabase';
 import { MediaDisplay } from '@/components/MediaDisplay';
 import { useStore } from '@/context/StoreContext';
+import { slugifyArtistName } from '@/data/artists';
 
 interface ArtworkCardProps {
   piece: ArtPiece;
@@ -141,9 +142,13 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, index = 0, useA
         <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col justify-end pointer-events-none overflow-hidden">
           {/* Metadata slides up gracefully inside the card */}
           <div className="transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-[0.8s] ease-[cubic-bezier(0.16,1,0.3,1)]">
-            <p className="text-xs gold-text-gradient font-sans tracking-widest font-semibold uppercase mb-2">
+            <Link
+              to={`/artist/${slugifyArtistName(piece.artist)}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-xs gold-text-gradient font-sans tracking-widest font-semibold uppercase mb-2 hover:underline inline-block pointer-events-auto"
+            >
               {piece.artist}
-            </p>
+            </Link>
             <h3 className="font-display text-2xl sm:text-3xl text-ink-50 font-light leading-tight mb-4">
               {piece.title} {piece.year && <span className="text-ink-200">({piece.year})</span>}
             </h3>
@@ -172,9 +177,12 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = ({ piece, index = 0, useA
             <h3 className="font-display text-xl sm:text-2xl text-ink-50 font-medium truncate">
               {piece.title}
             </h3>
-            <p className="text-xs text-ink-200 font-sans tracking-wide mt-1">
+            <Link
+              to={`/artist/${slugifyArtistName(piece.artist)}`}
+              className="text-xs text-ink-200 hover:text-gold-300 transition-colors font-sans tracking-wide mt-1 inline-block"
+            >
               {piece.artist}
-            </p>
+            </Link>
           </div>
           <div className="text-right shrink-0">
             <span className="text-sm font-sans text-gold-400 font-medium block">

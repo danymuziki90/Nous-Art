@@ -1,16 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AuthProvider, useAuth } from '@/lib/auth';
 import { StoreProvider } from '@/context/StoreContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Home from '@/pages/Home';
 import Gallery from '@/pages/Gallery';
 import ArtworkDetail from '@/pages/ArtworkDetail';
+import Artists from '@/pages/Artists';
+import ArtistDetail from '@/pages/ArtistDetail';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
-import AdminLogin from '@/pages/admin/AdminLogin';
-import AdminDashboard from '@/pages/admin/AdminDashboard';
 import Terms from '@/pages/Terms';
 import Privacy from '@/pages/Privacy';
 import { SearchModal } from '@/components/SearchModal';
@@ -23,13 +22,6 @@ function ScrollToTop() {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
-}
-
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
-  if (loading) return null;
-  if (!user) return <Navigate to="/admin" replace />;
-  return <>{children}</>;
 }
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -45,34 +37,24 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <StoreProvider>
-          <ScrollToTop />
-          <SearchModal />
-          <CartDrawer />
-          <WishlistDrawer />
-          <Routes>
-            <Route path="/admin" element={<AdminLogin />} />
-            <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Navbar />
-                  <main><AdminDashboard /></main>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            <Route path="/gallery" element={<PublicLayout><Gallery /></PublicLayout>} />
-            <Route path="/artwork/:id" element={<PublicLayout><ArtworkDetail /></PublicLayout>} />
-            <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
-            <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
-            <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
-            <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </StoreProvider>
-      </AuthProvider>
+      <StoreProvider>
+        <ScrollToTop />
+        <SearchModal />
+        <CartDrawer />
+        <WishlistDrawer />
+        <Routes>
+          <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+          <Route path="/gallery" element={<PublicLayout><Gallery /></PublicLayout>} />
+          <Route path="/artwork/:id" element={<PublicLayout><ArtworkDetail /></PublicLayout>} />
+          <Route path="/artists" element={<PublicLayout><Artists /></PublicLayout>} />
+          <Route path="/artist/:id" element={<PublicLayout><ArtistDetail /></PublicLayout>} />
+          <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
+          <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+          <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
+          <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </StoreProvider>
     </BrowserRouter>
   );
 }
