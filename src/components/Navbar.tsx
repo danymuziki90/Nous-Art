@@ -83,6 +83,11 @@ export default function Navbar() {
       to: '/',
     },
     {
+      id: 'about',
+      label: 'About',
+      to: '/about',
+    },
+    {
       id: 'collection',
       label: 'Collection',
       to: '/gallery',
@@ -96,11 +101,6 @@ export default function Navbar() {
       id: 'exhibitions',
       label: 'Exhibitions',
       to: '/exhibitions',
-    },
-    {
-      id: 'about',
-      label: 'About',
-      to: '/about',
     },
     {
       id: 'contact',

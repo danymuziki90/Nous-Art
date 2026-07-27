@@ -38,10 +38,12 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-ink-950 text-ink-50 flex flex-col md:flex-row">
       {/* Mobile Top Navbar */}
       <div className="md:hidden bg-ink-900 border-b border-white/10 p-4 flex items-center justify-between z-30 sticky top-0">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400">
-            <Sparkles size={16} />
-          </div>
+        <div className="flex items-center gap-3">
+          <img
+            src="/img/logo.jpeg"
+            alt="NOUS ART Logo"
+            className="w-8 h-8 rounded-lg object-cover border border-gold-500/30 shadow-md"
+          />
           <span className="font-display text-lg text-ink-50">NOUS ART CMS</span>
         </div>
         <button
@@ -62,9 +64,11 @@ export default function AdminLayout() {
           {/* Logo Brand */}
           <div className="pb-6 border-b border-white/10 mb-6">
             <Link to="/admin" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 shadow-md">
-                <Sparkles size={20} />
-              </div>
+              <img
+                src="/img/logo.jpeg"
+                alt="NOUS ART Logo"
+                className="w-10 h-10 rounded-xl object-cover border border-gold-500/30 shadow-md"
+              />
               <div>
                 <h1 className="font-display text-xl text-ink-50 font-light tracking-wide">NOUS ART</h1>
                 <span className="text-[10px] font-mono text-gold-400 tracking-widest uppercase block">

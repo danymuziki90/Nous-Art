@@ -47,8 +47,12 @@ export default function AdminLogin() {
         <div className="max-w-md w-full glass-panel rounded-2xl border border-white/10 p-8 md:p-10 shadow-2xl relative z-10 fade-up">
           {/* Header Brand */}
           <div className="text-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 mx-auto mb-4 shadow-xl">
-              <Sparkles size={26} />
+            <div className="w-16 h-16 rounded-2xl p-0.5 border border-gold-500/40 mx-auto mb-4 shadow-2xl overflow-hidden bg-ink-900">
+              <img
+                src="/img/logo.jpeg"
+                alt="NOUS ART Logo"
+                className="w-full h-full object-cover rounded-xl"
+              />
             </div>
             <h1 className="font-display text-3xl text-ink-50 font-light tracking-tight">
               NOUS ART <span className="font-serif italic gold-text-gradient font-normal">Back Office</span>

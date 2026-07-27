@@ -78,6 +78,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/about" className="text-sm text-ink-200 hover:text-gold-300 transition-colors flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  About & Philosophy
+                </Link>
+              </li>
+              <li>
                 <Link to="/gallery" className="text-sm text-ink-200 hover:text-gold-300 transition-colors flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Collection
@@ -93,12 +99,6 @@ export default function Footer() {
                 <Link to="/exhibitions" className="text-sm text-ink-200 hover:text-gold-300 transition-colors flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Exhibitions Programme
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-sm text-ink-200 hover:text-gold-300 transition-colors flex items-center gap-2 group">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  About & Philosophy
                 </Link>
               </li>
               <li>
