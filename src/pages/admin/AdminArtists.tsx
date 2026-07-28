@@ -45,6 +45,7 @@ export default function AdminArtists() {
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const filteredArtists = artists.filter(
     (artist) =>
@@ -55,6 +56,7 @@ export default function AdminArtists() {
 
   const handleOpenAdd = () => {
     setEditingArtist(null);
+    setFormError(null);
     setFormData({
       name: '',
       portrait: '/artists/elena-marchetti.png',
@@ -77,6 +79,7 @@ export default function AdminArtists() {
 
   const handleOpenEdit = (artist: Artist) => {
     setEditingArtist(artist);
+    setFormError(null);
     setFormData({ ...artist });
     setShowModal(true);
   };
@@ -102,9 +105,10 @@ export default function AdminArtists() {
     e.preventDefault();
 
     if (!formData.name || !formData.portrait) {
-      alert('Please fill in Artist Name and Portrait URL.');
+      setFormError('Veuillez remplir le Nom de l\'artiste et l\'URL du portrait.');
       return;
     }
+    setFormError(null);
 
     if (editingArtist) {
       updateArtist(editingArtist.id, formData);
@@ -386,6 +390,12 @@ export default function AdminArtists() {
                   placeholder="Education, apprenticeships, and philosophy..."
                 />
               </div>
+
+              {formError && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">
+                  {formError}
+                </div>
+              )}
 
               <div className="pt-4 flex items-center justify-end gap-3">
                 <button

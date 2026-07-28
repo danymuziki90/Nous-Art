@@ -42,6 +42,7 @@ export default function AdminExhibitions() {
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const filteredExhibitions = exhibitions.filter(
     (ex) =>
@@ -52,6 +53,7 @@ export default function AdminExhibitions() {
 
   const handleOpenAdd = () => {
     setEditingExhibition(null);
+    setFormError(null);
     setFormData({
       title: '',
       subtitle: '',
@@ -69,6 +71,7 @@ export default function AdminExhibitions() {
 
   const handleOpenEdit = (ex: Exhibition) => {
     setEditingExhibition(ex);
+    setFormError(null);
     setFormData({ ...ex });
     setShowModal(true);
   };
@@ -94,9 +97,10 @@ export default function AdminExhibitions() {
     e.preventDefault();
 
     if (!formData.title || !formData.curator || !formData.coverImage) {
-      alert('Please fill in Title, Curator, and Cover Image.');
+      setFormError('Veuillez remplir le Titre, le Curateur et l\'image de couverture.');
       return;
     }
+    setFormError(null);
 
     if (editingExhibition) {
       updateExhibition(editingExhibition.id, formData);
@@ -390,6 +394,12 @@ export default function AdminExhibitions() {
                   placeholder="Full curatorial narrative..."
                 />
               </div>
+
+              {formError && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">
+                  {formError}
+                </div>
+              )}
 
               <div className="pt-4 flex items-center justify-end gap-3">
                 <button

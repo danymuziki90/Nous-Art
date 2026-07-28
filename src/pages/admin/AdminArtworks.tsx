@@ -44,6 +44,7 @@ export default function AdminArtworks() {
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const filteredArtworks = artworks.filter(
     (piece) =>
@@ -54,6 +55,7 @@ export default function AdminArtworks() {
 
   const handleOpenAdd = () => {
     setEditingPiece(null);
+    setFormError(null);
     setFormData({
       title: '',
       artist: artists[0]?.name || 'Elena Marchetti',
@@ -72,6 +74,7 @@ export default function AdminArtworks() {
 
   const handleOpenEdit = (piece: ArtPiece) => {
     setEditingPiece(piece);
+    setFormError(null);
     setFormData({ ...piece });
     setShowModal(true);
   };
@@ -97,9 +100,10 @@ export default function AdminArtworks() {
     e.preventDefault();
 
     if (!formData.title || !formData.artist || !formData.image_url) {
-      alert('Please fill in Title, Artist, and Image URL.');
+      setFormError('Veuillez remplir le Titre, l\'Artiste et l\'URL de l\'image.');
       return;
     }
+    setFormError(null);
 
     if (editingPiece) {
       updateArtwork(editingPiece.id, formData);
@@ -412,6 +416,12 @@ export default function AdminArtworks() {
                   Feature this artwork on Home & Gallery spotlights
                 </label>
               </div>
+
+              {formError && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">
+                  {formError}
+                </div>
+              )}
 
               <div className="pt-4 flex items-center justify-end gap-3">
                 <button

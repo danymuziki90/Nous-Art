@@ -14,8 +14,8 @@ interface AdminAuthContextType {
   logout: () => void;
 }
 
-const DEFAULT_ADMIN_EMAIL = 'genzlismhq@gmail.com';
-const DEFAULT_ADMIN_PASS = 'Gerse@2026';
+const DEFAULT_ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL as string || '';
+const DEFAULT_ADMIN_PASS  = import.meta.env.VITE_ADMIN_PASS  as string || '';
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 

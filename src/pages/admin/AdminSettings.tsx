@@ -48,6 +48,8 @@ export default function AdminSettings() {
   const [heroUrl, setHeroUrl] = useState<string>(siteSettings.hero_media_url || '');
   const [heroUploading, setHeroUploading] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [heroUploadError, setHeroUploadError] = useState<string | null>(null);
+  const [mediumFormError, setMediumFormError] = useState<string | null>(null);
 
   // Medium Category Modal State
   const [showMediumModal, setShowMediumModal] = useState(false);
@@ -69,11 +71,12 @@ export default function AdminSettings() {
     if (!file) return;
 
     setHeroUploading(true);
+    setHeroUploadError(null);
     try {
       const url = await uploadToR2(file, 'hero');
       setHeroUrl(url);
     } catch (err: any) {
-      alert('Upload error: ' + err.message);
+      setHeroUploadError('Erreur upload: ' + err.message);
     } finally {
       setHeroUploading(false);
     }
@@ -120,7 +123,7 @@ export default function AdminSettings() {
       const url = await uploadToR2(file, 'mediums');
       setMediumFormData((prev) => ({ ...prev, image: url }));
     } catch (err: any) {
-      alert('Upload error: ' + err.message);
+      setMediumFormError('Erreur upload: ' + err.message);
     } finally {
       setMediumUploading(false);
     }
@@ -130,9 +133,10 @@ export default function AdminSettings() {
     e.preventDefault();
 
     if (!mediumFormData.title || !mediumFormData.image) {
-      alert('Please enter a Category Title and Image URL.');
+      setMediumFormError('Veuillez entrer un Titre de catégorie et une URL d\'image.');
       return;
     }
+    setMediumFormError(null);
 
     if (editingMedium) {
       updateMediumCategory(editingMedium.id, mediumFormData);
