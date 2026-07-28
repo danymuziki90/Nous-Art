@@ -5,36 +5,36 @@ import { CMSProvider } from '@/context/CMSContext';
 import { AdminAuthProvider, AdminProtectedRoute } from '@/context/AdminAuthContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
-// Public pages — loaded on demand per route
-const Home        = lazy(() => import('@/pages/Home'));
-const Gallery     = lazy(() => import('@/pages/Gallery'));
-const ArtworkDetail = lazy(() => import('@/pages/ArtworkDetail'));
-const Artists     = lazy(() => import('@/pages/Artists'));
-const ArtistDetail = lazy(() => import('@/pages/ArtistDetail'));
-const Exhibitions = lazy(() => import('@/pages/Exhibitions'));
-const About       = lazy(() => import('@/pages/About'));
-const Contact     = lazy(() => import('@/pages/Contact'));
-const Terms       = lazy(() => import('@/pages/Terms'));
-const Privacy     = lazy(() => import('@/pages/Privacy'));
 import { SearchModal } from '@/components/SearchModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { WishlistDrawer } from '@/components/WishlistDrawer';
 
-// Admin shell — imported eagerly so /nart-admin renders instantly (small footprint)
-import AdminLogin  from '@/pages/admin/AdminLogin';
-import AdminLayout from '@/pages/admin/AdminLayout';
+// Public pages — lazy loaded per route
+const Home          = lazy(() => import('@/pages/Home'));
+const Gallery       = lazy(() => import('@/pages/Gallery'));
+const ArtworkDetail = lazy(() => import('@/pages/ArtworkDetail'));
+const Artists       = lazy(() => import('@/pages/Artists'));
+const ArtistDetail  = lazy(() => import('@/pages/ArtistDetail'));
+const Exhibitions   = lazy(() => import('@/pages/Exhibitions'));
+const About         = lazy(() => import('@/pages/About'));
+const Contact       = lazy(() => import('@/pages/Contact'));
+const Terms         = lazy(() => import('@/pages/Terms'));
+const Privacy       = lazy(() => import('@/pages/Privacy'));
 
-// Admin inner pages — lazy loaded, prefetched on login page mount
+// Admin pages — all lazy to avoid chunk conflicts with manualChunks
+const AdminLogin       = lazy(() => import('@/pages/admin/AdminLogin'));
+const AdminLayout      = lazy(() => import('@/pages/admin/AdminLayout'));
 const AdminDashboard   = lazy(() => import('@/pages/admin/AdminDashboard'));
 const AdminArtworks    = lazy(() => import('@/pages/admin/AdminArtworks'));
 const AdminArtists     = lazy(() => import('@/pages/admin/AdminArtists'));
 const AdminExhibitions = lazy(() => import('@/pages/admin/AdminExhibitions'));
 const AdminSettings    = lazy(() => import('@/pages/admin/AdminSettings'));
 
-// Prefetch all admin chunks as soon as the user lands on the login page
-// so they are already cached by the time login completes
+// Prefetch admin chunks silently after 2s on any public page
+// so the back office loads instantly when the admin navigates there
 function prefetchAdminChunks() {
+  import('@/pages/admin/AdminLogin');
+  import('@/pages/admin/AdminLayout');
   import('@/pages/admin/AdminDashboard');
   import('@/pages/admin/AdminArtworks');
   import('@/pages/admin/AdminArtists');
@@ -42,7 +42,7 @@ function prefetchAdminChunks() {
   import('@/pages/admin/AdminSettings');
 }
 
-// Full-screen loader for public pages
+// Full-screen spinner (public pages)
 function PageLoader() {
   return (
     <div className="min-h-screen bg-ink-950 flex items-center justify-center">
@@ -51,7 +51,7 @@ function PageLoader() {
   );
 }
 
-// Lightweight inline loader for admin page transitions (inside the layout)
+// Inline spinner inside the admin sidebar layout
 function AdminPageLoader() {
   return (
     <div className="flex items-center justify-center py-24">
@@ -64,9 +64,9 @@ function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Start prefetching admin chunks as soon as user hits any /nart-admin route
-    if (pathname.startsWith('/nart-admin')) {
-      prefetchAdminChunks();
+    if (!pathname.startsWith('/nart-admin')) {
+      const timer = setTimeout(prefetchAdminChunks, 2000);
+      return () => clearTimeout(timer);
     }
   }, [pathname]);
   return null;
@@ -106,7 +106,7 @@ export default function App() {
                 <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
                 <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
 
-                {/* Admin CMS Back Office Routes — shell loads instantly */}
+                {/* Admin CMS Routes */}
                 <Route path="/nart-admin/login" element={<AdminLogin />} />
                 <Route
                   path="/nart-admin"
@@ -116,7 +116,6 @@ export default function App() {
                     </AdminProtectedRoute>
                   }
                 >
-                  {/* Inner pages lazy-loaded inside the already-rendered layout */}
                   <Route index element={<Suspense fallback={<AdminPageLoader />}><AdminDashboard /></Suspense>} />
                   <Route path="artworks" element={<Suspense fallback={<AdminPageLoader />}><AdminArtworks /></Suspense>} />
                   <Route path="artists" element={<Suspense fallback={<AdminPageLoader />}><AdminArtists /></Suspense>} />
@@ -124,7 +123,7 @@ export default function App() {
                   <Route path="settings" element={<Suspense fallback={<AdminPageLoader />}><AdminSettings /></Suspense>} />
                 </Route>
 
-                {/* Fallback Route */}
+                {/* Fallback */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
