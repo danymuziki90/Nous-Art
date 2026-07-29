@@ -1,7 +1,8 @@
 /**
  * NOUS ART — Cloudflare R2 Upload Worker
  * ========================================
- * Deploy this Worker to Cloudflare to enable real R2 file uploads.
+ * Deploy this Worker to Cloudflare to enable real R2 file uploads
+ * AND JSON metadata storage for the CMS.
  *
  * Setup:
  *  1. Create a Cloudflare Worker at https://dash.cloudflare.com/workers
@@ -17,20 +18,101 @@
  *
  * R2 Bucket binding:
  *   - Name: MEDIA_BUCKET (must match the binding name in the Worker settings)
+ *
+ * Supported operations:
+ *   - POST   (FormData)          → Upload a file (image/video) to R2
+ *   - DELETE (JSON body)         → Delete a file from R2
+ *   - GET    (?key=cms/xxx.json) → Read a CMS JSON metadata file from R2
+ *   - PUT    (JSON body)         → Write a CMS JSON metadata file to R2
  */
 
 export default {
   async fetch(request, env) {
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
+    // ─── CORS Preflight ─────────────────────────────────────────────────
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders });
     }
 
+    // ─── GET: Read a CMS JSON metadata file from R2 ─────────────────────
+    if (request.method === 'GET') {
+      try {
+        const url = new URL(request.url);
+        const key = url.searchParams.get('key');
+
+        if (!key) {
+          return new Response(
+            JSON.stringify({ error: 'Missing "key" query parameter' }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const object = await env.MEDIA_BUCKET.get(key);
+
+        if (!object) {
+          return new Response(
+            JSON.stringify({ error: 'Not found', key }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const body = await object.text();
+
+        return new Response(body, {
+          status: 200,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          },
+        });
+      } catch (err) {
+        return new Response(
+          JSON.stringify({ error: String(err) }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    // ─── PUT: Write a CMS JSON metadata file to R2 ──────────────────────
+    if (request.method === 'PUT') {
+      try {
+        const body = await request.json();
+        const { key, data } = body;
+
+        if (!key || data === undefined) {
+          return new Response(
+            JSON.stringify({ error: 'Missing "key" or "data" in request body' }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const jsonString = JSON.stringify(data);
+
+        await env.MEDIA_BUCKET.put(key, jsonString, {
+          httpMetadata: { contentType: 'application/json' },
+        });
+
+        return new Response(
+          JSON.stringify({ success: true, key, size: jsonString.length }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      } catch (err) {
+        return new Response(
+          JSON.stringify({ error: String(err) }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    // ─── POST: Upload a file (image/video) to R2 ────────────────────────
     if (request.method === 'POST') {
       try {
         const formData = await request.formData();
@@ -64,6 +146,7 @@ export default {
       }
     }
 
+    // ─── DELETE: Remove a file from R2 ──────────────────────────────────
     if (request.method === 'DELETE') {
       try {
         const body = await request.json();

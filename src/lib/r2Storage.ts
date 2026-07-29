@@ -5,6 +5,10 @@
  *  1. If VITE_R2_UPLOAD_WORKER_URL is set → POST to your Cloudflare Worker (secure, recommended for production)
  *  2. Otherwise → encode the file as a compressed Data URL stored in localStorage (dev/demo fallback)
  *
+ * CMS Data flow:
+ *  - fetchCMSData() → GET from Worker to read JSON metadata files stored in R2
+ *  - saveCMSData()  → PUT to Worker to write JSON metadata files to R2
+ *
  * To enable real R2 uploads, deploy the Worker in `/workers/r2-upload-worker.js`
  * and set VITE_R2_UPLOAD_WORKER_URL in your .env file.
  */
@@ -190,6 +194,87 @@ export async function deleteFromR2(path: string): Promise<boolean> {
     return response.ok;
   } catch (err) {
     console.error('[r2Storage] Delete error:', err);
+    return false;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CMS JSON Metadata Storage — Read/Write JSON files in R2 via the Worker
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Names of CMS collections stored as JSON in R2 */
+export type CMSCollection = 'artworks' | 'artists' | 'exhibitions' | 'mediums' | 'settings';
+
+/**
+ * Fetches a CMS JSON metadata file from R2 via the Worker.
+ * Returns `null` if the file does not exist or if the Worker is not configured.
+ *
+ * @param collection - The collection name (e.g. 'artworks', 'artists')
+ * @returns The parsed JSON data, or null
+ */
+export async function fetchCMSData<T>(collection: CMSCollection): Promise<T | null> {
+  if (!R2_UPLOAD_WORKER_URL) {
+    console.log(`[r2Storage] No Worker URL — skipping fetchCMSData for: ${collection}`);
+    return null;
+  }
+
+  const key = `cms/${collection}.json`;
+
+  try {
+    const response = await fetch(`${R2_UPLOAD_WORKER_URL}?key=${encodeURIComponent(key)}`, {
+      method: 'GET',
+      headers: { 'Cache-Control': 'no-cache' },
+    });
+
+    if (response.status === 404) {
+      // File doesn't exist yet in R2 — this is normal on first use
+      console.log(`[r2Storage] CMS data not found in R2: ${key} (will use defaults)`);
+      return null;
+    }
+
+    if (!response.ok) {
+      console.error(`[r2Storage] Failed to fetch CMS data (${response.status}): ${key}`);
+      return null;
+    }
+
+    const data = await response.json();
+    return data as T;
+  } catch (err) {
+    console.error(`[r2Storage] Error fetching CMS data for ${collection}:`, err);
+    return null;
+  }
+}
+
+/**
+ * Saves a CMS JSON metadata file to R2 via the Worker.
+ * This makes the data available to all browsers and devices.
+ *
+ * @param collection - The collection name (e.g. 'artworks', 'artists')
+ * @param data - The data to persist
+ */
+export async function saveCMSData<T>(collection: CMSCollection, data: T): Promise<boolean> {
+  if (!R2_UPLOAD_WORKER_URL) {
+    console.log(`[r2Storage] No Worker URL — skipping saveCMSData for: ${collection}`);
+    return false;
+  }
+
+  const key = `cms/${collection}.json`;
+
+  try {
+    const response = await fetch(R2_UPLOAD_WORKER_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, data }),
+    });
+
+    if (!response.ok) {
+      console.error(`[r2Storage] Failed to save CMS data (${response.status}): ${key}`);
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.error(`[r2Storage] Error saving CMS data for ${collection}:`, err);
     return false;
   }
 }

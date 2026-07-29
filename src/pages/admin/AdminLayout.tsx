@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useCMS } from '@/context/CMSContext';
 import {
   LayoutDashboard,
   Palette,
@@ -15,9 +16,11 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
+import { Loader2 } from 'lucide-react';
 
 export default function AdminLayout() {
   const { adminUser, logout } = useAdminAuth();
+  const { loading: cmsLoading, syncing: cmsSyncing } = useCMS();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -110,10 +113,20 @@ export default function AdminLayout() {
           <div className="space-y-2 text-[10px] font-mono text-ink-300">
             <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-ink-950 border border-white/5">
               <div className="flex items-center gap-2 text-gold-400">
-                <ShieldCheck size={12} />
+                {cmsSyncing || cmsLoading ? (
+                  <Loader2 size={12} className="animate-spin" />
+                ) : (
+                  <ShieldCheck size={12} />
+                )}
                 <span>CMS Sync</span>
               </div>
-              <span className="text-gold-400 font-bold">Live</span>
+              {cmsLoading ? (
+                <span className="text-amber-400 font-bold">Loading…</span>
+              ) : cmsSyncing ? (
+                <span className="text-amber-400 font-bold">Syncing…</span>
+              ) : (
+                <span className="text-emerald-400 font-bold">Live ✓</span>
+              )}
             </div>
           </div>
 

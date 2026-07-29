@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { INITIAL_ARTWORKS, DEFAULT_SITE_SETTINGS, type ArtPiece, type SiteSettings } from '@/data/artworks';
 import { ARTISTS, type Artist } from '@/data/artists';
 import { INITIAL_EXHIBITIONS, type Exhibition } from '@/data/exhibitions';
 import { INITIAL_MEDIUMS, type MediumCategory } from '@/data/mediums';
+import { fetchCMSData, saveCMSData } from '@/lib/r2Storage';
 
 interface CMSContextType {
   artworks: ArtPiece[];
@@ -10,6 +11,11 @@ interface CMSContextType {
   exhibitions: Exhibition[];
   mediumCategories: MediumCategory[];
   siteSettings: SiteSettings;
+
+  /** true while the initial R2 data fetch is in progress */
+  loading: boolean;
+  /** true while a save to R2 is in progress */
+  syncing: boolean;
 
   // Artwork CRUD
   addArtwork: (artwork: Omit<ArtPiece, 'id' | 'created_at'>) => ArtPiece;
@@ -42,77 +48,191 @@ interface CMSContextType {
 
 const CMSContext = createContext<CMSContextType | undefined>(undefined);
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+/** Read from localStorage with a JSON parse fallback */
+function readLocal<T>(key: string): T | null {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? (JSON.parse(saved) as T) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Write to localStorage (local cache) */
+function writeLocal(key: string, data: unknown): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (err) {
+    console.warn('[CMS] localStorage write failed:', err);
+  }
+}
+
+// localStorage keys
+const LS_ARTWORKS    = 'nous_art_cms_artworks';
+const LS_ARTISTS     = 'nous_art_cms_artists';
+const LS_EXHIBITIONS = 'nous_art_cms_exhibitions';
+const LS_MEDIUMS     = 'nous_art_cms_mediums';
+const LS_SETTINGS    = 'nous_art_cms_settings';
+
+// ─── Provider ───────────────────────────────────────────────────────────────
+
 export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Artworks state
-  const [artworks, setArtworks] = useState<ArtPiece[]>(() => {
-    try {
-      const saved = localStorage.getItem('nous_art_cms_artworks');
-      return saved ? JSON.parse(saved) : INITIAL_ARTWORKS;
-    } catch {
-      return INITIAL_ARTWORKS;
-    }
-  });
+  // Start with localStorage data (fast) or hardcoded defaults
+  const [artworks, setArtworks]             = useState<ArtPiece[]>(() => readLocal<ArtPiece[]>(LS_ARTWORKS) ?? INITIAL_ARTWORKS);
+  const [artists, setArtists]               = useState<Artist[]>(() => readLocal<Artist[]>(LS_ARTISTS) ?? ARTISTS);
+  const [exhibitions, setExhibitions]       = useState<Exhibition[]>(() => readLocal<Exhibition[]>(LS_EXHIBITIONS) ?? INITIAL_EXHIBITIONS);
+  const [mediumCategories, setMediumCategories] = useState<MediumCategory[]>(() => readLocal<MediumCategory[]>(LS_MEDIUMS) ?? INITIAL_MEDIUMS);
+  const [siteSettings, setSiteSettings]     = useState<SiteSettings>(() => readLocal<SiteSettings>(LS_SETTINGS) ?? DEFAULT_SITE_SETTINGS);
 
-  // Artists state
-  const [artists, setArtists] = useState<Artist[]>(() => {
-    try {
-      const saved = localStorage.getItem('nous_art_cms_artists');
-      return saved ? JSON.parse(saved) : ARTISTS;
-    } catch {
-      return ARTISTS;
-    }
-  });
+  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
 
-  // Exhibitions state
-  const [exhibitions, setExhibitions] = useState<Exhibition[]>(() => {
-    try {
-      const saved = localStorage.getItem('nous_art_cms_exhibitions');
-      return saved ? JSON.parse(saved) : INITIAL_EXHIBITIONS;
-    } catch {
-      return INITIAL_EXHIBITIONS;
-    }
-  });
+  // Track whether the initial R2 load has completed, so we don't
+  // trigger R2 saves from the setState calls during hydration.
+  const hydrated = useRef(false);
 
-  // Medium Categories state
-  const [mediumCategories, setMediumCategories] = useState<MediumCategory[]>(() => {
-    try {
-      const saved = localStorage.getItem('nous_art_cms_mediums');
-      return saved ? JSON.parse(saved) : INITIAL_MEDIUMS;
-    } catch {
-      return INITIAL_MEDIUMS;
-    }
-  });
-
-  // Site Settings state
-  const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => {
-    try {
-      const saved = localStorage.getItem('nous_art_cms_settings');
-      return saved ? JSON.parse(saved) : DEFAULT_SITE_SETTINGS;
-    } catch {
-      return DEFAULT_SITE_SETTINGS;
-    }
-  });
-
-  // Sync to localStorage
+  // ─── Phase 1: Load from R2 on mount (source of truth) ──────────────
   useEffect(() => {
-    localStorage.setItem('nous_art_cms_artworks', JSON.stringify(artworks));
-  }, [artworks]);
+    let cancelled = false;
 
-  useEffect(() => {
-    localStorage.setItem('nous_art_cms_artists', JSON.stringify(artists));
-  }, [artists]);
+    async function loadFromR2() {
+      try {
+        const [r2Artworks, r2Artists, r2Exhibitions, r2Mediums, r2Settings] = await Promise.all([
+          fetchCMSData<ArtPiece[]>('artworks'),
+          fetchCMSData<Artist[]>('artists'),
+          fetchCMSData<Exhibition[]>('exhibitions'),
+          fetchCMSData<MediumCategory[]>('mediums'),
+          fetchCMSData<SiteSettings>('settings'),
+        ]);
 
-  useEffect(() => {
-    localStorage.setItem('nous_art_cms_exhibitions', JSON.stringify(exhibitions));
-  }, [exhibitions]);
+        if (cancelled) return;
 
-  useEffect(() => {
-    localStorage.setItem('nous_art_cms_mediums', JSON.stringify(mediumCategories));
-  }, [mediumCategories]);
+        // If R2 returned data, use it. Otherwise check for localStorage data
+        // that may need migration (admin previously saved to localStorage only).
+        if (r2Artworks) {
+          setArtworks(r2Artworks);
+          writeLocal(LS_ARTWORKS, r2Artworks);
+        } else {
+          // Migration: if localStorage has non-default data, push it to R2
+          const local = readLocal<ArtPiece[]>(LS_ARTWORKS);
+          if (local && JSON.stringify(local) !== JSON.stringify(INITIAL_ARTWORKS)) {
+            await saveCMSData('artworks', local);
+          }
+        }
 
+        if (r2Artists) {
+          setArtists(r2Artists);
+          writeLocal(LS_ARTISTS, r2Artists);
+        } else {
+          const local = readLocal<Artist[]>(LS_ARTISTS);
+          if (local && JSON.stringify(local) !== JSON.stringify(ARTISTS)) {
+            await saveCMSData('artists', local);
+          }
+        }
+
+        if (r2Exhibitions) {
+          setExhibitions(r2Exhibitions);
+          writeLocal(LS_EXHIBITIONS, r2Exhibitions);
+        } else {
+          const local = readLocal<Exhibition[]>(LS_EXHIBITIONS);
+          if (local && JSON.stringify(local) !== JSON.stringify(INITIAL_EXHIBITIONS)) {
+            await saveCMSData('exhibitions', local);
+          }
+        }
+
+        if (r2Mediums) {
+          setMediumCategories(r2Mediums);
+          writeLocal(LS_MEDIUMS, r2Mediums);
+        } else {
+          const local = readLocal<MediumCategory[]>(LS_MEDIUMS);
+          if (local && JSON.stringify(local) !== JSON.stringify(INITIAL_MEDIUMS)) {
+            await saveCMSData('mediums', local);
+          }
+        }
+
+        if (r2Settings) {
+          setSiteSettings(r2Settings);
+          writeLocal(LS_SETTINGS, r2Settings);
+        } else {
+          const local = readLocal<SiteSettings>(LS_SETTINGS);
+          if (local && JSON.stringify(local) !== JSON.stringify(DEFAULT_SITE_SETTINGS)) {
+            await saveCMSData('settings', local);
+          }
+        }
+      } catch (err) {
+        console.error('[CMS] Failed to load from R2, using local/default data:', err);
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+          // Mark hydration complete after a tick so setState batching finishes
+          setTimeout(() => { hydrated.current = true; }, 0);
+        }
+      }
+    }
+
+    loadFromR2();
+    return () => { cancelled = true; };
+  }, []);
+
+  // ─── Phase 2: Sync to localStorage AND R2 on every change ─────────
+  // We use a debounce-like approach: save immediately to localStorage,
+  // and debounce R2 saves to avoid flooding the Worker.
+
+  const syncTimeouts = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+
+  const persistToR2 = useCallback((collection: 'artworks' | 'artists' | 'exhibitions' | 'mediums' | 'settings', data: unknown) => {
+    // Don't save to R2 during initial hydration
+    if (!hydrated.current) return;
+
+    // Clear any pending save for this collection
+    if (syncTimeouts.current[collection]) {
+      clearTimeout(syncTimeouts.current[collection]);
+    }
+
+    // Debounce: save after 300ms of no further changes
+    syncTimeouts.current[collection] = setTimeout(async () => {
+      setSyncing(true);
+      try {
+        await saveCMSData(collection, data);
+      } catch (err) {
+        console.error(`[CMS] Failed to sync ${collection} to R2:`, err);
+      } finally {
+        setSyncing(false);
+      }
+    }, 300);
+  }, []);
+
+  // Sync artworks
   useEffect(() => {
-    localStorage.setItem('nous_art_cms_settings', JSON.stringify(siteSettings));
-  }, [siteSettings]);
+    writeLocal(LS_ARTWORKS, artworks);
+    persistToR2('artworks', artworks);
+  }, [artworks, persistToR2]);
+
+  // Sync artists
+  useEffect(() => {
+    writeLocal(LS_ARTISTS, artists);
+    persistToR2('artists', artists);
+  }, [artists, persistToR2]);
+
+  // Sync exhibitions
+  useEffect(() => {
+    writeLocal(LS_EXHIBITIONS, exhibitions);
+    persistToR2('exhibitions', exhibitions);
+  }, [exhibitions, persistToR2]);
+
+  // Sync medium categories
+  useEffect(() => {
+    writeLocal(LS_MEDIUMS, mediumCategories);
+    persistToR2('mediums', mediumCategories);
+  }, [mediumCategories, persistToR2]);
+
+  // Sync site settings
+  useEffect(() => {
+    writeLocal(LS_SETTINGS, siteSettings);
+    persistToR2('settings', siteSettings);
+  }, [siteSettings, persistToR2]);
 
   // --- Artwork CRUD Operations ---
   const addArtwork = (data: Omit<ArtPiece, 'id' | 'created_at'>): ArtPiece => {
@@ -222,11 +342,17 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setExhibitions(INITIAL_EXHIBITIONS);
     setMediumCategories(INITIAL_MEDIUMS);
     setSiteSettings(DEFAULT_SITE_SETTINGS);
-    localStorage.removeItem('nous_art_cms_artworks');
-    localStorage.removeItem('nous_art_cms_artists');
-    localStorage.removeItem('nous_art_cms_exhibitions');
-    localStorage.removeItem('nous_art_cms_mediums');
-    localStorage.removeItem('nous_art_cms_settings');
+    localStorage.removeItem(LS_ARTWORKS);
+    localStorage.removeItem(LS_ARTISTS);
+    localStorage.removeItem(LS_EXHIBITIONS);
+    localStorage.removeItem(LS_MEDIUMS);
+    localStorage.removeItem(LS_SETTINGS);
+    // Also reset R2 data
+    saveCMSData('artworks', INITIAL_ARTWORKS);
+    saveCMSData('artists', ARTISTS);
+    saveCMSData('exhibitions', INITIAL_EXHIBITIONS);
+    saveCMSData('mediums', INITIAL_MEDIUMS);
+    saveCMSData('settings', DEFAULT_SITE_SETTINGS);
   };
 
   return (
@@ -237,6 +363,8 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         exhibitions,
         mediumCategories,
         siteSettings,
+        loading,
+        syncing,
         addArtwork,
         updateArtwork,
         deleteArtwork,
