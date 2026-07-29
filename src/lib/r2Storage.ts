@@ -221,9 +221,10 @@ export async function fetchCMSData<T>(collection: CMSCollection): Promise<T | nu
   const key = `cms/${collection}.json`;
 
   try {
-    const response = await fetch(`${R2_UPLOAD_WORKER_URL}?key=${encodeURIComponent(key)}`, {
+    // Use a timestamp query parameter to bypass browser/CDN cache without triggering CORS preflight for Cache-Control header
+    const cacheBuster = Date.now();
+    const response = await fetch(`${R2_UPLOAD_WORKER_URL}?key=${encodeURIComponent(key)}&t=${cacheBuster}`, {
       method: 'GET',
-      headers: { 'Cache-Control': 'no-cache' },
     });
 
     if (response.status === 404) {
