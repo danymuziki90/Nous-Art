@@ -381,6 +381,17 @@ export default function AdminArtists() {
               </div>
 
               <div>
+                <label className="block text-ink-300 uppercase text-[10px] mb-1">Full Biography (Paragraphs separated by new lines)</label>
+                <textarea
+                  rows={5}
+                  value={formData.biography?.join('\n\n') || ''}
+                  onChange={(e) => setFormData({ ...formData, biography: e.target.value.split('\n').filter(p => p.trim() !== '') })}
+                  className="w-full px-3 py-2.5 bg-ink-900 border border-white/10 rounded-xl text-ink-100 focus:outline-none focus:border-gold-500/50 font-sans"
+                  placeholder="Detailed artist biography..."
+                />
+              </div>
+
+              <div>
                 <label className="block text-ink-300 uppercase text-[10px] mb-1">Artistic Background & Philosophy</label>
                 <textarea
                   rows={3}
